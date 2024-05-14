@@ -17,3 +17,8 @@
 - Show the progress to the client
 - Specify concrete examples
 - Prepare and pracise demo
+
+### Secretary
+- Take notes in client meeting
+- In retrospective meetings
+- In daily scrum
