@@ -21,3 +21,5 @@ Practices to be followed:
 - methods: snake_case
 - modules: snake_case
 - variables: snake_case
+
+All names should be written in English.

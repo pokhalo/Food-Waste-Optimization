@@ -11,5 +11,6 @@ Commit messages should be written by following the following guidelines:
 5. Use the imperative mood in the subject line
 6. Wrap the body at 72 characters
 7. Use the body to explain *what* and *why* vs. *how*
+8. Write messages in English
 
 More about commit messages [here](https://cbea.ms/git-commit/).
