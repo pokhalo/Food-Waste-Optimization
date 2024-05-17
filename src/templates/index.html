@@ -1,18 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>My Webpage</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Food Waste Optimization</title>
+    <!-- Bulma -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
 </head>
 <body>
-    <ul id="navigation">
-    {% for item in navigation %}
-        <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
-    {% endfor %}
-    </ul>
+    <!-- Title & navigation -->
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <div class="p-5">
+                <h2 class="title is-2">Food Waste Optimization</p>
+                <h4 class="subtitle is-4">AI assisted model to forecast food consumption in YLVA restaurants</p>                
+            </div>            
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div class="navbar-end">
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                  <a class="navbar-item">
+                    Home
+                  </a>
+                  <a class="navbar-item">
+                    Documentation
+                  </a>
+                  <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                      More
+                    </a>
+                    <div class="navbar-dropdown">
+                      <a class="navbar-item">
+                        About
+                      </a>
+                      <a class="navbar-item">
+                        Contact
+                      </a>
+                      <hr class="navbar-divider">
+                      <a class="navbar-item">
+                        Report an issue
+                      </a>
+                    </div>
+                  </div>
+                </div>
+            <div class="navbar-item">
+              <div class="buttons">
+                <a class="button is-info">
+                  <strong>Sign up</strong>
+                </a>
+                <a class="button is-light">
+                  Log in
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+    </nav>
+    <!-- Section for displaying data -->    
+    <div class="pt-3">
+        <div class="container is-max-desktop">
+            <div class="pt-6">
+                <div class="p-4">
+                    <h5 class="title is-5">Estimated Amount of Food Waste, Physicum</h5>
+                    <canvas id="canvas-for-sales-forecast"></canvas>            
+                </div>            
+            </div>
+        </div>
+    </div>
 
-    <h1>Food Waste Optimization</h1>
-    {{ a_variable }}
-
-    {# a comment #}
+    </div>
+	<!-- Chart Js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const chartForSalesForecast = document.getElementById('canvas-for-sales-forecast')
+        new Chart(chartForSalesForecast, {
+          type: 'bar',
+          data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+            datasets: [{
+              label: 'Predicted Bio Waste / kg',
+              data: [22.5, 43.2, 55.6, 23.7, 36.4],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        })
+      </script>
 </body>
 </html>
