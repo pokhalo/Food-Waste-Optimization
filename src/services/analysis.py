@@ -7,7 +7,7 @@ HOURLY_CUSTOMER_COUNT = "~/Downloads/Tuntikohtainen asiakasmäärä.xlsx"
 BOUGHT_MEALS = "~/Downloads/Kopio_Kumpula asiakasdataa.xlsx"
 
 
-class Model:
+class ModelService:
     """Class for the statistical model
     """
     def __init__(self, data):
@@ -35,7 +35,7 @@ exa = hourly_customers.Exactum
 comb = pd.merge(bought_meals.Exactum, hourly_customers.Exactum, on="Date").dropna()
 comb.columns = ["Bought meals", "Daily customers"]
 
-linreg = Model(comb)
+linreg = ModelService(comb)
 
 linreg.learn()
 
