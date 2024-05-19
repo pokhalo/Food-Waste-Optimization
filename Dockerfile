@@ -4,6 +4,10 @@ WORKDIR /app
 
 COPY . .
 
+RUN chmod -R 777 *
+
+ENV POETRY_VIRTUALENVS_IN_PROJECT=true
+
 RUN pip3 install poetry
 
 RUN poetry install
