@@ -22,7 +22,7 @@ Because the project is coursework, it is not possible to contribute outside the 
 ### Documentation
 - [General](Documentation/general_practices.md)
 - [Coding](Documentation/programming_practices.md)
-- [Branching](Documentation/branching-practises.md)
+- [Branching](Documentation/branching_practises.md)
 - [Making commits](Documentation/commit_practises.md)
 - [Definition of Done](Documentation/dod.md)
 
@@ -35,4 +35,4 @@ Current [live system](Openshift setup pending)
 You can run the project locally in a [Docker](https://www.docker.com/) container.
 Detailed instructions will be provided as the project matures.
 --->
-- [Tech Stack](Documentation/tech-stack.md)
+- [Tech Stack](Documentation/tech_stack.md)
