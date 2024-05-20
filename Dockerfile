@@ -12,6 +12,6 @@ RUN pip3 install poetry
 
 RUN poetry install
 
-EXPOSE 8080
+EXPOSE 5000
 
 CMD [ "poetry", "run" , "invoke", "start"]
