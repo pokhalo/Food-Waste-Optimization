@@ -1,6 +1,6 @@
 # Optimizing Food Waste Reduction  
 
-[GHA workflow badge](https://github.com/Food-Waste-Optimization/Food-Waste-Optimization/workflows/Tests/badge.svg)
+![GHA workflow badge](https://github.com/Food-Waste-Optimization/Food-Waste-Optimization/workflows/Tests/badge.svg)
 [![codecov](https://codecov.io/gh/Food-Waste-Optimization/Food-Waste-Optimization/graph/badge.svg?token=62FTEI7EG0)](https://codecov.io/gh/Food-Waste-Optimization/Food-Waste-Optimization)
 
 This project is part of the summer 2024 Software Engineering project course [TKT20007](https://github.com/HY-TKTL/TKT20007-Ohjelmistotuotantoprojekti/) at the University of Helsinki. 
@@ -20,9 +20,9 @@ Because the project is coursework, it is not possible to contribute outside the 
 --->
 
 ### Documentation
-- [General](Documentation/)
-- [Coding](Documentation/)
-- [Branching](Documentation/branching-practises.md)
+- [General](Documentation/general_practices.md)
+- [Coding](Documentation/programming_practices.md)
+- [Branching](Documentation/branching_practises.md)
 - [Making commits](Documentation/commit_practises.md)
 - [Definition of Done](Documentation/dod.md)
 
@@ -35,4 +35,4 @@ Current [live system](Openshift setup pending)
 You can run the project locally in a [Docker](https://www.docker.com/) container.
 Detailed instructions will be provided as the project matures.
 --->
-- [Tech Stack](Documentation/tech-stach.md)
+- [Tech Stack](Documentation/tech_stack.md)
