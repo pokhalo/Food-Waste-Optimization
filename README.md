@@ -22,8 +22,8 @@ Because the project is coursework, it is not possible to contribute outside the 
 ### Documentation
 - [General](Documentation/general_practices.md)
 - [Coding](Documentation/programming_practices.md)
-- [Branching](Documentation/branching_practises.md)
-- [Making commits](Documentation/commit_practises.md)
+- [Branching](Documentation/branching_practices.md)
+- [Making commits](Documentation/commit_practices.md)
 - [Definition of Done](Documentation/dod.md)
 
 
