@@ -62,8 +62,44 @@
           </div>
         </div>
     </nav>
-<section class="section">
-    <h1 class="title">This is launch page</h1>
-</section>
+    <!-- Section for displaying data -->    
+    <div class="pt-3">
+        <div class="container is-max-desktop">
+            <div class="pt-6">
+                <div class="p-4">
+                    <h5 class="title is-5">Estimated Amount of Food Waste, Physicum</h5>
+                    <canvas id="canvas-for-forecast"></canvas>            
+                </div>            
+            </div>
+        </div>
+    </div>
+	<!-- Chart Js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const injectedLabels = JSON.parse('{{ labelsFromDataRouter | tojson }}')
+        const injectedData = JSON.parse('{{ dataFromDataRouter | tojson }}')
+        const injectedLabel = '{{ singleLabelFromDataRouter | safe }}'
+
+        const chartForForecast = document.getElementById('canvas-for-forecast')
+
+        new Chart(chartForForecast, {
+          type: 'bar',
+          data: {
+            labels: injectedLabels,
+            datasets: [{
+                label: injectedLabel,
+                data: injectedData,
+                borderWidth: 1
+            }]
+            },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        })
+      </script>
 </body>
 </html>
