@@ -6,7 +6,7 @@
   - Guest can see a launch page (containing what? -> needs to be defined)
   - User can input data (what, how? -> needs to be defined)
   
-# Goals for the Sprint1:
+# Goals for the Sprint2:
   - Define User Story for the Week:
     -> User can see data based on analysis
   - Divide user story into tasks:
