@@ -11,3 +11,6 @@ pip-delete-this-directory.txt
 nosetests.xml
 coverage.xml
 
+basic_mvp_data/
+*.xlsx
+*.csv
