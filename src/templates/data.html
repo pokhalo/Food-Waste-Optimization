@@ -67,39 +67,72 @@
         <div class="container is-max-desktop">
             <div class="pt-6">
                 <div class="p-4">
-                    <h5 class="title is-5">Estimated Amount of Food Waste, Physicum</h5>
+                    <h5 class="title is-5" id="title-of-forecast">Estimated Amount of Food Waste, Chemicum</h5>
                     <canvas id="canvas-for-forecast"></canvas>            
-                </div>            
+                </div>
+                <div class="buttons">
+                  <button class="button is-link is-light" onClick="clickChemicum()">Chemicum</button>
+                  <button class="button is-link is-light" onClick="clickExactum()">Exactum</button>
+                  <button class="button is-link is-light" onClick="clickTotal()">Total</button>
+                </div>
             </div>
         </div>
     </div>
 	<!-- Chart Js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ 	<!-- Injected data variables, functions for buttons and for creating & updating the chart -->   
     <script>
-        const injectedLabels = JSON.parse('{{ labelsFromDataRouter | tojson }}')
-        const injectedData = JSON.parse('{{ dataFromDataRouter | tojson }}')
-        const injectedLabel = '{{ singleLabelFromDataRouter | safe }}'
+      const injectedLabels = JSON.parse('{{ labelsFromDataRouter | tojson }}')
+      const injectedLabel = '{{ singleLabelFromDataRouter | safe }}'
+      const injectedDataForChemicum = JSON.parse('{{ dataFromDataRouterChemicum | tojson }}')
+      const injectedDataForExactum = JSON.parse('{{ dataFromDataRouterExactum | tojson }}')
+      const injectedDataTotal = JSON.parse('{{ dataFromDataRouterTotal | tojson }}')
+      var dataToDisplay = injectedDataForChemicum
 
-        const chartForForecast = document.getElementById('canvas-for-forecast')
+      const canvasForForecast = document.getElementById('canvas-for-forecast')
 
-        new Chart(chartForForecast, {
-          type: 'bar',
-          data: {
-            labels: injectedLabels,
-            datasets: [{
-                label: injectedLabel,
-                data: injectedData,
-                borderWidth: 1
-            }]
-            },
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true
-              }
+      const barChart = new Chart(canvasForForecast, {
+        type: 'bar',
+        data: {
+          labels: injectedLabels,
+          datasets: [{
+            label: injectedLabel,
+              data: dataToDisplay,
+              borderWidth: 1
+          }]
+          },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
             }
           }
-        })
-      </script>
+        }
+      })
+
+      const clickChemicum = () => {
+        document.getElementById("title-of-forecast").innerHTML = 'Estimated Amount of Food Waste, Chemicum'
+        dataToDisplay = injectedDataForChemicum
+        updateBarChart()
+      }
+
+      const clickExactum = () => {
+        document.getElementById("title-of-forecast").innerHTML = 'Estimated Amount of Food Waste, Exactum'          
+        dataToDisplay = injectedDataForExactum
+        updateBarChart()
+      }
+
+      const clickTotal = () => {
+        document.getElementById("title-of-forecast").innerHTML = 'Estimated Amount of Food Waste, Total'          
+        dataToDisplay = injectedDataTotal
+        updateBarChart()
+      }
+
+      const updateBarChart = () => {
+        barChart.data.datasets[0].data = dataToDisplay
+        barChart.update()
+      }
+       
+  </script>
 </body>
 </html>
