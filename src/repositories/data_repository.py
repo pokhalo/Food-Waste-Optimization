@@ -21,9 +21,9 @@ class DataRepository:
         customer_data = self.merge_multiple_excel_sheets("src/data/basic_mvp_data/Kopio_Kumpula asiakasdataa.xlsx")
         supersight_data = self.get_people_flow_by_date("src/data/basic_mvp_data/supersight-raw-data.csv")
 
-        data = pd.merge(receipts_by_date_exactum, customer_data, on="Date")
+        data = pd.merge(receipts_by_date_exactum, customer_data, on="Date", how="inner")
 
-        data = pd.merge(data, supersight_data, on="Date")
+        data = pd.merge(data, supersight_data, on="Date", how="inner")
 
         return data
 
@@ -73,8 +73,8 @@ class DataRepository:
         biowaste_exactum.columns = new_header
 
         # merge based on index, which is date
-        combined_data = pd.merge(sold_meals_exactum, dist_sold_meals_exactum, left_index=True, right_index=True, how="inner")
-        combined_data = pd.merge(combined_data, biowaste_exactum, left_index=True, right_index=True, how="inner")
+        combined_data = pd.merge(sold_meals_exactum, dist_sold_meals_exactum, left_index=True, right_index=True, how="outer")
+        combined_data = pd.merge(combined_data, biowaste_exactum, left_index=True, right_index=True, how="outer")
 
         # create date object
         np.insert(combined_data.columns.values, 0, "Date")
@@ -84,11 +84,6 @@ class DataRepository:
         return combined_data
 
 
-a = DataRepository()
-
-b = a.get_df_from_stationary_data()
-
-print(b)
-
+data_repository = DataRepository()
 
 
