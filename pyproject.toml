@@ -11,6 +11,8 @@ flask = "^3.0.3"
 invoke = "^2.2.0"
 pandas = "^2.2.2"
 scikit-learn = "^1.5.0"
+openpyxl = "^3.1.2"
+matplotlib = "^3.9.0"
 
 
 [tool.poetry.group.dev.dependencies]

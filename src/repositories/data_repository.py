@@ -25,8 +25,19 @@ class DataRepository:
 
         data = pd.merge(data, supersight_data, on="Date", how="inner")
 
-        return data
+        data = self.get_next_day_waste(data).fillna(value = 0)
 
+        data['Weekday'] = data.index.dayofweek
+
+        data = data[data["Yhteensä"] > 0]
+
+        return data
+    
+
+
+    def get_next_day_waste(self, data):
+        data['Huomisen Jäte'] = data['Yhteensä'].shift(-1)
+        return data
 
     
     def get_people_flow_by_date(self, filename):

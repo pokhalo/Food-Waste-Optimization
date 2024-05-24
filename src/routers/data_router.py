@@ -1,5 +1,6 @@
 from flask import render_template
 from services.formatting import get_dummy_data
+from services.analysis import ModelService
 
 class DataRouter:
     """Class to handle /data requests
@@ -21,4 +22,3 @@ class DataRouter:
                                dataFromDataRouterChemicum = self.data_chemicum,
                                dataFromDataRouterExactum = self.data_exactum, 
                                dataFromDataRouterTotal = self.data_total)
-
