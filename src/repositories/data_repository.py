@@ -23,14 +23,23 @@ class DataRepository:
 
         data = pd.merge(receipts_by_date_exactum, customer_data, on="Date")
 
-        #data = pd.concat([supersight_data, data])
         data = pd.merge(data, supersight_data, on="Date")
 
-        print(data)
+        return data
 
 
     
     def get_people_flow_by_date(self, filename):
+        """Gets the daily difference of people
+        going out and coming in. Negative values
+        mean more people leaving than coming in.
+
+        Args:
+            filename (.csv): supersight camera data
+
+        Returns:
+            pd.Series: integer difference of people
+        """
         data = pd.read_csv(filepath_or_buffer=filename, sep=",")
         data["Date"] = pd.to_datetime(data["dateCreated"])
         data.set_index("Date", inplace=True)
