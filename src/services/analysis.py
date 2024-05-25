@@ -34,7 +34,7 @@ s.learn()
 # Predict using a weekday, e.g. monday = 0, tuesday = 1 ...
 print(s.predict(2)) # Prediction is a float representing estimated waste for the given day in kgs
 
-print(s.test_model()) # this shows info about the accuracy of the model, does not really work yet
+#print(s.test_model()) # this shows info about the accuracy of the model, does not really work yet
 
 # This will visualize the fit using matplotlib
 s.model.visualize()
