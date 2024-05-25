@@ -22,5 +22,4 @@ s = ModelService()
 
 s.model.learn()
 print(s.model.predict(2))
-print(s.model.test())
 s.model.visualize()
