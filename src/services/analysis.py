@@ -18,8 +18,23 @@ class ModelService:
     def predict(self, feature):
         return self.model.predict(feature)
 
+    def test_model(self):
+        mse, mae, r2 = self.model.test()
+        return f"Mean squared error: {mse}\nMean absolute error: {mae}\nR^2: {r2}"
+
+
+# HOW TO USE
+
 s = ModelService()
 
-s.model.learn()
-print(s.model.predict(2))
+# After defining the class the model must be fitted using
+s.learn()
+# The data is fetched automatically and now it is ready to make predictions
+
+# Predict using a weekday, e.g. monday = 0, tuesday = 1 ...
+print(s.predict(2)) # Prediction is a float representing estimated waste for the given day in kgs
+
+print(s.test_model()) # this shows info about the accuracy of the model, does not really work yet
+
+# This will visualize the fit using matplotlib
 s.model.visualize()

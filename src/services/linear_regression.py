@@ -24,22 +24,23 @@ class LinearRegressionModel:
         y = self.data["Huomisen Jäte"]
         X = self.data.drop(["Huomisen Jäte"], axis=1)
 
-        self.train_x, self.test_x, self.train_y, self.test_y = train_test_split(X, y, test_size=0.1, random_state=None, shuffle=True, stratify=None)
-
+        self.train_x, self.test_x, self.train_y, self.test_y = train_test_split(X, y, test_size=0.05, random_state=None, shuffle=True, stratify=None)
         self.model.fit(X=self.train_x, y=self.train_y)
 
     def predict(self, weekday=0):
         features = self.data.iloc[[-1]].reset_index(drop=True)
         features = features.drop(["Huomisen Jäte"], axis="columns")
         features["Weekday"] = weekday
-        return self.model.predict(features)
+        return self.model.predict(features)[0]
 
 
     def test(self):
-        y_pred = self.predict(self.test_x)
-        mse = mean_squared_error(self.test_y, y_pred)
-        mae = mean_absolute_error(self.test_y, y_pred)
-        r2 = r2_score(self.test_y, y_pred)
+        # does not work properly
+        y_pred = [self.predict(self.test_x["Weekday"].values[0])]
+        test_y = self.test_y.values
+        mse = mean_squared_error(test_y, y_pred)
+        mae = mean_absolute_error(test_y, y_pred)
+        r2 = r2_score(test_y, y_pred)
         
         return mse, mae, r2
 
