@@ -17,16 +17,16 @@ class DataRepository:
             pandas.DataFrame: The processed data.
         """
         # Read hourly customer data from Excel
-        hourly_customer = pd.read_excel(io="src/data/basic_mvp_data/Tuntikohtainen asiakasmäärä v2.xlsx", index_col=0)
-        
+        hourly_customer = pd.read_excel(io="src/data/basic_mvp_data/tuntidata2.xlsx", index_col=0)
+
         # Filter data for the Exactum restaurant
         hourly_customer_exactum = hourly_customer[hourly_customer["Ravintola"] == "620 Exactum"]
-        
+
         # Aggregate receipt counts by date for Exactum
         receipts_by_date_exactum = hourly_customer_exactum.groupby("Date").sum()["Kuitti kpl"]
 
         # Merge multiple Excel sheets into one DataFrame
-        customer_data = self.merge_multiple_excel_sheets("src/data/basic_mvp_data/Kopio_Kumpula asiakasdataa.xlsx")
+        customer_data = self.merge_multiple_excel_sheets("src/data/basic_mvp_data/kumpula_data.xlsx")
         
         # Get people flow data by date
         supersight_data = self.get_people_flow_by_date("src/data/basic_mvp_data/supersight-raw-data.csv")
@@ -125,5 +125,3 @@ class DataRepository:
         return combined_data
 
 data_repository = DataRepository()
-
-

@@ -25,16 +25,22 @@ class ModelService:
 
 # HOW TO USE
 
-s = ModelService()
+def example_model():
+    s = ModelService()
 
-# After defining the class the model must be fitted using
-s.learn()
-# The data is fetched automatically and now it is ready to make predictions
+    # After defining the class the model must be fitted using
+    s.learn()
+    # The data is fetched automatically and now it is ready to make predictions
 
-# Predict using a weekday, e.g. monday = 0, tuesday = 1 ...
-print(s.predict(2)) # Prediction is a float representing estimated waste for the given day in kgs
+    # Predict using a weekday, e.g. monday = 0, tuesday = 1 ...
+    #print(s.predict(2)) # Prediction is a float representing estimated waste for the given day in kgs
 
-#print(s.test_model()) # this shows info about the accuracy of the model, does not really work yet
+    #print(s.test_model()) # this shows info about the accuracy of the model, does not really work yet
 
-# This will visualize the fit using matplotlib
-s.model.visualize()
+    # This will visualize the fit using matplotlib
+    #s.model.visualize()
+
+    return s.predict(2)
+
+print(example_model())
+
