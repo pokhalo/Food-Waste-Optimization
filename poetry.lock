@@ -256,6 +256,7 @@ async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
 [[package]]
+
 name = "fonttools"
 version = "4.51.0"
 description = "Tools to manipulate font files"
@@ -319,6 +320,7 @@ type1 = ["xattr"]
 ufo = ["fs (>=2.2.0,<3)"]
 unicode = ["unicodedata2 (>=15.1.0)"]
 woff = ["brotli (>=1.0.1)", "brotlicffi (>=0.8.0)", "zopfli (>=0.1.4)"]
+
 
 [[package]]
 name = "importlib-metadata"
