@@ -1,4 +1,6 @@
-FROM python:3.8-slim-buster
+FROM python:3.9-slim-buster 
+
+# python version changed from 3.8 to 3.9
 
 WORKDIR /app
 
