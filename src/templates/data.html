@@ -62,12 +62,19 @@
           </div>
         </div>
     </nav>
-    <!-- Section for displaying data -->    
+    <!-- Section for displaying data -->
+    <div class="container is-max-desktop mt-6">
+      <div class="notification is-success is-light">
+        <h5 class="title is-5" id="title-of-forecast-2">Model Based Estimation of Food Waste for the Next Wednesday</h5>
+        <h5 class="title is-5" id="space-for-forecast"></h5>
+      </div>       
+    </div>
+
     <div class="pt-3">
         <div class="container is-max-desktop">
-            <div class="pt-6">
+            <div class="pt-6 pb-6">
                 <div class="p-4">
-                    <h5 class="title is-5" id="title-of-forecast">Estimated Amount of Food Waste, Chemicum</h5>
+                    <h5 class="title is-5" id="title-of-forecast-1">Estimated Amount of Food Waste, Chemicum</h5>
                     <canvas id="canvas-for-forecast"></canvas>            
                 </div>
                 <div class="buttons">
@@ -82,12 +89,15 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
  	<!-- Injected data variables, functions for buttons and for creating & updating the chart -->   
     <script>
+      const injectedDataForWednesday = '{{ dataForWednesdayFromDataRouter | safe }}'
       const injectedLabels = JSON.parse('{{ labelsFromDataRouter | tojson }}')
       const injectedLabel = '{{ singleLabelFromDataRouter | safe }}'
       const injectedDataForChemicum = JSON.parse('{{ dataFromDataRouterChemicum | tojson }}')
       const injectedDataForExactum = JSON.parse('{{ dataFromDataRouterExactum | tojson }}')
       const injectedDataTotal = JSON.parse('{{ dataFromDataRouterTotal | tojson }}')
       var dataToDisplay = injectedDataForChemicum
+
+      document.getElementById("space-for-forecast").innerHTML = injectedDataForWednesday
 
       const canvasForForecast = document.getElementById('canvas-for-forecast')
 
@@ -111,19 +121,19 @@
       })
 
       const clickChemicum = () => {
-        document.getElementById("title-of-forecast").innerHTML = 'Estimated Amount of Food Waste, Chemicum'
+        document.getElementById("title-of-forecast-1").innerHTML = 'Estimated Amount of Food Waste, Chemicum'
         dataToDisplay = injectedDataForChemicum
         updateBarChart()
       }
 
       const clickExactum = () => {
-        document.getElementById("title-of-forecast").innerHTML = 'Estimated Amount of Food Waste, Exactum'          
+        document.getElementById("title-of-forecast-1").innerHTML = 'Estimated Amount of Food Waste, Exactum'          
         dataToDisplay = injectedDataForExactum
         updateBarChart()
       }
 
       const clickTotal = () => {
-        document.getElementById("title-of-forecast").innerHTML = 'Estimated Amount of Food Waste, Total'          
+        document.getElementById("title-of-forecast-1").innerHTML = 'Estimated Amount of Food Waste, Total'          
         dataToDisplay = injectedDataTotal
         updateBarChart()
       }
