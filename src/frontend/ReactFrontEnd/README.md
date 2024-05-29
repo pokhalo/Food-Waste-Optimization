@@ -1,3 +1,21 @@
+
+To start:
+go to /frontend
+npm create vite@latest ReactFrontEnd -- --template react
+cd ReactFrontEnd
+npm install
+
+Currently, these additional libraries are installed into project:
+axios
+
+To install axios:
+-Go to React root folder and run:
+  npm install axios
+
+-To run React in dev-mode:
+  npm run dev
+
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
