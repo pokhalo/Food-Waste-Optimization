@@ -76,6 +76,9 @@ class DataRepository:
         # Read people flow data from CSV
         data = pd.read_csv(filepath_or_buffer=filename, sep=",")
         
+        # Cameras in Exa/Phy counts are wrong way around for counting people in Exa
+        data.loc[data['phoneName'] == 'S113', ['countIn', 'countOut']] = data.loc[data['phoneName'] == 'S113', ['countOut', 'countIn']].values
+
         # Convert date column to datetime and set it as the index
         data["Date"] = pd.to_datetime(data["dateCreated"])
         data.set_index("Date", inplace=True)
