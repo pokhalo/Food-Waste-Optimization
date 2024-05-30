@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify, make_response
 
 from src.routers.data_router import DataRouter
-from src.services.analysis import ModelService
+from src.services.analysis import example_model
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -16,6 +16,11 @@ def initial_view():
 @app.route("/react")
 def testing_react():
     return jsonify({ 'content': 'random string to test requests from react' })
+
+@app.route('/api/data')
+def get_data_for_wednesday():
+    prediction = example_model()
+    return jsonify({'content': prediction })
 
 if __name__ == "__main__":
     app.run()

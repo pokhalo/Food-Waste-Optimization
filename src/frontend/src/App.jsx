@@ -5,33 +5,34 @@ import Proportions from './assets/avg_proportion_sold_meal_types.png'
 import StdofMeals from './assets/std_of_meals.png'
 
 const App = () => {
-  const [count, setCount] = useState(0)
   const [message, setMessage] = useState('tyhjä viesti')
+  const [predData, setData] = useState(999)
 
   useEffect(() => {
-    const functionToLoad = async () => {
+    const fetchData = async () => {
       try {
-        const result = await requestService.getRequestToFlask()
-        setMessage(result.data)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    functionToLoad() 
-  }, [])
+        const result = await requestService.getRequestToFlask();
+        setMessage(result.data);
 
-  console.log(message)
+        const response = await requestService.getDataFromFlask();
+        setData(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    console.log(message)
+    console.log(predData)
+    fetchData();
+  }, []);
 
   return (
     <>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-        <p>{message.content}</p>
+      <div>
+        <p>Model Based Estimation of Food Waste for the Next Wednesday</p>
+        {predData && ( 
+        <pre>{JSON.stringify(predData.content, null, 2)}</pre>
+      )}
       </div>
 
       <div className="data_image">
@@ -42,6 +43,7 @@ const App = () => {
       </div>
     </>
   )
+
 }
 
 export default App
