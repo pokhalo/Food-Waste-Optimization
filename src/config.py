@@ -9,31 +9,33 @@ try:
 except FileNotFoundError:
     pass
 
-SECRET_KEY = "default"
 
 class DefaultConfiguration:
     DEBUG = False
     TESTING = False
-    global SECRET_KEY
     SECRET_KEY = "default"
-    print("Default Configuration Loaded", flush=True)
+    CONFIG_MODE = "Default"
+
+    @classmethod
+    def set_config_variables(cls):
+        CONFIG_MODE = cls.CONFIG_MODE
+        SECRET_KEY = cls.SECRET_KEY
+    
 
 class DevelopmentConfiguration(DefaultConfiguration):
     DEBUG = True
-    global SECRET_KEY
+    CONFIG_MODE = "Development"
     SECRET_KEY = os.getenv('DEVELOPMENT_KEY')
-    print("Development Configuration Loaded", flush=True)
 
 class TestingConfiguration(DefaultConfiguration):
     TESTING = True
-    print("Testing Configuration Loaded", flush=True)
+    CONFIG_MODE = "Testing"
 
 class ProductionConfiguration(DefaultConfiguration):
     DEBUG = False
     TESTING = False
-    global SECRET_KEY
+    CONFIG_MODE = "Production"
     SECRET_KEY = os.getenv('PRODUCTION_KEY')
-    print("Production Configuration Loaded", flush=True)
 
 config = {
     'development': DevelopmentConfiguration,
@@ -41,3 +43,9 @@ config = {
     'production': ProductionConfiguration,
     'default': DefaultConfiguration
 }
+
+
+def set_configuration(env):
+    ConfigurationClass = config.get(env, DefaultConfiguration)
+    ConfigurationClass.set_config_variables()
+    return ConfigurationClass
