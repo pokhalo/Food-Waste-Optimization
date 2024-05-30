@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import requestService from './services/requestservice.jsx'
+import Proportions from './assets/avg_proportion_sold_meal_types.png'
+import StdofMeals from './assets/std_of_meals.png'
 
 const App = () => {
   const [count, setCount] = useState(0)
@@ -20,20 +20,10 @@ const App = () => {
     functionToLoad() 
   }, [])
 
-
   console.log(message)
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
@@ -43,9 +33,13 @@ const App = () => {
         </p>
         <p>{message.content}</p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+
+      <div className="data_image">
+        <img src={Proportions} alt="Chart of average proportions of meals sold per weekday, sorted by type of meal." className="Proportions-image" />
+      </div>
+      <div className="std_image">
+        <img src={StdofMeals} alt="Chart of standard deviation of the proportion of meal types sold by weekday, sorted by type of meal." className="Std-image" />
+      </div>
     </>
   )
 }

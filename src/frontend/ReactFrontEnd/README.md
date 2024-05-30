@@ -1,5 +1,8 @@
 
 To start:
+Install npm  
+npm install vite  
+  
 go to /frontend
 npm create vite@latest ReactFrontEnd -- --template react
 cd ReactFrontEnd
