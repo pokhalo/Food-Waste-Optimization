@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import './App.css'
 import requestService from './services/requestservice.jsx'
-import Proportions from './assets/avg_proportion_sold_meal_types.png'
-import StdofMeals from './assets/std_of_meals.png'
+import Menu from './components/Menu.jsx'
+import Footer from './components/Footer.jsx'
+import MainView from './components/MainView.jsx'
 
 const App = () => {
   const [message, setMessage] = useState('tyhjä viesti')
@@ -28,19 +28,10 @@ const App = () => {
 
   return (
     <>
-      <div>
-        <p>Model Based Estimation of Food Waste for the Next Wednesday</p>
-        {predData && ( 
-        <pre>{JSON.stringify(predData.content, null, 2)}</pre>
-      )}
-      </div>
+    <Menu></Menu>
+    <MainView message={message} predData={predData}></MainView>
+    <Footer></Footer>
 
-      <div className="data_image">
-        <img src={Proportions} alt="Chart of average proportions of meals sold per weekday, sorted by type of meal." className="Proportions-image" />
-      </div>
-      <div className="std_image">
-        <img src={StdofMeals} alt="Chart of standard deviation of the proportion of meal types sold by weekday, sorted by type of meal." className="Std-image" />
-      </div>
     </>
   )
 
