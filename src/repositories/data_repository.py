@@ -36,30 +36,24 @@ class DataRepository:
         data = pd.merge(data, supersight_data, on="Date", how="inner")
 
         # Calculate next day's waste and fill NaN values with 0
-        data = self.get_next_day_waste(data).fillna(value=0)
+        data = self.get_previous_day_sold_meals(data).fillna(value=0)
 
         # Add a column for the weekday
         data['Weekday'] = data.index.dayofweek
 
-        # Filter out rows where the total is less than or equal to 0
-        data = data[data["Yhteensä"] > 0]
-
-        # Print the processed data
-        print(data)
-
         return data
 
-    def get_next_day_waste(self, data):
+    def get_previous_day_sold_meals(self, data):
         """
-        Add a column for the next day's waste based on the 'Yhteensä' column.
+        Add a column for yesterdays num of sold meals.
 
         Args:
             data (pandas.DataFrame): The DataFrame to modify.
 
         Returns:
-            pandas.DataFrame: The modified DataFrame with the next day's waste.
+            pandas.DataFrame: The modified DataFrame with the new column.
         """
-        data['Huomisen Jäte'] = data['Yhteensä'].shift(-1)
+        data['Sold meals yesterday'] = data['620 Exactum'].shift(1)
         return data
 
     def get_people_flow_by_date(self, filename):
