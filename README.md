@@ -35,4 +35,6 @@ Current [live system](Openshift setup pending)
 You can run the project locally in a [Docker](https://www.docker.com/) container.
 Detailed instructions will be provided as the project matures.
 --->
+- Currently added extensions:
+  - flask-cors
 - [Tech Stack](Documentation/tech_stack.md)
