@@ -19,6 +19,7 @@ class ModelService:
         return self.model.predict(feature)
 
     def test_model(self):
+        self.model.learn()
         mse, mae, r2 = self.model.test()
         return f"Mean squared error: {mse}\nMean absolute error: {mae}\nR^2: {r2}"
 
@@ -36,9 +37,12 @@ def example_model():
     #print(s.predict(2)) # Prediction is a float representing estimated waste for the given day in kgs
 
     #print(s.test_model()) # this shows info about the accuracy of the model, does not really work yet
-
-    # This will visualize the fit using matplotlib
-    #s.model.visualize()
+    
+    #res = []
+    #for i in range(0, 1000):
+    #    day = i % 7
+    #    res.append(s.test_model()[1])
+    #print(sum(res)/1000)
 
     return s.predict(2)
 
