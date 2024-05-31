@@ -1,10 +1,12 @@
 from flask import render_template
-from services.formatting import get_dummy_data
+from src.services.formatting import get_dummy_data
+from src.services.analysis import example_model
 
 class DataRouter:
     """Class to handle /data requests
     """
     def __init__(self):
+        self.forecast = example_model()
         self.data = get_dummy_data()
         self.labels = self.data[0]
         self.single_label = self.data[1]
@@ -16,9 +18,10 @@ class DataRouter:
         return self.data 
     
     def render_view(self):
-        return render_template('data.html', labelsFromDataRouter = self.labels, 
+        return render_template('data.html', 
+                               dataForWednesdayFromDataRouter = self.forecast, 
+                               labelsFromDataRouter = self.labels, 
                                singleLabelFromDataRouter = self.single_label, 
                                dataFromDataRouterChemicum = self.data_chemicum,
                                dataFromDataRouterExactum = self.data_exactum, 
                                dataFromDataRouterTotal = self.data_total)
-

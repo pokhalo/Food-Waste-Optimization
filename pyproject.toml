@@ -6,16 +6,22 @@ authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 flask = "^3.0.3"
 invoke = "^2.2.0"
 python-dotenv = "^1.0.1"
+pandas = "^2.2.2"
+scikit-learn = "^1.5.0"
+openpyxl = "^3.1.2"
+matplotlib = "^3.9.0"
+flask-cors = "^4.0.1"
 
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.0"
 coverage = "^7.5.1"
 pylint = "^3.1.1"
+flask-testing = "^0.8.1"
 
 [build-system]
 requires = ["poetry-core"]

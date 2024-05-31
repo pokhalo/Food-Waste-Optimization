@@ -8,8 +8,8 @@ Practices to be followed:
 
 ### Format
 
-- maximum lenght of a line: 100 characters
-- maximum lenght of a module: 1000 lines
+- maximum length of a line: 100 characters
+- maximum length of a module: 1000 lines
 
 ### Naming styles
 
