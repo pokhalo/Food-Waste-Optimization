@@ -5,33 +5,32 @@ import Footer from './components/Footer.jsx'
 import MainView from './components/MainView.jsx'
 
 const App = () => {
-  const [message, setMessage] = useState('tyhjä viesti')
   const [predData, setData] = useState(999)
 
   useEffect(() => {
+    let ignore = false
     const fetchData = async () => {
       try {
-        const result = await requestService.getRequestToFlask();
-        setMessage(result.data);
-
-        const response = await requestService.getDataFromFlask();
-        setData(response.data);
+        const response = await requestService.getDataFromFlask()
+        if (!ignore) {
+          setData(response.data)          
+        }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data:', error)
       }
-    };
+    }
+    fetchData()
+    return () => {
+      ignore = true
+    }
+  }, [])
 
-    console.log(message)
-    console.log(predData)
-    fetchData();
-  }, []);
 
   return (
     <>
     <Menu></Menu>
-    <MainView message={message} predData={predData}></MainView>
+    <MainView predData={predData}></MainView>
     <Footer></Footer>
-
     </>
   )
 

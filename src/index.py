@@ -21,11 +21,6 @@ app.add_url_rule('/data', view_func=DataRouter().render_view)
 def initial_view():
     return render_template('index.html')
 
-# Testing requests between React and Flask starts here: 
-@app.route("/react")
-def testing_react():
-    return jsonify({ 'content': 'random string to test requests from react' })
-
 @app.route('/api/data')
 def get_data_for_wednesday():
     prediction = example_model()
