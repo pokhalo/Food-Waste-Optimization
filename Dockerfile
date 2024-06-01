@@ -18,4 +18,4 @@ RUN poetry install
 
 EXPOSE 5000
 
-CMD [ "poetry", "run" , "invoke", "start"]
+CMD [ "poetry", "run" , "invoke", "start-production"]
