@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, jsonify, make_response
-from src.routers.data_router import DataRouter
-from src.services.analysis import example_model
+from flask import Flask, render_template, jsonify
+from routers.data_router import DataRouter
+from services.analysis import example_model
 import os
 from config import set_configuration
 from flask_cors import CORS

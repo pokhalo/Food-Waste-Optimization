@@ -1,5 +1,5 @@
-from src.repositories.data_repository import data_repository
-from src.services.linear_regression import LinearRegressionModel
+from repositories.data_repository import data_repository
+from services.linear_regression import LinearRegressionModel
 
 # run with "poetry run python -m src.services.analysis"
 
