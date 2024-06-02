@@ -27,6 +27,8 @@ Because the project is coursework, it is not possible to contribute outside the 
 - [Definition of Done](Documentation/dod.md)
 
 
+### Installation & Running Instructions
+
 ### Further information
 <!---
 Current [live system](Openshift setup pending)
