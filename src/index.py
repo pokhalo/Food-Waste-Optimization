@@ -27,4 +27,4 @@ def get_data_for_wednesday():
     return jsonify({'content': prediction })
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.')
+    app.run(host='0.0.0.0')
