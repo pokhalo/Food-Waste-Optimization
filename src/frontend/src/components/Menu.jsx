@@ -1,61 +1,32 @@
+import { Link } from 'react-router-dom'
+import 'bulma/css/bulma.min.css'
 
 const Menu = () => {
 
 
     return (
-        <nav class="navbar" role="navigation" aria-label="main navigation">
-            <div class="navbar-brand">
-                <div class="p-5">
-                    <h2 class="title is-2">Food Waste Optimization</h2>
-                    <h4 class="subtitle is-4">AI assisted model to forecast food consumption in YLVA restaurants</h4>             
-                </div>            
-                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                </a>
-            </div>
-            <div class="navbar-end">
-                <div id="navbarBasicExample" class="navbar-menu">
-                    <div class="navbar-start">
-                      <a class="navbar-item">
-                        Home
-                      </a>
-                      <a class="navbar-item">
-                        Documentation
-                      </a>
-                      <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link">
-                          More
-                        </a>
-                        <div class="navbar-dropdown">
-                          <a class="navbar-item">
-                            About
-                          </a>
-                          <a class="navbar-item">
-                            Contact
-                          </a>
-                          <hr class="navbar-divider"></hr>
-                          <a class="navbar-item">
-                            Report an issue
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                <div class="navbar-item">
-                  <div class="buttons">
-                    <a class="button is-info">
-                      <strong>Sign up</strong>
-                    </a>
-                    <a class="button is-light">
-                      Log in
-                    </a>
-                  </div>
+      <>
+        <nav className="navbar" role="navigation" aria-label="main navigation">
+            <div className="navbar-brand">
+                <div className="p-5">
+                    <h2 className="title is-2">Food Waste Optimization</h2>
+                    <h4 className="subtitle is-4">AI assisted model to forecast food consumption in YLVA restaurants</h4>             
                 </div>
               </div>
-            </div>
+            <div className="navbar-start is-right">
+                  <div className="navbar-item is-right"></div>
+            </div>           
+            
         </nav>
+        <div className="tabs">
+        <ul>
+          <li className="is-active"><Link to={`/sales`}>Manager View</Link></li>
+          <li><Link to={`/menus`}> Menu Creators View</Link></li>
+          <li><Link to={`/upload`}>Data upload</Link></li>
+          <li><Link to={`/admin`}>Admin</Link></li>
+        </ul>
+      </div>
+    </>
     )
 }
 
