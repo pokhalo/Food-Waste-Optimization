@@ -3,6 +3,7 @@ import requestService from './services/requestservice.jsx'
 import Menu from './components/Menu.jsx'
 import Footer from './components/Footer.jsx'
 import MainView from './components/MainView.jsx'
+import 'bulma/css/bulma.min.css'
 
 const App = () => {
   const [predData, setData] = useState(999)
