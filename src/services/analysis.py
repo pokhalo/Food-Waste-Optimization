@@ -1,5 +1,6 @@
 from repositories.data_repository import data_repository
 from services.linear_regression import LinearRegressionModel
+from services.neural_network import NeuralNetwork
 
 # run with "poetry run python -m src.services.analysis"
 
@@ -11,6 +12,7 @@ class ModelService:
     def __init__(self):
         self.data = data_repository.get_df_from_stationary_data()
         self.model = LinearRegressionModel(data=self.data)
+
 
     def learn(self):
         self.model.learn()
