@@ -1,12 +1,5 @@
 from services.ml_model import ML_Model
 from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-from sklearn.preprocessing import StandardScaler
-from sklearn.utils import resample
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
 
 class LinearRegressionModel(ML_Model):
     """Class for linear regression. Uses
@@ -19,7 +12,7 @@ class LinearRegressionModel(ML_Model):
         y = self.data["620 Exactum"]
         X = self.data.drop("620 Exactum", axis="columns")
 
-        self.train_x, self.test_x, self.train_y, self.test_y = train_test_split(X, y, test_size=0.02, random_state=None, shuffle=True, stratify=None)
+        self.split_data(X, y)
         
         self.train_x = self.scaler.fit_transform(self.train_x)
         
