@@ -12,12 +12,12 @@ class DataRepository:
         - Reads customer data and receipt counts.
         - Merges customer data, receipt counts, and people flow data.
         - Calculates next day's waste and filters the data.
-
+        
         Returns:
             pandas.DataFrame: The processed data.
         """
         # Read hourly customer data from Excel
-        hourly_customer = pd.read_excel(io="src/data/basic_mvp_data/tuntidata2.xlsx", index_col=0)
+        hourly_customer = pd.read_excel(io="data/basic_mvp_data/tuntidata2.xlsx", index_col=0)
 
         # Filter data for the Exactum restaurant
         hourly_customer_exactum = hourly_customer[hourly_customer["Ravintola"] == "620 Exactum"]
@@ -25,21 +25,30 @@ class DataRepository:
         # Aggregate receipt counts by date for Exactum
         receipts_by_date_exactum = hourly_customer_exactum.groupby("Date").sum()["Kuitti kpl"]
 
-        # Merge multiple Excel sheets into one DataFrame
-        customer_data = self.merge_multiple_excel_sheets("src/data/basic_mvp_data/kumpula_data.xlsx")
-        
+        customer_data = pd.read_csv("data/basic_mvp_data/kumpula_lounaat_kat.csv", sep=";", skiprows=2)
+        customer_data = customer_data.drop([0,1])
+        customer_data = customer_data.drop(columns=customer_data.columns[1:-14], axis="columns")
+        customer_data = customer_data.drop(columns=customer_data.columns[-1], axis="columns")
+
+        customer_data["Date"]  = pd.to_datetime(customer_data["Unnamed: 0"])
+        customer_data = customer_data.drop(columns=customer_data.columns[0], axis="columns")
+
         # Get people flow data by date
-        supersight_data = self.get_people_flow_by_date("src/data/basic_mvp_data/supersight-raw-data.csv")
+        #supersight_data = self.get_people_flow_by_date("src/data/basic_mvp_data/supersight-raw-data.csv")
 
         # Merge receipts, customer data, and people flow data
         data = pd.merge(receipts_by_date_exactum, customer_data, on="Date", how="inner")
-        data = pd.merge(data, supersight_data, on="Date", how="inner")
+        data.set_index("Date", inplace=True)
+        #data = pd.merge(data, supersight_data, on="Date", how="inner")
 
         # Calculate next day's waste and fill NaN values with 0
         data = self.get_previous_day_sold_meals(data).fillna(value=0)
 
         # Add a column for the weekday
         data['Weekday'] = data.index.dayofweek
+
+        print(self.get_menu_items())
+
 
         return data
 
@@ -53,7 +62,7 @@ class DataRepository:
         Returns:
             pandas.DataFrame: The modified DataFrame with the new column.
         """
-        data['Sold meals yesterday'] = data['620 Exactum'].shift(1)
+        data['Sold meals yesterday'] = data["Total.2"].shift(1)
         return data
 
     def get_people_flow_by_date(self, filename):
@@ -84,41 +93,22 @@ class DataRepository:
         # Remove timezone information
         return daily_sum_diff.tz_convert(None)
 
-    def merge_multiple_excel_sheets(self, filename):
-        """
-        Combine data from multiple Excel sheets into one DataFrame.
 
-        Args:
-            filename (str): Path to the Excel file.
+    def get_menu_items(self):
+        
+        csv_path = "data/basic_mvp_data/kumpula_menu.csv"
+        excel_path = "data/basic_mvp_data/kumpula_menu.xlsx"
+        read_file_product = pd.read_csv(csv_path, sep=";")
+        read_file_product.to_excel(excel_path, index=None, header=True)
+        menu_data = pd.read_excel("data/basic_mvp_data/kumpula_menu.xlsx")
+        print(menu_data)
 
-        Returns:
-            pandas.DataFrame: The combined data from multiple sheets.
-        """
-        # Read multiple sheets from Excel file
-        excel_data = pd.read_excel(io=filename, sheet_name=None, skiprows=1, index_col=0)
 
-        # Extract and process data for Exactum
-        sold_meals_exactum = excel_data["Myydyt lounaat"]["620 Exactum"][1:]
-        cols_for_exactum = excel_data["Myytyjen lounaiden suhde"].columns[-14:]
-        dist_sold_meals_exactum = excel_data["Myytyjen lounaiden suhde"][cols_for_exactum][1:]
 
-        cols_for_exactum = excel_data["Biojäte"].columns[10:-5]
-        biowaste_exactum = excel_data["Biojäte"][cols_for_exactum]
+        return False
 
-        # Set up a new header for biowaste data
-        new_header = biowaste_exactum.iloc[0]
-        biowaste_exactum = biowaste_exactum[2:]
-        biowaste_exactum.columns = new_header
+if __name__ == "__main__":
+    data_repository = DataRepository()
+    data = data_repository.get_df_from_stationary_data()
+    #print(data)
 
-        # Merge all data based on index (date)
-        combined_data = pd.merge(sold_meals_exactum, dist_sold_meals_exactum, left_index=True, right_index=True, how="outer")
-        combined_data = pd.merge(combined_data, biowaste_exactum, left_index=True, right_index=True, how="outer")
-
-        # Insert Date column and set it as the index
-        np.insert(combined_data.columns.values, 0, "Date")
-        combined_data["Date"] = pd.to_datetime(combined_data.index.values, dayfirst=True)
-        combined_data = combined_data.set_index(keys="Date")
-
-        return combined_data
-
-data_repository = DataRepository()
