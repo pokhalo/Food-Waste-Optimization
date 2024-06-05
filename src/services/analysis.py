@@ -1,6 +1,6 @@
-from repositories.data_repository import data_repository
-from services.linear_regression import LinearRegressionModel
-from services.neural_network import NeuralNetwork
+from src.repositories.data_repository import data_repository
+from src.services.linear_regression import LinearRegressionModel
+from src.services.neural_network import NeuralNetwork
 
 # run with "poetry run python -m src.services.analysis"
 
@@ -11,7 +11,7 @@ class ModelService:
     """
     def __init__(self):
         self.data = data_repository.get_df_from_stationary_data()
-        self.model = LinearRegressionModel(data=self.data)
+        self.model = NeuralNetwork(data=self.data)
 
 
     def learn(self):
@@ -22,8 +22,9 @@ class ModelService:
 
     def test_model(self):
         self.model.learn()
-        mse, mae, r2 = self.model.test()
-        return f"Mean squared error: {mse}\nMean absolute error: {mae}\nR^2: {r2}"
+        return self.model.test()
+        #mse, mae, r2 = self.model.test()
+        #return f"Mean squared error: {mse}\nMean absolute error: {mae}\nR^2: {r2}"
 
 
 # HOW TO USE
@@ -31,8 +32,12 @@ class ModelService:
 def example_model():
     s = ModelService()
 
+    s.model.setup_data()
+
     # After defining the class the model must be fitted using
-    s.learn()
+    
+    s.test_model()
+    
     # The data is fetched automatically and now it is ready to make predictions
 
     # Predict using a weekday, e.g. monday = 0, tuesday = 1 ...
@@ -48,5 +53,4 @@ def example_model():
 
     return s.predict(2)
 
-#print(example_model())
-
+print(example_model())

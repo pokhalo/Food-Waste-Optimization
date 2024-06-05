@@ -22,9 +22,12 @@ class ML_Model:
     def setup_model(self):
         return None
     
-    def split_data(self, X, y):
-        self.train_x, self.test_x, self.train_y, self.test_y = train_test_split(X, y, test_size=0.02, random_state=None, shuffle=True, stratify=None)
+    def split_data(self, X, y, test_size=0.02):
+        self.train_x, self.test_x, self.train_y, self.test_y = train_test_split(X, y, test_size=test_size, random_state=None, shuffle=True, stratify=None)
     
+    def scale_data(self, data):
+        return self.scaler.transform(data)
+
     def predict(self, weekday=0):
         features = self.get_avg_of_last_days(20)
         features = features.drop(["620 Exactum"], axis="columns")
@@ -49,6 +52,10 @@ class ML_Model:
 
 
     def test(self):
+        y_pred = self.predict(int(self.test_x[0][-1]))
+        test_y = self.test_y
+        print(f"correct: {test_y}, predicted: {y_pred}")
+        return
         y_pred = [self.predict(self.test_x["Weekday"])]
         test_y = self.test_y.values
         print(f"correct: {test_y}, predicted: {y_pred}")
