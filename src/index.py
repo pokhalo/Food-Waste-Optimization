@@ -5,7 +5,9 @@ import os
 from config import set_configuration
 from flask_cors import CORS
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='',
+            static_folder='frontend/dist',
+            template_folder='frontend/dist')
 CORS(app)
 
 configuration_mode = os.getenv('FLASK_ENV')
