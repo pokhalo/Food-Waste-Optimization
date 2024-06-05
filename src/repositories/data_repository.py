@@ -47,6 +47,7 @@ class DataRepository:
         # Add a column for the weekday
         data['Weekday'] = data.index.dayofweek
 
+        #Change percentage strings to a float between 0 and 1
         for column in data:
             if column[0] == "%":
                 data[column] = data[column].str.replace("%", '')
@@ -101,7 +102,8 @@ class DataRepository:
 
 
     def get_menu_items(self):
-        
+
+        # Save data file as excel and gather relevant data into dataframe    
         csv_path = "data/basic_mvp_data/kumpula_menu.csv"
         excel_path = "data/basic_mvp_data/kumpula_menu.xlsx"
         read_file_product = pd.read_csv(csv_path, sep=";")
@@ -115,18 +117,19 @@ class DataRepository:
         menu_data.rename(columns={menu_data.columns[1]: 'Meals sold'}, inplace=True)
         menu_data["Date"] = np.nan
 
+        # Save dates that are among menu item data into their own column
         menu_data.reset_index()
-        for index, row in menu_data.iterrows():
-            if len(row['Menu item']) == 10 and row["Menu item"][0] == "2":
-                menu_data[row['Date']] = row['Menu item']
-
-        menu_data.drop(axis='columns', columns='Date', inplace=True)
-        menu_data.rename(columns={menu_data.columns[2]: 'Date'}, inplace=True)
+        for indexx, row in menu_data.iterrows():
+            if len(row['Menu item']) == 10 and row['Menu item'][0] == "2":
+                menu_data.loc[indexx, "Date"] = row['Menu item']
+            else:
+                menu_data.loc[indexx, "Date"] = menu_data.loc[indexx-1, "Date"]
 
 
         #print(menu_data)
 
         return menu_data
+
 
 if __name__ == "__main__":
     data_repository = DataRepository()
