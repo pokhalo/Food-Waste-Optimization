@@ -17,7 +17,7 @@ class DataRepository:
             pandas.DataFrame: The processed data.
         """
         # Read hourly customer data from Excel
-        hourly_customer = pd.read_excel(io="data/basic_mvp_data/tuntidata2.xlsx", index_col=0)
+        hourly_customer = pd.read_excel(io="src/data/basic_mvp_data/tuntidata2.xlsx", index_col=0)
 
         # Filter data for the Exactum restaurant
         hourly_customer_exactum = hourly_customer[hourly_customer["Ravintola"] == "620 Exactum"]
@@ -25,7 +25,7 @@ class DataRepository:
         # Aggregate receipt counts by date for Exactum
         receipts_by_date_exactum = hourly_customer_exactum.groupby("Date").sum()["Kuitti kpl"]
 
-        customer_data = pd.read_csv("data/basic_mvp_data/kumpula_lounaat_kat.csv", sep=";", skiprows=2)
+        customer_data = pd.read_csv("src/data/basic_mvp_data/kumpula_lounaat_kat.csv", sep=";", skiprows=2)
         customer_data = customer_data.drop([0,1])
         customer_data = customer_data.drop(columns=customer_data.columns[1:-14], axis="columns")
         customer_data = customer_data.drop(columns=customer_data.columns[-1], axis="columns")
@@ -54,6 +54,7 @@ class DataRepository:
                 data[column] = data[column].str.replace(" ", '')
                 data[column] = data[column].str.replace(",", '.').astype(float)
                 data[column] = data[column] / 100
+
         self.get_menu_items()
 
 
@@ -104,11 +105,11 @@ class DataRepository:
     def get_menu_items(self):
 
         # Save data file as excel and gather relevant data into dataframe    
-        csv_path = "data/basic_mvp_data/kumpula_menu.csv"
-        excel_path = "data/basic_mvp_data/kumpula_menu.xlsx"
+        csv_path = "src/data/basic_mvp_data/kumpula_menu.csv"
+        excel_path = "src/data/basic_mvp_data/kumpula_menu.xlsx"
         read_file_product = pd.read_csv(csv_path, sep=";")
         read_file_product.to_excel(excel_path, index=None, header=False)
-        menu_data = pd.read_excel("data/basic_mvp_data/kumpula_menu.xlsx")
+        menu_data = pd.read_excel("src/data/basic_mvp_data/kumpula_menu.xlsx")
         menu_data = menu_data.drop([0, 1], axis=0)
         menu_data = menu_data.drop(columns=menu_data.columns[0:-3])
         menu_data.drop(axis='columns', columns='Total.2', inplace=True)
@@ -129,7 +130,19 @@ class DataRepository:
         #print(menu_data)
 
         return menu_data
+    
 
+    def roll_means(self, value:int = 5):
+        df = self.get_df_from_stationary_data()
+        #df.set_index('Date', inplace=True)
+        rolling_means = df.rolling(window=value).mean()
+        rolling_means['Total.2'] = df['Total.2']
+        rolling_means['Sold meals yesterday'] = df['Sold meals yesterday']
+        rolling_means['Weekday'] = df['Weekday']
+        rolling_means.dropna(inplace=True)
+        return rolling_means.apply(pd.to_numeric, errors='coerce')
+
+data_repository = DataRepository()
 
 if __name__ == "__main__":
     data_repository = DataRepository()

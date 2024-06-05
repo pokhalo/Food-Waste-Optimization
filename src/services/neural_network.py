@@ -7,14 +7,15 @@ class NeuralNetwork(ML_Model):
     regression.
     """
     def setup_model(self):
-        self.model = MLPRegressor(hidden_layer_sizes=(1000, 500), 
+        self.model = MLPRegressor(hidden_layer_sizes=(10000, 5000, 2500, 1000), 
                                   batch_size="auto", 
-                                  activation="logistic", 
+                                  activation="relu", 
                                   solver="adam", 
                                   learning_rate="invscaling", 
                                   learning_rate_init=0.001, 
-                                  max_iter=1_000_000, 
-                                  early_stopping=False)
+                                  max_iter=10_000, 
+                                  early_stopping=False,
+                                  shuffle=True)
 
     def setup_data(self):
         y = self.data["Total.2"].values

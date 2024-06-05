@@ -10,7 +10,7 @@ class ModelService:
     between models and the app.
     """
     def __init__(self):
-        self.data = data_repository.get_df_from_stationary_data()
+        self.data = data_repository.roll_means()
         self.model = NeuralNetwork(data=self.data)
 
 
@@ -51,6 +51,6 @@ def example_model():
     #    res.append(s.test_model()[1])
     #print(sum(res)/1000)
 
-    return s.predict(2)
+    #return s.predict(2)
 
 print(example_model())

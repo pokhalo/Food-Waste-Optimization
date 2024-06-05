@@ -10,7 +10,6 @@ import pandas as pd
 class ML_Model:
     def __init__(self, data):
         self.data = data
-
         self.train_x = None
         self.test_x = None
         self.train_y = None
@@ -30,7 +29,7 @@ class ML_Model:
         return self.scaler.transform(data)
 
     def predict(self, weekday=0):
-        features = self.get_avg_of_last_days(20).values
+        features = self.get_avg_of_last_days().values
         #features = features.drop(["620 Exactum"], axis="columns")
         #features.at[0,"Weekday"] = weekday
         features[-1] = weekday
@@ -39,13 +38,13 @@ class ML_Model:
 
         return int(self.model.predict(features)[0])
 
-    def get_avg_of_last_days(self, days=7):
+    def get_avg_of_last_days(self, days=5):
         """
         Get the average of all numeric features of the last `days` days.
         In theory, this will give the model a better capability of predicting 
         according to larger trends than just the previous day.
 
-        Default is 7 days.
+        Default is 5 days.
 
         Returns: DataFrame of one entry which is the average of the last `days` days.
         """
@@ -62,25 +61,10 @@ class ML_Model:
 
 
     def test(self):
-        y_pred = self.predict(int(self.test_x[-1]))
-        test_y = self.test_y
-        print(f"correct: {test_y}, predicted: {y_pred}")
-        return
-        y_pred = [self.predict(self.test_x["Weekday"])]
-        test_y = self.test_y.values
-        print(f"correct: {test_y}, predicted: {y_pred}")
-        mse = mean_squared_error(test_y, y_pred)
-        mae = mean_absolute_error(test_y, y_pred)
-        
-        params = pd.Series(self.model.coef_, index=self.test_x.columns)
-        print(params)
-        err = np.std([self.model.fit(*resample(self.train_x, self.train_y)).coef_
-              for i in range(1000)], 0)
-        
-        print(pd.DataFrame({'effect': params.round(0),
-                    'error': err.round(0)}))
-        
-        #r2 = r2_score(test_y, y_pred)
-        r2 = 1
-        return mse, mae, r2
+        print("Model score (R^2):", self.model.score(self.test_x, self.test_y))
+        for i in range(len(self.test_x)):
+            x = self.scale_data(self.test_x[i].reshape(1,-1))
+            y = self.test_y[i]
+            prediction = self.model.predict(x)
+            print(prediction[0], y, "error: ", abs(prediction[0] - y))
 
