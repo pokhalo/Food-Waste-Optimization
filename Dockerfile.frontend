@@ -10,7 +10,7 @@ COPY ./src/frontend .
 
 RUN chmod -R 777 *
 
-RUN npm run build-prod
+RUN npm run build
 
 EXPOSE 8080
 
