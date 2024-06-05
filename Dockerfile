@@ -18,7 +18,7 @@ WORKDIR /app
 
 COPY . .
 
-COPY --from=BUILD_FRONT /app/dist/ /app/src/frontend/
+COPY --from=BUILD_FRONT /app/dist/ /app/src/frontend/dist
 
 RUN chmod -R 777 *
 
