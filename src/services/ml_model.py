@@ -62,9 +62,13 @@ class ML_Model:
 
     def test(self):
         print("Model score (R^2):", self.model.score(self.test_x, self.test_y))
+        res = []
         for i in range(len(self.test_x)):
             x = self.scale_data(self.test_x[i].reshape(1,-1))
             y = self.test_y[i]
             prediction = self.model.predict(x)
-            print(prediction[0], y, "error: ", abs(prediction[0] - y))
+            error = abs(prediction[0] - y)
+            res.append(error)
+            print(prediction[0], y, "error: ", error)
+        print("Mean absolute error:", np.array(res).mean())
 

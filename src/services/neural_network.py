@@ -7,13 +7,13 @@ class NeuralNetwork(ML_Model):
     regression.
     """
     def setup_model(self):
-        self.model = MLPRegressor(hidden_layer_sizes=(10000, 5000, 2500, 1000), 
-                                  batch_size="auto", 
+        self.model = MLPRegressor(hidden_layer_sizes=(1000, 250, 100, 50), 
+                                  batch_size=25, 
                                   activation="relu", 
                                   solver="adam", 
                                   learning_rate="invscaling", 
-                                  learning_rate_init=0.001, 
-                                  max_iter=10_000, 
+                                  learning_rate_init=0.01, 
+                                  max_iter=500_000, 
                                   early_stopping=False,
                                   shuffle=True)
 

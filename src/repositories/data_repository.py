@@ -136,7 +136,7 @@ class DataRepository:
         df = self.get_df_from_stationary_data()
         #df.set_index('Date', inplace=True)
         rolling_means = df.rolling(window=value).mean()
-        rolling_means['Total.2'] = df['Total.2']
+        rolling_means['Total.2'] = df['Total.2'].shift(-1)
         rolling_means['Sold meals yesterday'] = df['Sold meals yesterday']
         rolling_means['Weekday'] = df['Weekday']
         rolling_means.dropna(inplace=True)
