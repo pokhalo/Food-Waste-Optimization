@@ -1,8 +1,9 @@
 from src.repositories.data_repository import data_repository
 from src.services.linear_regression import LinearRegressionModel
 from src.services.neural_network import NeuralNetwork
+from sklearn.exceptions import NotFittedError
 
-# run with "poetry run python -m src.services.analysis"
+# run with "poetry run python -m src.services.model_service"
 
 
 class ModelService:
@@ -10,54 +11,56 @@ class ModelService:
     between models and the app.
     """
     def __init__(self):
+        # data is fetched every time init is run, this should not happen
         self.data = data_repository.roll_means()
-        self.model = NeuralNetwork(data=self.data)
+        self.prediction_data = data_repository.get_df_from_stationary_data()
+        self.model = NeuralNetwork(data=self.data, prediction_data=self.prediction_data)
 
     def predict(self, feature):
-        return self.model.predict(feature)
+        try:
+            return self.model.predict(feature)
+        except NotFittedError as err:
+            print("You must load or fit model first")
 
     def test_model(self):
-        self.model.learn()
-        return self.model.test()
-        #mse, mae, r2 = self.model.test()
-        #return f"Mean squared error: {mse}\nMean absolute error: {mae}\nR^2: {r2}"
+        try:
+            self.load_model()
+        except NotFittedError as err:
+            # no model to load
+            print("Model could not be loaded, fitting instead:", err)
+            self.fit_and_save()
+        mse, mae, r2 = self.model.test()
+
+        print(f"Mean squared error: {mse}\nMean absolute error: {mae}\nR^2: {r2}")
 
     def fit_and_save(self):
         try:
             self.model.fit_and_save()
             print("Model fitted and saved")
-        except: pass
+        except Exception as err:
+            print("Model could not be fitted:", err)
 
     def load_model(self):
         try:
             self.model.load_model()
             print("Model loaded")
-        except: pass
+        except Exception as err:
+            print("Model could not be loaded:", err)
+            self.model.fit_and_save()
 
 # HOW TO USE
 
 def example_model():
     s = ModelService()
 
-    s.fit_and_save()
-
     # After defining the class the model must be fitted using
-    
-    s.test_model()
-    
-    # The data is fetched automatically and now it is ready to make predictions
+    s.load_model()
 
-    # Predict using a weekday, e.g. monday = 0, tuesday = 1 ...
-    #print(s.predict(2)) # Prediction is a float representing estimated waste for the given day in kgs
+    #s.predict(2)
 
-    #print(s.test_model()) # this shows info about the accuracy of the model, does not really work yet
-    
-    #res = []
-    #for i in range(0, 1000):
-    #    day = i % 7
-    #    res.append(s.test_model()[1])
-    #print(sum(res)/1000)
-
-    #return s.predict(2)
-
-print(example_model())
+if __name__ == "__main__":
+    model = ModelService()
+    model.fit_and_save()
+    model.load_model()
+    model.test_model()
+    print(model.predict(2))
