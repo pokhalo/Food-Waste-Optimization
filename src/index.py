@@ -20,6 +20,7 @@ app.add_url_rule('/data', view_func=DataRouter().render_view)
 
 
 @app.route("/")
+@app.route("/fwowebserver")
 def initial_view():
     return render_template('index.html')
 

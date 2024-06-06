@@ -6,7 +6,8 @@
   "homepage": "https://megasense-server.cs.helsinki.fi/fwowebserver",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/fwowebserver/",
+    "build": "vite build",
+    "build-prod": "vite build --base=/fwowebserver/",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
