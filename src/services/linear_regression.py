@@ -1,4 +1,4 @@
-from src.services.ml_model import ML_Model
+from services.ml_model import ML_Model
 from sklearn.linear_model import LinearRegression
 
 class LinearRegressionModel(ML_Model):

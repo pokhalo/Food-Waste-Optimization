@@ -1,4 +1,5 @@
-from src.services.ml_model import ML_Model, MODEL_PATH, SCALER_PATH
+#from src.services.ml_model import ML_Model, MODEL_PATH, SCALER_PATH
+from services.ml_model import ML_Model
 from sklearn.neural_network import MLPRegressor
 from matplotlib import pyplot as plt
 import pickle

@@ -1,11 +1,13 @@
 from flask import Flask, render_template, jsonify
-from src.routers.data_router import DataRouter
+from routers.data_router import DataRouter
 #from src.services.analysis import example_model
 import os
-from src.config import set_configuration
+from config import set_configuration
 from flask_cors import CORS
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='',
+            static_folder='frontend/dist',
+            template_folder='frontend/dist')
 CORS(app)
 
 configuration_mode = os.getenv('FLASK_ENV')
@@ -18,6 +20,7 @@ app.add_url_rule('/data', view_func=DataRouter().render_view)
 
 
 @app.route("/")
+@app.route("/fwowebserver")
 def initial_view():
     return render_template('index.html')
 
