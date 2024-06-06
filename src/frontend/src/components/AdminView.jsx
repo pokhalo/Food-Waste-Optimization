@@ -1,12 +1,16 @@
-import Menu from './Menu.jsx'
-import Footer from './Footer'
+import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react'
+import Unauthorized from './Unauthorized'
 
 const AdminView = () => {
 
     return (
         <div>
-            <Menu></Menu>
-            <Footer></Footer>
+            <AuthenticatedTemplate>
+                <p>Admin view</p>
+            </AuthenticatedTemplate>
+            <UnauthenticatedTemplate>
+                <Unauthorized></Unauthorized>
+            </UnauthenticatedTemplate>
         </div>
     )
 }

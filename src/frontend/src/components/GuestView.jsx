@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import { Bar } from 'react-chartjs-2'
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js'
-import { Link } from 'react-router-dom'
 import 'bulma/css/bulma.min.css'
 
-const GuestView = () => {
+const GuestView = ({ instance }) => {
 
     const [ dataToDisplay, setDataToDisplay ] = useState([22.5, 43.2, 55.6, 23.7, 36.4])
     const data_for_chemicum = [22.5, 43.2, 55.6, 23.7, 36.4]
@@ -31,7 +30,6 @@ const GuestView = () => {
         }
       }
     }
-
           
       const clickChemicum = () => {
         setTitleForForecast('Estimated Amount of Food Waste, Chemicum')
@@ -49,44 +47,23 @@ const GuestView = () => {
       }
 
     return (
-        <>
-        <nav className="navbar" role="navigation" aria-label="main navigation">
-            <div className="navbar-brand">
-                <div className="p-5">
-                    <h2 className="title is-2">Food Waste Optimization</h2>
-                    <h4 className="subtitle is-4">AI assisted model to forecast food consumption in YLVA restaurants</h4>             
+      <>
+        <div className="pt-3">
+            <div className="container is-max-desktop">
+                <div className="pt-6 pb-6">
+                    <div className="p-4">
+                        <h5 className="title is-5" id="title-of-forecast-1">{titleForForecast}</h5>
+                        <Bar options={options} data={data}></Bar>           
+                    </div>
+                    <div className="buttons">
+                      <button className="button is-link is-light" onClick={clickChemicum}>Chemicum</button>
+                      <button className="button is-link is-light" onClick={clickExactum}>Exactum</button>
+                      <button className="button is-link is-light" onClick={clickTotal}>Total</button>
+                    </div>
                 </div>
-              </div>
-            <div className="navbar-start is-right">
-                  <div className="navbar-item is-right"></div>
-            </div>           
-              <div className="navbar-end is-right">
-                <div className="navbar-item is-right">
-                  <div className="buttons">
-                    <Link to={`/sales`} className="button is-light">
-                      Log in for YLVA staff members
-                    </Link>
-                  </div>
-                </div>
-              </div>
-        </nav>
-
-      <div className="pt-3">
-          <div className="container is-max-desktop">
-              <div className="pt-6 pb-6">
-                  <div className="p-4">
-                      <h5 className="title is-5" id="title-of-forecast-1">{titleForForecast}</h5>
-                      <Bar options={options} data={data}></Bar>           
-                  </div>
-                  <div className="buttons">
-                    <button className="button is-link is-light" onClick={clickChemicum}>Chemicum</button>
-                    <button className="button is-link is-light" onClick={clickExactum}>Exactum</button>
-                    <button className="button is-link is-light" onClick={clickTotal}>Total</button>
-                  </div>
-              </div>
-          </div>
-      </div>
-    </>
+            </div>
+        </div>
+      </>
     )
 }
 
