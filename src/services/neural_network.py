@@ -1,4 +1,4 @@
-from src.services.ml_model import ML_Model
+from services.ml_model import ML_Model
 from sklearn.neural_network import MLPRegressor
 from matplotlib import pyplot as plt
 

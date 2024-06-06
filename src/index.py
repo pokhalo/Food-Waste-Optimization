@@ -1,8 +1,8 @@
 from flask import Flask, render_template, jsonify
-from src.routers.data_router import DataRouter
+from routers.data_router import DataRouter
 #from src.services.analysis import example_model
 import os
-from src.config import set_configuration
+from config import set_configuration
 from flask_cors import CORS
 
 app = Flask(__name__, static_url_path='',
