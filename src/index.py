@@ -1,8 +1,8 @@
 from flask import Flask, render_template, jsonify
-from routers.data_router import DataRouter
-from services.analysis import example_model
+from src.routers.data_router import DataRouter
+#from src.services.analysis import example_model
 import os
-from config import set_configuration
+from src.config import set_configuration
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -23,7 +23,8 @@ def initial_view():
 
 @app.route('/api/data')
 def get_data_for_wednesday():
-    prediction = example_model()
+    #prediction = example_model()
+    prediction = 130
     return jsonify({'content': prediction })
 
 if __name__ == "__main__":
