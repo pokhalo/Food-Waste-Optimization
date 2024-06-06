@@ -6,7 +6,8 @@ class DataRouter:
     """Class to handle /data requests
     """
     def __init__(self):
-        self.forecast = example_model()
+        #self.forecast = example_model()
+        self.forecast = 130
         self.data = get_dummy_data()
         self.labels = self.data[0]
         self.single_label = self.data[1]
@@ -16,7 +17,7 @@ class DataRouter:
 
     def get_data(self):
         return self.data 
-    
+
     def render_view(self):
         return render_template('data.html', 
                                dataForWednesdayFromDataRouter = self.forecast, 

@@ -22,48 +22,53 @@ class ML_Model:
     def setup_model(self):
         return None
     
-    def split_data(self, X, y):
-        self.train_x, self.test_x, self.train_y, self.test_y = train_test_split(X, y, test_size=0.02, random_state=None, shuffle=True, stratify=None)
+    def split_data(self, X, y, test_size=0.1):
+        self.train_x, self.test_x, self.train_y, self.test_y = train_test_split(X, y, test_size=test_size, random_state=None, shuffle=True, stratify=None)
     
+    def scale_data(self, data):
+        return self.scaler.transform(data)
+
     def predict(self, weekday=0):
-        features = self.get_avg_of_last_days(20)
-        features = features.drop(["620 Exactum"], axis="columns")
-        features.at[0,"Weekday"] = weekday
+        features = self.get_avg_of_last_days().values
+        #features = features.drop(["620 Exactum"], axis="columns")
+        #features.at[0,"Weekday"] = weekday
+        features[-1] = weekday
 
         features = self.scaler.transform(features)
 
         return int(self.model.predict(features)[0])
 
-    def get_avg_of_last_days(self, days=7):
-        """Get the average of all features of the last
-        num days. In theory this will give the model a better
-        capability of predicting according to larger trends
-        than previous day.
+    def get_avg_of_last_days(self, days=5):
+        """
+        Get the average of all numeric features of the last `days` days.
+        In theory, this will give the model a better capability of predicting 
+        according to larger trends than just the previous day.
 
-        Default is 7 days
+        Default is 5 days.
 
-        Returns: Dataframe of one entry which is avg of last num days
+        Returns: DataFrame of one entry which is the average of the last `days` days.
         """
         df = self.data.iloc[-days:].reset_index(drop=True)
-        return pd.DataFrame(df.mean(axis=0)).T
+        
+        # Convert all columns to numeric, coercing errors to NaN
+        df = df.apply(pd.to_numeric, errors='coerce')
+        
+        # Compute the mean, skipping NaN values
+        numeric_avg = df.mean(axis=0, skipna=True)
+        
+        return pd.DataFrame(numeric_avg).T
+
 
 
     def test(self):
-        y_pred = [self.predict(self.test_x["Weekday"])]
-        test_y = self.test_y.values
-        print(f"correct: {test_y}, predicted: {y_pred}")
-        mse = mean_squared_error(test_y, y_pred)
-        mae = mean_absolute_error(test_y, y_pred)
-        
-        params = pd.Series(self.model.coef_, index=self.test_x.columns)
-        print(params)
-        err = np.std([self.model.fit(*resample(self.train_x, self.train_y)).coef_
-              for i in range(1000)], 0)
-        
-        print(pd.DataFrame({'effect': params.round(0),
-                    'error': err.round(0)}))
-        
-        #r2 = r2_score(test_y, y_pred)
-        r2 = 1
-        return mse, mae, r2
+        print("Model score (R^2):", self.model.score(self.test_x, self.test_y))
+        res = []
+        for i in range(len(self.test_x)):
+            x = self.scale_data(self.test_x[i].reshape(1,-1))
+            y = self.test_y[i]
+            prediction = self.model.predict(x)
+            error = abs(prediction[0] - y)
+            res.append(error)
+            print(prediction[0], y, "error: ", error)
+        print("Mean absolute error:", np.array(res).mean())
 
