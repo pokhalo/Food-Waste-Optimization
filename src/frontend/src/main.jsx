@@ -8,6 +8,7 @@ import UploadView from './components/UploadView.jsx'
 import GuestView from './components/GuestView.jsx'
 
 const router = createBrowserRouter([
+  { path: "/", element: <GuestView /> }, 
   { path: "/fwowebserver/", element: <GuestView /> }, 
   { path: "/sales/*", element: <App /> },
   { path: "/menus/*", element: <MenuView />},
