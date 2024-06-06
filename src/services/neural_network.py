@@ -13,7 +13,7 @@ class NeuralNetwork(ML_Model):
                                   solver="adam", 
                                   learning_rate="invscaling", 
                                   learning_rate_init=0.01, 
-                                  max_iter=500_000, 
+                                  max_iter=500_000,
                                   early_stopping=False,
                                   shuffle=True)
 
