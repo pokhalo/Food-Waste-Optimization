@@ -5,6 +5,12 @@ import os
 from config import set_configuration
 from flask_cors import CORS
 
+from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
+from sqlalchemy import text
+
+load_dotenv()
+
 app = Flask(__name__, static_url_path='',
             static_folder='frontend/dist',
             template_folder='frontend/dist')
@@ -18,6 +24,16 @@ print('Key: ', app.config["SECRET_KEY"], flush=True)
 
 app.add_url_rule('/data', view_func=DataRouter().render_view)
 
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+print(os.getenv("DATABASE_URL"))
+db = SQLAlchemy(app)
+
+
+@app.route("/dbtest")
+def db_conn_test():
+    rs = db.session.execute(text("SELECT 1"))
+    result = rs.fetchone()
+    return result
 
 @app.route("/")
 @app.route("/fwowebserver")
