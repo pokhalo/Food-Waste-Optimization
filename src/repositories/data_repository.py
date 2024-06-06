@@ -38,11 +38,12 @@ class DataRepository:
 
         # Merge receipts, customer data, and people flow data
         data = pd.merge(receipts_by_date_exactum, customer_data, on="Date", how="inner")
+
         data.set_index("Date", inplace=True)
         #data = pd.merge(data, supersight_data, on="Date", how="inner")
 
         # Calculate next day's waste and fill NaN values with 0
-        data = self.get_previous_day_sold_meals(data).fillna(value=0)
+        data = data.fillna(value=0)
 
         # Add a column for the weekday
         data['Weekday'] = data.index.dayofweek
@@ -58,19 +59,6 @@ class DataRepository:
         self.get_menu_items()
 
 
-        return data
-
-    def get_previous_day_sold_meals(self, data):
-        """
-        Add a column for yesterdays num of sold meals.
-
-        Args:
-            data (pandas.DataFrame): The DataFrame to modify.
-
-        Returns:
-            pandas.DataFrame: The modified DataFrame with the new column.
-        """
-        data['Sold meals yesterday'] = data["Total.2"].shift(1)
         return data
 
     def get_people_flow_by_date(self, filename):
@@ -136,8 +124,7 @@ class DataRepository:
         df = self.get_df_from_stationary_data()
         #df.set_index('Date', inplace=True)
         rolling_means = df.rolling(window=value).mean()
-        rolling_means['Total.2'] = df['Total.2'].shift(-1)
-        rolling_means['Sold meals yesterday'] = df['Sold meals yesterday']
+        rolling_means['Next day sold meals'] = df['Total.2'].shift(-1)
         rolling_means['Weekday'] = df['Weekday']
         rolling_means.dropna(inplace=True)
         return rolling_means.apply(pd.to_numeric, errors='coerce')
