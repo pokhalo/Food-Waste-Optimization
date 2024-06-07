@@ -5,19 +5,19 @@
 
 import { LogLevel } from '@azure/msal-browser';
 
+// Setting id, authority and uri according to MODE:
+var id = import.meta.env.VITE_CLIENT_ID_PRODUCTION
+var authority = import.meta.env.VITE_AUTHORITY
+var uri = import.meta.env.VITE_URI_PRODUCTION
+if (import.meta.env.MODE == 'development') {
+    id = import.meta.env.VITE_CLIENT_ID_DEVELOPMENT
+    uri = import.meta.env.VITE_URI_DEVELOPMENT
+}
 /**
  * Configuration object to be passed to MSAL instance on creation.
  * For a full list of MSAL.js configuration parameters, visit:
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/configuration.md 
  */
-
-const id = import.meta.env.VITE_CLIENT_ID
-const authority = import.meta.env.VITE_AUTHORITY
-var uri = 'http://localhost:8080'
-if (import.meta.env.MODE != 'development') {
-    uri = 'https://megasense-server.cs.helsinki.fi/fwowebserver'
-}
-
 export const msalConfig = {
     auth: {
         clientId: id, // This is the ONLY mandatory field that you need to supply.
