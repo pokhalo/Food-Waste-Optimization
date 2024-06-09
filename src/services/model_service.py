@@ -63,4 +63,8 @@ if __name__ == "__main__":
     model.fit_and_save()
     model.load_model()
     model.test_model()
-    print(model.predict(2))
+    predicted_value = model.predict(2)
+    print(predicted_value)
+    #write predicted model into a file
+    with open("src/data/basic_mvp_data/predicted.txt", mode="w") as fileobject:
+        fileobject.write(str(predicted_value))
