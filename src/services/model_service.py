@@ -98,8 +98,12 @@ def example_model():
 
 if __name__ == "__main__":
     model = ModelService()
+    model.fit_and_save()
     model.load_model()
-    print(model.predict_next_week())
+    print(model.predict_next_week(5))
     model.test_model()
     predicted_value = model.predict(2)
     print(predicted_value)
+    print("Saving predicted value to file")
+    with open('../data/predicted.txt', "w") as file:
+        file.write(str(predicted_value))
