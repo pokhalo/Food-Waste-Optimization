@@ -13,3 +13,7 @@ nosetests.xml
 basic_mvp_data/
 *.xlsx
 *.csv
+
+*.savd())
+
+src/data/
