@@ -26,9 +26,9 @@ def initial_view():
 
 @app.route('/api/data')
 def get_data_for_wednesday():
-    #prediction = example_model()
-    prediction = 130
-    return jsonify({'content': prediction })
+    with open('src/data/predicted.txt', mode='r') as file:
+        prediction = file.readline()
+        return jsonify({'content': prediction })
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
