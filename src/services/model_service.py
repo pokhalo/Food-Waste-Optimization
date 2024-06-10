@@ -17,12 +17,30 @@ class ModelService:
         self.model = NeuralNetwork(data=self.data, prediction_data=self.prediction_data)
 
     def predict(self, feature):
+        """This function will predict sold meals
+        for a specific day using an offset. Will take a mean
+        of last number of days and switches the day to feature.
+
+        Args:
+            feature (int): day of prediction, 0 - monday, 1 - tuesday etc.
+
+        Returns:
+            int: number of sold meals
+        """
         try:
             return self.model.predict(feature)
         except NotFittedError as err:
             print("You must load or fit model first")
 
     def test_model(self):
+        """First will try to load model, if unsuccessful,
+        will fit and save a model. Then will run tests
+
+        prints:
+        Mean squared error
+        Mean absolute error
+        R^2 value
+        """
         try:
             self.load_model()
         except NotFittedError as err:
@@ -34,6 +52,9 @@ class ModelService:
         print(f"Mean squared error: {mse}\nMean absolute error: {mae}\nR^2: {r2}")
 
     def fit_and_save(self):
+        """Will fit the model and the save into a file.
+        If unsuccessful, will give error.
+        """
         try:
             self.model.fit_and_save()
             print("Model fitted and saved")
@@ -41,12 +62,29 @@ class ModelService:
             print("Model could not be fitted:", err)
 
     def load_model(self):
+        """This function will load the model. First
+        try to load a model and if no model is found,
+        will give error.
+        """
         try:
             self.model.load_model()
             print("Model loaded")
         except Exception as err:
             print("Model could not be loaded:", err)
-            self.model.fit_and_save()
+
+    def predict_next_week(self, num_of_days):
+        """Return a list of predictions
+        for the next week from current date.
+
+        num_of_days represents the length of week,
+        or, how many days the restaurant is open.
+
+
+        Returns:
+            list of int: list of predictions where index is offset from current day
+        """
+        day_offset = list(range(0, num_of_days))
+        return list(map(self.predict, day_offset))
 
 # HOW TO USE
 
@@ -60,6 +98,8 @@ def example_model():
 
 if __name__ == "__main__":
     model = ModelService()
+    model.load_model()
+    print(model.predict_next_week())
     model.test_model()
     predicted_value = model.predict(2)
     print(predicted_value)
