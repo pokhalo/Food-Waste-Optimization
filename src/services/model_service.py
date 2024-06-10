@@ -1,6 +1,6 @@
-from src.repositories.data_repository import data_repository
-from src.services.linear_regression import LinearRegressionModel
-from src.services.neural_network import NeuralNetwork
+from repositories.data_repository import data_repository
+from services.linear_regression import LinearRegressionModel
+from services.neural_network import NeuralNetwork
 from sklearn.exceptions import NotFittedError
 
 # run with "poetry run python -m src.services.model_service"
