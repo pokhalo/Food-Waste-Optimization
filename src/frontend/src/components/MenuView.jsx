@@ -1,12 +1,16 @@
-import Menu from "./Menu"
-import Footer from "./Footer"
+import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react'
+import Unauthorized from './Unauthorized'
 
 const MenuView = () => {
 
     return (
         <div>
-            <Menu></Menu>
-            <Footer></Footer>
+            <AuthenticatedTemplate>
+                <p>Menus here</p>
+            </AuthenticatedTemplate>
+            <UnauthenticatedTemplate>
+                <Unauthorized></Unauthorized>
+            </UnauthenticatedTemplate>
         </div>
     )
 }
