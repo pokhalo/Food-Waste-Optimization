@@ -105,5 +105,5 @@ if __name__ == "__main__":
     predicted_value = model.predict(2)
     print(predicted_value)
     print("Saving predicted value to file")
-    with open('../data/predicted.txt', "w") as file:
+    with open('src/data/predicted.txt', "w") as file:
         file.write(str(predicted_value))
