@@ -1,6 +1,6 @@
-from src.repositories.data_repository import data_repository
-from src.services.linear_regression import LinearRegressionModel
-from src.services.neural_network import NeuralNetwork
+from ..repositories.data_repository import data_repository
+from .linear_regression import LinearRegressionModel
+from .neural_network import NeuralNetwork
 from sklearn.exceptions import NotFittedError
 
 # run with "poetry run python -m src.services.model_service"
@@ -60,7 +60,6 @@ def example_model():
 
 if __name__ == "__main__":
     model = ModelService()
-    model.fit_and_save()
-    model.load_model()
     model.test_model()
-    print(model.predict(2))
+    predicted_value = model.predict(2)
+    print(predicted_value)
