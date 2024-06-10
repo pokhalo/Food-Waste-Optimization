@@ -130,8 +130,3 @@ class DataRepository:
         return rolling_means.apply(pd.to_numeric, errors='coerce')
 
 data_repository = DataRepository()
-
-if __name__ == "__main__":
-    data_repository = DataRepository()
-    data = data_repository.get_df_from_stationary_data()
-    print(data)

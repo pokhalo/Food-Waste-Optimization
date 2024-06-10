@@ -14,4 +14,4 @@ RUN poetry lock
 
 RUN poetry install
 
-CMD [ "poetry", "run", "python","-m", "src/services/model_service.py" ]
+CMD [ "poetry", "run", "python3","-m", "src.services.model_service" ]
