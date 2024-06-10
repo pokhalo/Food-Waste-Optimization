@@ -26,7 +26,7 @@ def initial_view():
 
 @app.route('/api/data')
 def get_data_for_wednesday():
-    with open('/data/predicted.txt') as file:
+    with open('src/data/predicted.txt', mode='r') as file:
         prediction = file.readline()
         return jsonify({'content': prediction })
 
