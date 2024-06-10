@@ -31,7 +31,7 @@ db = SQLAlchemy(app)
 
 @app.route("/dbtest")
 def db_conn_test():
-    rs = db.session.execute(text("SELECT 'Toimii, ollaan valmiita!'"))
+    rs = db.session.execute(text("SELECT 'Toimii vieläkin, ollaan valmiita!'"))
     result = rs.fetchone()
     return result[0]
 
