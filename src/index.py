@@ -31,9 +31,9 @@ db = SQLAlchemy(app)
 
 @app.route("/dbtest")
 def db_conn_test():
-    rs = db.session.execute(text("SELECT 'Toimii vieläkin, ollaan valmiita!'"))
+    rs = db.session.execute(text("SELECT * from test"))
     result = rs.fetchone()
-    return result[0]
+    return result[1]
 
 @app.route("/")
 @app.route("/fwowebserver")
