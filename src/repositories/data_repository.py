@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 
+PEOPLE_FLOW = "src/data/basic_mvp_data/people_flow_data.csv"
+
 class DataRepository:
     """Class to handle connection to data streams and manage data operations."""
     
@@ -88,6 +90,38 @@ class DataRepository:
 
         # Remove timezone information
         return daily_sum_diff.tz_convert(None)
+    
+    def get_average_occupancy_by_restaurant(self, restaurant, weekday):
+        df = pd.read_csv(filepath_or_buffer=PEOPLE_FLOW, sep=",")
+
+        # Extract the phone names from the columns and rename the columns for easier access
+        phone_names = [col.split('"')[-2] if 'phoneName' in col else 'Time' for col in df.columns]
+        df.columns = [f'{col.split(" ")[0]}_{phone_name}' if phone_name != 'Time' else 'Time' for col, phone_name in zip(df.columns, phone_names)]
+
+        # Set the Time column as the index
+        df['Time'] = pd.to_datetime(df['Time'])
+        df.set_index('Time', inplace=True)
+
+        resampled_df = df.resample('H').sum()
+
+        # Calculate the difference between 'in' and 'out' counts for each phone
+        diffs = {}
+        for phone in set(phone_names) - {'Time'}:
+            resampled_df[f'diff_{phone}'] = resampled_df[f'count_in_{phone}'].fillna(0) - resampled_df[f'count_out_{phone}'].fillna(0)
+
+
+        # Add columns for the hour and weekday
+        resampled_df['hour'] = resampled_df.index.hour
+        resampled_df['weekday'] = resampled_df.index.weekday
+
+        # Group by weekday and hour and compute the mean difference for each phone
+        mean_diff_by_weekday_hour = resampled_df.groupby(['weekday', 'hour']).mean()
+
+        mean_diff_by_weekday_hour = mean_diff_by_weekday_hour.filter(like='diff_')
+
+        mean_diff_by_weekday_hour.columns = "physicum chemicum physicum_corridor main_door exactum diff_S63".split()
+
+        return mean_diff_by_weekday_hour[restaurant][weekday].values
 
 
     def get_menu_items(self):
