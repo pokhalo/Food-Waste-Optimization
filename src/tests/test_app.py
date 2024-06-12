@@ -1,6 +1,6 @@
 import unittest
 from flask_testing import TestCase
-from index import app
+from src.app.index import app
 
 class TestApp(TestCase):
     def create_app(self):
@@ -12,4 +12,3 @@ class TestApp(TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

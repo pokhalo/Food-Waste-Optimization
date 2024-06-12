@@ -2,8 +2,8 @@ from flask import render_template
 
 #from src.services.formatting import get_dummy_data
 #from src.services.model_service import example_model
-from services.formatting import get_dummy_data
-from services.analysis import example_model
+from ..services.formatting import get_dummy_data
+from ..services.analysis import example_model
 
 class DataRouter:
     """Class to handle /data requests
