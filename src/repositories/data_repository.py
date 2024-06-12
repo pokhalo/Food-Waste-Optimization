@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 
+
+
 class DataRepository:
     """Class to handle connection to data streams and manage data operations."""
     
@@ -130,3 +132,19 @@ class DataRepository:
         return rolling_means.apply(pd.to_numeric, errors='coerce')
 
 data_repository = DataRepository()
+
+if __name__ == "__main__":
+    from ..app.index import DATABASE_URL, app
+    from flask_sqlalchemy import SQLAlchemy
+    from sqlalchemy import text
+
+    app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
+    db = SQLAlchemy(app)
+
+    data = data_repository.get_df_from_stationary_data()
+    roll = data_repository.roll_means()
+
+    rs = db.session.execute(text("SELECT * from test"))
+    result = rs.fetchone()
+    print(result)
+

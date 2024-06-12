@@ -1,6 +1,6 @@
-from repositories.data_repository import data_repository
-from services.linear_regression import LinearRegressionModel
-from services.neural_network import NeuralNetwork
+from ..repositories.data_repository import data_repository
+from ..services.linear_regression import LinearRegressionModel
+from ..services.neural_network import NeuralNetwork
 
 # run with "poetry run python -m src.services.analysis"
 
