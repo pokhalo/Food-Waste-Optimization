@@ -9,6 +9,7 @@ pip-delete-this-directory.txt
 .tox/
 .cache
 nosetests.xml
+__init__.py
 
 basic_mvp_data/
 *.xlsx
