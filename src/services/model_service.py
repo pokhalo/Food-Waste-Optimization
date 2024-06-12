@@ -72,7 +72,7 @@ class ModelService:
         except Exception as err:
             print("Model could not be loaded:", err)
 
-    def predict_next_week(self, num_of_days):
+    def predict_next_week(self, num_of_days=5):
         """Return a list of predictions
         for the next week from current date.
 
