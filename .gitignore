@@ -1,6 +1,6 @@
 .env
 __pycache__
-.coverage
+.coverag*
 htmlcov
 *.pyc
 *.pyo
