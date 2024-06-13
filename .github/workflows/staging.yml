@@ -24,7 +24,7 @@ jobs:
       - name: Build and push
         run: |
           docker build --build-arg DB_USER=${{ secrets.DB_USERNAME }} --build-arg DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
-          --build-arg DB_HOST=${{env.DB_HOST}} --build-arg DB_NAME=${{env.DB_NAME}} -t fwoapp:staging .
+          --build-arg DB_HOST=${{env.DB_HOST}} --build-arg DB_NAME=${{env.DB_NAME}} -t ohjelmistotuotantoprojekti/food-waste-optimization:staging .
           docker push fwo:staging
 
     Build-and-push-ANN:
