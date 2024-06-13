@@ -15,6 +15,8 @@ class ModelService:
         self.data = data_repository.roll_means()
         self.prediction_data = data_repository.get_df_from_stationary_data()
         self.model = NeuralNetwork(data=self.data, prediction_data=self.prediction_data)
+        self.data_repo = data_repository
+
 
     def predict(self, feature):
         """This function will predict sold meals
@@ -71,7 +73,20 @@ class ModelService:
             print("Model loaded")
         except Exception as err:
             print("Model could not be loaded:", err)
+    
+    def predict_waste_by_day(self, weekday):
+        """Predicts food waste for a given day
+        based on average food waste per customer
+        and estimated amount of customers.
 
+        Args:
+            weekday (int): day of week, 0-6
+
+        Returns:
+            float: food waste in kgs
+        """
+        return self.data_repo.get_avg_meals_waste_ratio() * self.predict(weekday=weekday)
+    
     def predict_next_week(self, num_of_days=5):
         """Return a list of predictions
         for the next week from current date.

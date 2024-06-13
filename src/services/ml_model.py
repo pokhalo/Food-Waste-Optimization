@@ -32,7 +32,7 @@ class ML_Model:
     
     def _split_data(self, X, y, test_size=0.1):
         self.train_x, self.test_x, self.train_y, self.test_y = train_test_split(X, y, test_size=test_size, random_state=None, shuffle=True, stratify=None)
-    
+
     def predict(self, weekday=0):
         """ Get predicted meals sold for day "weekday".
         Uses average of last "x" days as input data.
