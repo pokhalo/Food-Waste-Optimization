@@ -25,7 +25,7 @@ jobs:
         run: |
           docker build --build-arg DB_USER=${{ secrets.DB_USERNAME }} --build-arg DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
           --build-arg DB_HOST=${{env.DB_HOST}} --build-arg DB_NAME=${{env.DB_NAME}} -t ohjelmistotuotantoprojekti/food-waste-optimization:staging .
-          docker push fwo:staging
+          docker push ohjelmistotuotantoprojekti/food-waste-optimization:staging
 
     Build-and-push-ANN:
       name: Build and push Neural Network image to Docker Hub
