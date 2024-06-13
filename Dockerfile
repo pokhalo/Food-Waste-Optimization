@@ -42,6 +42,8 @@ COPY --from=BUILD_FRONT /app/dist/ /app/src/frontend/dist
 
 RUN chmod -R 777 *
 
+RUN poetry lock
+
 RUN poetry install --without dev
 
 EXPOSE 5000
