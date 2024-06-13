@@ -10,7 +10,7 @@ def create_app():
     load_dotenv()
     template_dir = os.path.abspath('src/frontend/dist/')
 
-    app = Flask(__name__, static_url_path='/fwowebserver',
+    app = Flask(__name__, static_url_path='/',
                 static_folder=template_dir,
                 template_folder=template_dir)
     CORS(app)
