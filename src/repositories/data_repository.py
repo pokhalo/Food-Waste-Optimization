@@ -144,6 +144,22 @@ class DataRepository:
         rolling_means['Weekday'] = df['Weekday']
         rolling_means.dropna(inplace=True)
         return rolling_means.apply(pd.to_numeric, errors='coerce')
+    
+    def get_avg_meals_waste_ratio(self):
+        """Computes the average ratio of meals sold
+        to biowaste produced by one customer.
+
+        !!! Requires "Kumpula biojäte.csv" file !!!
+
+        Returns:
+            float: ratio meals_sold:waste_produced per 1 customer
+        """
+        df = pd.read_csv("src/data/basic_mvp_data/Kumpula biojäte.csv", sep=";", skiprows=2, index_col=0)
+        
+        ratio = 0.75 # example
+
+        return ratio
+
 
 data_repository = DataRepository()
 
@@ -161,6 +177,6 @@ if __name__ == "__main__":
     #rs = db.session.execute(text("SELECT * from test"))
     #result = rs.fetchone()
     #print(result)
-    print(data_repository.get_average_occupancy_by_restaurant("Exactum", 4))
+    print(data_repository.get_avg_meals_waste_ratio())
 
 
