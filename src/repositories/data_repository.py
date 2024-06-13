@@ -2,8 +2,6 @@ import pandas as pd
 import numpy as np
 
 
-PEOPLE_FLOW = "src/data/basic_mvp_data/people_flow_data.csv"
-
 
 class DataRepository:
     """Class to handle connection to data streams and manage data operations."""
@@ -93,37 +91,19 @@ class DataRepository:
         # Remove timezone information
         return daily_sum_diff.tz_convert(None)
     
+    
     def get_average_occupancy_by_restaurant(self, restaurant, weekday):
-        df = pd.read_csv(filepath_or_buffer=PEOPLE_FLOW, sep=",")
+        df = pd.read_excel(io="src/data/basic_mvp_data/tuntidata2.xlsx", index_col=0)
 
-        # Extract the phone names from the columns and rename the columns for easier access
-        phone_names = [col.split('"')[-2] if 'phoneName' in col else 'Time' for col in df.columns]
-        df.columns = [f'{col.split(" ")[0]}_{phone_name}' if phone_name != 'Time' else 'Time' for col, phone_name in zip(df.columns, phone_names)]
+        df = df.replace({"600 Chemicum": "Chemicum", "610 Physicum": "Physicum", "620 Exactum": "Exactum"})
 
-        # Set the Time column as the index
-        df['Time'] = pd.to_datetime(df['Time'])
-        df.set_index('Time', inplace=True)
+        df["weekday"] = df.index.dayofweek
 
-        resampled_df = df.resample('H').sum()
-
-        # Calculate the difference between 'in' and 'out' counts for each phone
-        diffs = {}
-        for phone in set(phone_names) - {'Time'}:
-            resampled_df[f'diff_{phone}'] = resampled_df[f'count_in_{phone}'].fillna(0) - resampled_df[f'count_out_{phone}'].fillna(0)
+        grouped_df = df.groupby(["Ravintola", "Kuitin tunti", "weekday"]).mean()
 
 
-        # Add columns for the hour and weekday
-        resampled_df['hour'] = resampled_df.index.hour
-        resampled_df['weekday'] = resampled_df.index.weekday
-
-        # Group by weekday and hour and compute the mean difference for each phone
-        mean_diff_by_weekday_hour = resampled_df.groupby(['weekday', 'hour']).mean()
-
-        mean_diff_by_weekday_hour = mean_diff_by_weekday_hour.filter(like='diff_')
-
-        mean_diff_by_weekday_hour.columns = "physicum chemicum physicum_corridor main_door exactum diff_S63".split()
-
-        return mean_diff_by_weekday_hour[restaurant][weekday].values
+        return grouped_df.loc[restaurant, :, weekday].values.reshape(1,-1)[0]
+        
 
 
     def get_menu_items(self):
@@ -168,17 +148,19 @@ class DataRepository:
 data_repository = DataRepository()
 
 if __name__ == "__main__":
-    from ..app.index import DATABASE_URL, app
-    from flask_sqlalchemy import SQLAlchemy
-    from sqlalchemy import text
+    #from ..app.index import DATABASE_URL, app
+    #from flask_sqlalchemy import SQLAlchemy
+    #from sqlalchemy import text
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
-    db = SQLAlchemy(app)
+    #app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
+    #db = SQLAlchemy(app)
 
-    data = data_repository.get_df_from_stationary_data()
-    roll = data_repository.roll_means()
+    #data = data_repository.get_df_from_stationary_data()
+    #roll = data_repository.roll_means()
 
-    rs = db.session.execute(text("SELECT * from test"))
-    result = rs.fetchone()
-    print(result)
+    #rs = db.session.execute(text("SELECT * from test"))
+    #result = rs.fetchone()
+    #print(result)
+    print(data_repository.get_average_occupancy_by_restaurant("Exactum", 4))
+
 
