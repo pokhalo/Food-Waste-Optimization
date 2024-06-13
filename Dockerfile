@@ -34,6 +34,23 @@ WORKDIR /app
 
 ENV POETRY_VIRTUALENVS_IN_PROJECT=true
 
+# Passing secrets
+RUN --mount=type=secret,id=db_user \
+  cat /run/secrets/db_user
+
+RUN --mount=type=secret,id=db_password \
+  cat /run/secrets/db_password
+
+RUN --mount=type=secret,id=db_host \
+  cat /run/secrets/db_host
+  
+RUN --mount=type=secret,id=db_name \
+  cat /run/secrets/db_name
+
+RUN --mount=type=secret,id=database_url \
+  cat /run/secrets/database_url
+#
+
 COPY pyproject.toml poetry.lock ./
 
 RUN poetry lock
