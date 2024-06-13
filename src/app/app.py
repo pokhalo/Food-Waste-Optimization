@@ -8,9 +8,11 @@ from ..config import set_configuration
 
 def create_app():
     load_dotenv()
+    template_dir = os.path.abspath('src/frontend/dist/')
+
     app = Flask(__name__, static_url_path='/fwowebserver',
-                static_folder='frontend/dist',
-                template_folder='frontend/dist')
+                static_folder=template_dir,
+                template_folder=template_dir)
     CORS(app)
 
     configuration_mode = os.getenv('FLASK_ENV')

@@ -18,3 +18,5 @@ basic_mvp_data/
 *.savd())
 
 src/data/
+.*
+data
