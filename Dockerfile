@@ -23,9 +23,7 @@ RUN chmod -R 777 *
 
 RUN npm run build-prod
 
-
 ### Building container for flask app
-
 FROM python:3.9-slim
 
 RUN pip3 install poetry==1.8.2
@@ -46,7 +44,7 @@ ENV DB_PASSWORD=${DB_PASSWORD}
 ENV DB_HOST=${DB_HOST}
 ENV DB_NAME=${DB_NAME}
 
-ENV DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOSTNAME}/${DB_NAME}
+ENV DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}
 
 COPY pyproject.toml poetry.lock ./
 
