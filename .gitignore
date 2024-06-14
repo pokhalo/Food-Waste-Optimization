@@ -20,3 +20,5 @@ basic_mvp_data/
 src/data/
 .*
 data
+node_modules/
+src/frontend/ReactFrontEnd/
