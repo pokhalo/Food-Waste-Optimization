@@ -24,20 +24,20 @@ services:
 
     container_name: fwoapp
 
-    secrets:
-      - db_user
-      - db_password
-      - db_host
-      - db_name
+#    secrets:
+#      - db_user
+#      - db_password
+#      - db_host
+#      - db_name
 
 
-secrets:
-  db_user:
+#secrets:
+#  db_user:
 #    file: ./.secrets/db_user.txt
-    external: true
-  db_password:
+#    external: true
+#  db_password:
 #    file: ./.secrets/db_password.txt
-    external: true
+#    external: true
 #  db_host:
 #    file: ./.secrets/db_hostname.txt
 #  db_name:
