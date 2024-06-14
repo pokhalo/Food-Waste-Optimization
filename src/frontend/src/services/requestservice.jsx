@@ -18,6 +18,14 @@ const getDataFromFlask = async () => {
     return result
 }
 
+const getOccupancyOfRestaurantsByHour = async () => {
+    console.log(base_api_url)
+    const result = await axios.get(`${base_api_url}/data/occupancy`)
+    console.log('getOccupancyOfRestaurantsByHour: ', result)
+    return result
+}
+
 export default {
-    getDataFromFlask
+    getDataFromFlask,
+    getOccupancyOfRestaurantsByHour
 }

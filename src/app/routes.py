@@ -31,5 +31,11 @@ def init_routes(app):
         with open('src/data/predicted.txt', mode='r') as file:
             prediction = file.readline()
             return jsonify({'content': prediction })
+        
+    @app.route('/data/occupancy')
+    def occupancy_data():
+        data = data_repository.DataRepository().get_average_occupancy()
+        return data
+
 
     app.add_url_rule('/data', view_func=DataRouter().render_view)
