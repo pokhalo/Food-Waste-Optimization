@@ -44,7 +44,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-            contex: .
+            context: .
             file: Dockerfile.ANN
             push: true
             tags: ohjelmistotuotantoprojekti/food-waste-optimization:ann
