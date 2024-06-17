@@ -17,7 +17,7 @@ def start_production(ctx):
 @task
 def start_test_environment(ctx):
     if sys.platform != "win32":
-        tx.run("FLASK_ENV='testing' python3 -m src.app.index", pty=True)
+        ctx.run("FLASK_ENV='testing' python3 -m src.app.index", pty=True)
     else:
         ctx.run("set FLASK_ENV='testing' && python -m src.app.index") 
 @task(start_test_environment)
