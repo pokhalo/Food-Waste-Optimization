@@ -1,7 +1,7 @@
 from ..app.db import db, init_engine
 from ..repositories import data_repository
 from ..repositories import db_repository as dbrepo
-from flask import render_template, jsonify
+from flask import render_template, jsonify, make_response
 import os
 
 def init_routes(app):
@@ -24,7 +24,10 @@ def init_routes(app):
     @app.route("/")
     @app.route("/fwowebserver")
     def initial_view():
-        return render_template('index.html')
+        resp = make_response(render_template('index.html'))
+        resp.headers['Accept-Ranges'] = 'none'
+
+        return resp
 
     @app.route('/api/data')
     def get_data_for_wednesday():
