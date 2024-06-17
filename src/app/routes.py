@@ -20,11 +20,7 @@ def init_routes(app):
         rs = dbrepo.lookup_table_from_db(db, name="dataframe")
         rs2 = dbrepo.lookup_table_from_db(db, name="rolleddata")
         return (str(rs), str(rs2))
-
-    @app.route("/")
-    @app.route("/fwowebserver")
-    def initial_view():
-        return render_template('index.html')
+    
 
     @app.route('/api/data')
     def get_data_for_wednesday():
@@ -37,5 +33,3 @@ def init_routes(app):
         data = data_repository.DataRepository().get_average_occupancy()
         return data
 
-
-    app.add_url_rule('/data', view_func=DataRouter().render_view)
