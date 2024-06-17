@@ -6,26 +6,23 @@ on:
   pull_request:
     branches: [main]
 
-
 # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_HOSTNAME: ${{ env.DB_HOST }}
-      DB_NAME: ${{ env.DB_NAME }}
-      DATABASE_URL: "postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOSTNAME}/${DB_NAME}"
-
     steps:
       - name: Set environment
         run: |
           if [ -z "$GITHUB_WORKFLOW" ]; then
             GITHUB_WORKFLOW="staging"
           fi
+          DB_USER = "${{ secrets.DB_USER }}"
+          DB_PASSWORD = "${{ secrets.DB_PASSWORD }}"
+          DB_HOSTNAME = "${{ env.DB_HOST }}"
+          DB_NAME = "${{ env.DB_NAME }}"
+          DATABASE_URL = "postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOSTNAME}/${DB_NAME}"
       - uses: actions/checkout@v4
       - name: Set up Python 3.9
         uses: actions/setup-python@v5
