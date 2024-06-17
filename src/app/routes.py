@@ -21,6 +21,11 @@ def init_routes(app):
         return (str(rs), str(rs2))
     
 
+    @app.route("/")
+    @app.route("/fwowebserver")
+    def initial_view():
+        return render_template('index.html')
+
     @app.route('/api/data')
     def get_data_for_wednesday():
         with open('src/data/predicted.txt', mode='r') as file:
