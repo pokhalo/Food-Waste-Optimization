@@ -173,23 +173,34 @@ class DataRepository:
         """Computes the average ratio of meals sold
         to biowaste produced by one customer.
 
-        !!! Requires "Kumpula biojäte.csv" file !!!
+        !!! Requires "Biowaste.csv" file !!!
 
         Returns:
             float: ratio meals_sold:waste_produced per 1 customer
         """
-        df = pd.read_csv("src/data/basic_mvp_data/Kumpula biojäte.csv", sep=";", skiprows=2, index_col=0)
+        df = pd.read_csv("src/data/basic_mvp_data/Biowaste.csv", sep=";")
+        df.index = pd.to_datetime(df.pop("Date"))
 
-        df2 = pd.read_excel(io="src/data/basic_mvp_data/tuntidata2.xlsx", index_col=0).groupby(["Date", "Ravintola"])
+        grouped_biowaste = df.groupby(["Ravintola"]).sum().astype(float)
 
 
-        print(df2)
+        df2 = pd.read_excel(io="src/data/basic_mvp_data/tuntidata2.xlsx", index_col=0).groupby(["Ravintola"]).sum().drop(columns="Kuitin tunti")
 
+        data = grouped_biowaste.merge(df2, on=["Ravintola"], how="inner")
+
+
+        # Compute the ratio
+        for column in data.columns.values:
+            ratio_column_name = f'{column} per Kuitti kpl (kg)'
+            data[ratio_column_name] = data[column] / data['Kuitti kpl']
+            data.pop(column)
+        data.pop("Kuitti kpl per Kuitti kpl (kg)")
 
         
-        ratio = 0.75 # example
+        return data.to_dict()
 
-        return ratio
+
+
 
 
 data_repository = DataRepository()
@@ -208,5 +219,5 @@ if __name__ == "__main__":
     #rs = db.session.execute(text("SELECT * from test"))
     #result = rs.fetchone()
     #print(result)
-    print(data_repository.get_average_occupancy())
+    print(data_repository.get_avg_meals_waste_ratio())
 
