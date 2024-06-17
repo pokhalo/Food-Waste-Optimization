@@ -25,21 +25,15 @@ CREATE TABLE categories (
     name TEXT UNIQUE
 );
 
-CREATE TABLE sold_lunches_by_category (
-    date DATE,
-    amount NUMERIC,
-    restaurant_id INTEGER REFERENCES restaurants (id),
-    category_id INTEGER REFERENCES categories (id)
-);
-
 CREATE TABLE dishes (
     id SERIAL PRIMARY KEY,
     name TEXT
-    -- category_id INTEGER REFERENCES category (id)
+    category_id INTEGER REFERENCES category (id)
 );
 
 CREATE TABLE sold_lunches (
     date DATE,
+    time TIME,
     amount INTEGER,
     restaurant_id INTEGER REFERENCES restaurants (id),
     dish_id INTEGER REFERENCES dishes (id)
