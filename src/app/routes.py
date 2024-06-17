@@ -25,7 +25,7 @@ def init_routes(app):
     @app.route("/fwowebserver")
     def initial_view():
         resp = make_response(render_template('index.html'))
-        resp.accept_ranges = 'none'
+        resp.headers['Accept-Ranges'] = 'none'
 
         return resp
 
