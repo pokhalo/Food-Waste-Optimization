@@ -67,6 +67,7 @@ const App = ({ instance }) => {
       <Menu instance={instance}></Menu>
       <Routes>
             <Route path="/" element={<GuestView instance={instance}/>} />
+            <Route path="/fwowebserver" element={<GuestView instance={instance}/>} />
             <Route path="/sales" element={<MainView predData={predData}/>} />
             <Route path="/menus" element={<MenuView />} />
             <Route path="/admin" element={<AdminView />} />
