@@ -1,4 +1,3 @@
-from ..routers.data_router import DataRouter
 from ..app.db import db, init_engine
 from ..repositories import data_repository
 from ..repositories import db_repository as dbrepo
