@@ -35,7 +35,8 @@ jobs:
       - name: Run tests
         run: poetry run coverage run --branch -m pytest
         env:
-          DATABASE_URL: postgresql://${{ secrets.DB_USERNAME }}:${{ secrets.DB_PASSWORD }}@${{ vars.DB_HOSTNAME }}/${{ vars.DB_NAME }}        working-directory: src
+          DATABASE_URL: postgresql://${{ secrets.DB_USERNAME }}:${{ secrets.DB_PASSWORD }}@${{ vars.DB_HOSTNAME }}/${{ vars.DB_NAME }}
+          working-directory: src
       - name: Coverage report
         run: poetry run coverage xml
         working-directory: src
