@@ -1,6 +1,7 @@
 import unittest
 from flask_testing import TestCase
 from src.app.index import app
+from os import getenv
 
 class TestApp(TestCase):
     # Configure assignent for testing GHA
