@@ -35,7 +35,9 @@ jobs:
       - name: Install dependencies
         run: poetry lock && poetry install
       - name: Debug environment variables
-        run: echo "${{ vars.DB_HOSTNAME }}"
+        run: |
+            echo "${{ env.DB_HOSTNAME }}"
+            echo "${DB_HOSTNAME }"
       - name: Run tests
         run: poetry run coverage run --branch -m pytest
         working-directory: src
