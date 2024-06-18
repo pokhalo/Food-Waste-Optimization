@@ -36,8 +36,10 @@ jobs:
         run: poetry lock && poetry install
       - name: Debug environment variables
         run: |
-            echo "${{ env.DB_HOSTNAME }}"
-            echo "${DB_HOSTNAME}"
+            # This is empty. Why?
+            # echo "${{ env.DB_HOSTNAME }}"
+            # What about this?
+            echo "$DB_HOSTNAME"
       - name: Run tests
         run: poetry run coverage run --branch -m pytest
         working-directory: src
