@@ -27,7 +27,8 @@ CREATE TABLE categories (
 
 CREATE TABLE dishes (
     id SERIAL PRIMARY KEY,
-    name TEXT
+    name TEXT,
+    carbon_footprint NUMERIC,
     category_id INTEGER REFERENCES category (id)
 );
 
