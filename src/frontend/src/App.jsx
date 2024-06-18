@@ -8,7 +8,7 @@ import MenuView from './components/MenuView.jsx'
 import AdminView from './components/AdminView.jsx'
 import UploadView from './components/UploadView.jsx'
 import Footer from './components/Footer.jsx'
-import MainView from './components/MainView.jsx'
+import ManagerView from './components/ManagerView.jsx'
 import GuestView from './components/GuestView.jsx'
 import 'bulma/css/bulma.min.css'
 
@@ -71,7 +71,7 @@ const App = ({ instance }) => {
       <Routes>
             <Route path="/" element={<GuestView instance={instance} fetchedBiowasteData={fetchedBiowasteData.customerBiowaste} isLoadingBiowaste={isLoadingBiowaste}/>} />
             <Route path="/fwowebserver" element={<GuestView instance={instance} fetchedBiowasteData={fetchedBiowasteData.customerBiowaste} isLoadingBiowaste={isLoadingBiowaste}/>} />
-            <Route path="/sales" element={<MainView predData={predData} fetchedBiowasteData={fetchedBiowasteData}/>} />
+            <Route path="/sales" element={<ManagerView predData={predData} fetchedBiowasteData={fetchedBiowasteData}/>} />
             <Route path="/menus" element={<MenuView />} />
             <Route path="/admin" element={<AdminView />} />
             <Route path="/upload" element={<UploadView />} />
