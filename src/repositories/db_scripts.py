@@ -1,10 +1,12 @@
 import pandas as pd
 
+
 class DatabaseScript:
     """Class to import data to database.
     Should not be imported to anything, but
     run on it's own once to init database.
     """
+
     def __init__(self, db_connection=None):
         self.database_connection = db_connection
 
@@ -17,11 +19,11 @@ class DatabaseScript:
         """
         df = pd.read_csv(filepath, sep=";")
         df.index = pd.to_datetime(df.pop("Date"), format="%d.%m.%Y")
-        df.iloc[:,-4:] = df.iloc[:,-4:].astype(float)
+        df.iloc[:, -4:] = df.iloc[:, -4:].astype(float)
 
-        df.to_sql(name="biowaste", con=self.database_connection, if_exists="replace")
-        
-        
+        df.to_sql(name="biowaste", con=self.database_connection,
+                  if_exists="replace")
+
 
 if __name__ == "__main__":
     script = DatabaseScript()

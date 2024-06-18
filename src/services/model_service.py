@@ -10,13 +10,14 @@ class ModelService:
     """Class for handling the connection
     between models and the app.
     """
+
     def __init__(self):
         # data is fetched every time init is run, this should not happen
         self.data = data_repository.roll_means()
         self.prediction_data = data_repository.get_df_from_stationary_data()
-        self.model = NeuralNetwork(data=self.data, prediction_data=self.prediction_data)
+        self.model = NeuralNetwork(
+            data=self.data, prediction_data=self.prediction_data)
         self.data_repo = data_repository
-
 
     def predict(self, feature):
         """This function will predict sold meals
@@ -51,7 +52,8 @@ class ModelService:
             self.fit_and_save()
         mse, mae, r2 = self.model.test()
 
-        print(f"Mean squared error: {mse}\nMean absolute error: {mae}\nR^2: {r2}")
+        print(
+            f"Mean squared error: {mse}\nMean absolute error: {mae}\nR^2: {r2}")
 
     def fit_and_save(self):
         """Will fit the model and the save into a file.
@@ -73,7 +75,7 @@ class ModelService:
             print("Model loaded")
         except Exception as err:
             print("Model could not be loaded:", err)
-    
+
     def predict_waste_by_week(self):
         """Predicts food waste for a week
         based on average food waste per customer
@@ -88,9 +90,10 @@ class ModelService:
         waste = self.data_repo.get_avg_meals_waste_ratio()
         for waste_type in waste:
             for restaurant, weight in waste[waste_type].items():
-                waste[waste_type][restaurant] = list(map(lambda i: i*weight, self.predict_next_week()))
+                waste[waste_type][restaurant] = list(
+                    map(lambda i: i*weight, self.predict_next_week()))
         return waste
-    
+
     def predict_next_week(self, num_of_days=5):
         """Return a list of predictions
         for the next week from current date.
@@ -105,7 +108,7 @@ class ModelService:
         """
         day_offset = list(range(0, num_of_days))
         return list(map(self.predict, day_offset))
-    
+
     def predict_occupancy(self):
         """Fetches the average occupancy by hour by day by restaurant
         for all restaurants as a dictionary.
@@ -120,23 +123,25 @@ class ModelService:
 
 # HOW TO USE
 
+
 def example_model():
     s = ModelService()
 
     # After defining the class the model must be fitted using
     s.load_model()
 
-    #s.predict(2)
+    # s.predict(2)
+
 
 if __name__ == "__main__":
     model = ModelService()
-    #model.fit_and_save()
+    # model.fit_and_save()
     model.load_model()
     print(model.predict_waste_by_week())
-    #print(model.predict_next_week(5))
-    #model.test_model()
+    # print(model.predict_next_week(5))
+    # model.test_model()
     #predicted_value = model.predict(2)
-    #print(predicted_value)
+    # print(predicted_value)
     #print("Saving predicted value to file")
-    #with open('src/data/predicted.txt', "w") as file:
+    # with open('src/data/predicted.txt', "w") as file:
     #    file.write(str(predicted_value))
