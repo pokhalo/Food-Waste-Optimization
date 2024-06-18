@@ -3,6 +3,9 @@ from flask_testing import TestCase
 from src.app.index import app
 
 class TestApp(TestCase):
+    # Force assignent for testing GHA
+    SQLALCHEMY_DATABASE_URI = DATABASE_URL
+    
     def create_app(self):
         return app
 
