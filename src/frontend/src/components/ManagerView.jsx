@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react'
 import { Doughnut } from 'react-chartjs-2'
 import { Chart as ChartJS, LinearScale, ArcElement, Title, Tooltip, Legend } from 'chart.js'
@@ -13,21 +13,56 @@ const ManagerView = ({ predData, fetchedBiowasteData }) => {
 
 
     const [ biowasteDataToDisplay, setbiowasteDataToDisplay ] = useState([])
-    const dataLabels = ['9-10', '10-11', '11-12', '12-13', '13-14', '14-15']
+    const dataLabels = ['Coffee', 'Customer', 'Kitchen', 'Hall']
     const styleForInactiveButton = 'button is-link is-light'
     const styleForActiveButton = 'button is-link'
     const [ titleForForecast, setTitleForForecast ] = useState('Estimated Amount of Biowaste, Chemicum')
     const [ styleForChem, setStyleForChem ] = useState(styleForActiveButton)
     const [ styleForExa, setStyleForExa ] = useState(styleForInactiveButton)
     const [ styleForPhy, setStyleForPhy ] = useState(styleForInactiveButton)
-    const [ styleForMon, setStyleForMon ] = useState(styleForActiveButton)
-    const [ styleForTue, setStyleForTue ] = useState(styleForInactiveButton)
-    const [ styleForWed, setStyleForWed ] = useState(styleForInactiveButton)
-    const [ styleForThu, setStyleForThu ] = useState(styleForInactiveButton)
-    const [ styleForFri, setStyleForFri ] = useState(styleForInactiveButton)
-    const [ styleForSat, setStyleForSat ] = useState(styleForInactiveButton)
 
 
+    // const formatBiowasteData = (data, restaurant) => {
+    //   const coffeeWasteForMonChem = data.coffeBiowaste[0].Chemicum[0]
+    //   const customerWasteForMonChem = data.customerBiowaste[0].Chemicum[0]
+    //   const hallWasteForMonChem = data.hallBiowaste[0].Chemicum[0]
+    //   const kitchenWasteForMonChem = data.kitchenBiowaste[0].Chemicum[0]
+
+    //   const coffeeWasteForMonExa = data.coffeeBiowaste[1].Exactum[0]
+    //   const customerWasteForMonExa = data.customerBiowaste[1].Exactum[0]
+    //   const hallWasteForMonExa = data.hallBiowaste[1].Exactum[0]
+    //   const kitchenWasteForMonExa = data.kitchenBiowaste[1].Exactum[0]
+
+    //   const coffeWasteForMonPhy = data.coffeeBiowaste[2].Physicum[0]
+    //   const customerWasteForMonPhy = data.customerBiowaste[2].Physicum[0]
+    //   const hallWasteForMonPhy = data.hallBiowaste[2].Physicum[0]
+    //   const kitchenWasteForMonPhy = data.kitchenBiowaste[2].Physicum[0]
+
+    //   const dataChem = [ coffeeWasteForMonChem,
+    //     customerWasteForMonChem,
+    //     hallWasteForMonChem,
+    //     kitchenWasteForMonChem ]
+    //   const dataExa = [
+    //     coffeeWasteForMonExa,
+    //     customerWasteForMonExa,
+    //     hallWasteForMonExa,
+    //     kitchenWasteForMonExa ]
+    //   const dataPhy = [ 
+    //     coffeWasteForMonPhy,
+    //     customerWasteForMonPhy,
+    //     hallWasteForMonPhy,
+    //     kitchenWasteForMonPhy,
+    //   ]
+    //   if (restaurant == 'Chemicum') {
+    //     return dataChem
+    //   }
+    //   if (restaurant == 'Exactum') {
+    //     return dataExa
+    //   }
+    //   if (restaurant == 'Physicum') {
+    //     return dataPhy
+    //   }
+    // }
 
     const data = {
         labels: dataLabels,
@@ -48,7 +83,7 @@ const ManagerView = ({ predData, fetchedBiowasteData }) => {
 
       const clickChemicum = () => {
         setTitleForForecast('Estimated Amount of Biowaste, Chemicum')
-        setbiowasteDataToDisplay(fetchedBiowasteData.coffeeBiowaste[0].Chemicum)
+        setbiowasteDataToDisplay([15, 22, 14, 16])
         setStyleForChem(styleForActiveButton)
         setStyleForExa(styleForInactiveButton)
         setStyleForPhy(styleForInactiveButton)
@@ -56,7 +91,7 @@ const ManagerView = ({ predData, fetchedBiowasteData }) => {
 
       const clickExactum = () => {
         setTitleForForecast('Estimated Amount of Biowaste, Exactum')       
-        setbiowasteDataToDisplay(fetchedBiowasteData.coffeeBiowaste[1].Exactum)
+        setbiowasteDataToDisplay([35, 13, 12, 18])
         setStyleForExa(styleForActiveButton)
         setStyleForChem(styleForInactiveButton)
         setStyleForPhy(styleForInactiveButton)
@@ -64,61 +99,12 @@ const ManagerView = ({ predData, fetchedBiowasteData }) => {
 
       const clickPhysicum = () => {
         setTitleForForecast('Estimated Amount of Biowaste, Physicum')      
-        setbiowasteDataToDisplay(fetchedBiowasteData.coffeeBiowaste[2].Physicum)
+        setbiowasteDataToDisplay([24, 33, 21, 32])
         setStyleForPhy(styleForActiveButton)
         setStyleForChem(styleForInactiveButton)
         setStyleForExa(styleForInactiveButton)
       }
 
-      const clickMon = () => {
-        setWeekday(0)
-        setbiowasteDataToDisplay(fetchedBiowasteData[restaurant][weekday])
-        setStyleForMon(styleForActiveButton)
-        setStyleForTue(styleForInactiveButton)
-        setStyleForWed(styleForInactiveButton)
-        setStyleForThu(styleForInactiveButton)
-        setStyleForFri(styleForInactiveButton)
-      }
-
-      const clickTue = () => {
-        setWeekday(1)
-        setbiowasteDataToDisplay(fetchedData[restaurant][weekday])
-        setStyleForTue(styleForActiveButton)
-        setStyleForMon(styleForInactiveButton)
-        setStyleForWed(styleForInactiveButton)
-        setStyleForThu(styleForInactiveButton)
-        setStyleForFri(styleForInactiveButton)
-      }
-
-      const clickWed = () => {
-        setWeekday(2)
-        setbiowasteDataToDisplay(fetchedData[restaurant][weekday])
-        setStyleForWed(styleForActiveButton)
-        setStyleForMon(styleForInactiveButton)
-        setStyleForTue(styleForInactiveButton)
-        setStyleForThu(styleForInactiveButton)
-        setStyleForFri(styleForInactiveButton)
-      }
-
-      const clickThu = () => {
-        setWeekday(3)
-        setbiowasteDataToDisplay(fetchedData[restaurant][weekday])
-        setStyleForThu(styleForActiveButton)
-        setStyleForMon(styleForInactiveButton)
-        setStyleForTue(styleForInactiveButton)
-        setStyleForWed(styleForInactiveButton)
-        setStyleForFri(styleForInactiveButton)
-      }
-
-      const clickFri = () => {
-        setWeekday(4)
-        setbiowasteDataToDisplay(fetchedData[restaurant][weekday])
-        setStyleForFri(styleForActiveButton)
-        setStyleForMon(styleForInactiveButton)
-        setStyleForTue(styleForInactiveButton)
-        setStyleForWed(styleForInactiveButton)
-        setStyleForThu(styleForInactiveButton)
-      }
 
     return (
         <>
@@ -132,12 +118,12 @@ const ManagerView = ({ predData, fetchedBiowasteData }) => {
                 </h5>
         <div className="fixed-grid has-8-cols">
             <div className="grid">
-                <div className="cell">Cell 1</div>
-                <div className="cell">Cell 2</div>
+                <div className="cell"></div>
+                <div className="cell"></div>
 
 
 
-                <div className="cell  is-col-span-4">Cell 3
+                <div className="cell  is-col-span-4">
                     <h5 className="title is-5" id="title-of-forecast-1">{titleForForecast}</h5>
                     <Doughnut options={options} data={data}></Doughnut>
                     <div className="pt-3">
@@ -148,20 +134,14 @@ const ManagerView = ({ predData, fetchedBiowasteData }) => {
                                 <button className={styleForExa} onClick={clickExactum}>Exactum</button> 
                                 <button className={styleForPhy} onClick={clickPhysicum}>Physicum</button>
                             </div>
-                            <div className="buttons">
-                                <button className={styleForMon} onClick={clickMon}>Monday</button>
-                                <button className={styleForTue} onClick={clickTue}>Tuesday</button>
-                                <button className={styleForWed} onClick={clickWed}>Wednesday</button>
-                                <button className={styleForThu} onClick={clickThu}>Thursday</button>
-                                <button className={styleForFri} onClick={clickFri}>Friday</button>                      
-                            </div>
+
                     </div>
                 
-                <div className="cell">Cell 4</div>
-                <div className="cell">Cell 5</div>
-                <div className="cell">Cell 6</div>
-                <div className="cell">Cell 7</div>
-                <div className="cell">Cell 8</div>
+                <div className="cell"></div>
+                <div className="cell"></div>
+                <div className="cell"></div>
+                <div className="cell"></div>
+                <div className="cell"></div>
                 </div>
                 </div>
                 
