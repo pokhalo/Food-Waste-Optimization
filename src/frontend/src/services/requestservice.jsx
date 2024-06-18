@@ -25,7 +25,14 @@ const getOccupancyOfRestaurantsByHour = async () => {
     return result
 }
 
+const getBiowastePrediction = async () => {
+    const result = await axios.get(`${base_api_url}/data/biowaste`)
+    console.log('getBiowastePrediction: ', result)
+    return result
+}
+
 export default {
     getDataFromFlask,
-    getOccupancyOfRestaurantsByHour
+    getOccupancyOfRestaurantsByHour,
+    getBiowastePrediction
 }

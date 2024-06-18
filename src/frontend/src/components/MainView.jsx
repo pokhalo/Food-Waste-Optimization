@@ -4,7 +4,7 @@ import Proportions from '../assets/avg_proportion_sold_meal_types.png'
 import StdofMeals from '../assets/std_of_meals.png'
 import 'bulma/css/bulma.min.css'
 
-const MainView = ({ predData }) => {
+const MainView = ({ predData, fetchedBiowasteData }) => {
 
 
     return (
