@@ -17,7 +17,8 @@ CREATE TABLE customers_per_hour (
     date DATE,
     hour INTEGER,
     amount INTEGER,
-    restaurant_id INTEGER REFERENCES restaurants (id)
+    restaurant_id INTEGER REFERENCES restaurants (id),
+    PRIMARY KEY (date, hour, restaurant_id)
 );
 
 CREATE TABLE categories (
@@ -37,6 +38,7 @@ CREATE TABLE sold_lunches (
     time TIME,
     amount INTEGER,
     restaurant_id INTEGER REFERENCES restaurants (id),
-    dish_id INTEGER REFERENCES dishes (id)
+    dish_id INTEGER REFERENCES dishes (id),
+    PRIMARY KEY (date, time, restaurant_id, dish_id)
 );
 
