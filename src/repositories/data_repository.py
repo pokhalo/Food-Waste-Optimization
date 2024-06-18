@@ -179,15 +179,13 @@ class DataRepository:
             float: ratio meals_sold:waste_produced per 1 customer
         """
         df = pd.read_csv("src/data/basic_mvp_data/Biowaste.csv", sep=";")
-        df.index = pd.to_datetime(df.pop("Date"))
+        df.index = pd.to_datetime(df.pop("Date"), format="%d.%m.%Y")
 
         grouped_biowaste = df.groupby(["Ravintola"]).sum().astype(float)
-
 
         df2 = pd.read_excel(io="src/data/basic_mvp_data/tuntidata2.xlsx", index_col=0).groupby(["Ravintola"]).sum().drop(columns="Kuitin tunti")
 
         data = grouped_biowaste.merge(df2, on=["Ravintola"], how="inner")
-
 
         # Compute the ratio
         for column in data.columns.values:
@@ -196,7 +194,6 @@ class DataRepository:
             data.pop(column)
         data.pop("Kuitti kpl per Kuitti kpl (kg)")
 
-        
         return data.to_dict()
 
 
