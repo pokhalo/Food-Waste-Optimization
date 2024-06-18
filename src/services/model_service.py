@@ -74,18 +74,22 @@ class ModelService:
         except Exception as err:
             print("Model could not be loaded:", err)
     
-    def predict_waste_by_day(self, weekday):
-        """Predicts food waste for a given day
+    def predict_waste_by_week(self):
+        """Predicts food waste for a week
         based on average food waste per customer
         and estimated amount of customers.
 
-        Args:
-            weekday (int): day of week, 0-6
+        Should be modified. End result should be where
+        restaurant prediction is mapped to meal waste ratio prediction.
 
         Returns:
             float: food waste in kgs
         """
-        return self.data_repo.get_avg_meals_waste_ratio() * self.predict(weekday=weekday)
+        waste = self.data_repo.get_avg_meals_waste_ratio()
+        for waste_type in waste:
+            for restaurant, weight in waste[waste_type].items():
+                waste[waste_type][restaurant] = list(map(lambda i: i*weight, self.predict_next_week()))
+        return waste
     
     def predict_next_week(self, num_of_days=5):
         """Return a list of predictions
@@ -94,6 +98,7 @@ class ModelService:
         num_of_days represents the length of week,
         or, how many days the restaurant is open.
 
+        !!!Currently only works for Exactum!!!
 
         Returns:
             list of int: list of predictions where index is offset from current day
@@ -125,9 +130,9 @@ def example_model():
 
 if __name__ == "__main__":
     model = ModelService()
-    print(model.predict_occupancy())
     #model.fit_and_save()
-    #model.load_model()
+    model.load_model()
+    print(model.predict_waste_by_week())
     #print(model.predict_next_week(5))
     #model.test_model()
     #predicted_value = model.predict(2)
