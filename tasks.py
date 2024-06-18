@@ -1,13 +1,38 @@
 from invoke import task
+import sys
 
 @task
-def start(ctx):
-    ctx.run("python3 -m src.index", pty=True)
+def start_development(ctx):
+    if sys.platform != "win32":
+        ctx.run("FLASK_ENV='development' python3 -m src.app.index", pty=True)
+    else:
+        ctx.run("set FLASK_ENV='development' && python -m src.app.index")
+
+@task
+def start_production(ctx):
+    if sys.platform != "win32":
+        ctx.run("FLASK_ENV='production' python3 -m  src.app.index", pty=True)
+    else:
+       ctx.run("set FLASK_ENV='production' && python -m src.app.index") 
+@task
+def start_test_environment(ctx):
+    if sys.platform != "win32":
+        ctx.run("FLASK_ENV='testing' python3 -m src.app.index", pty=True)
+    else:
+        ctx.run("set FLASK_ENV='testing' && python -m src.app.index") 
+@task(start_test_environment)
+def test(ctx):
+    ctx.run('pytest')
 
 @task
 def coverage(ctx):
-    ctx.run("coverage run --branch -m pytest", pty=True)
-
+    if sys.platform != "win32":
+        ctx.run("coverage run --branch -m pytest", pty=True)
+    else:
+        ctx.run("coverage run --branch -m pytest")
 @task(coverage)
 def coverage_report(ctx):
-    ctx.run("coverage html", pty=True)
+    if sys.platform != "win32":
+        ctx.run("coverage html", pty=True)
+    else:
+        ctx.run("coverage html")

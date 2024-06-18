@@ -1,5 +1,6 @@
+.env
 __pycache__
-.coverage
+.coverag*
 htmlcov
 *.pyc
 *.pyo
@@ -8,7 +9,16 @@ pip-delete-this-directory.txt
 .tox/
 .cache
 nosetests.xml
+__init__.py
 
 basic_mvp_data/
 *.xlsx
 *.csv
+
+*.savd())
+
+src/data/
+.*
+data
+node_modules/
+src/frontend/ReactFrontEnd/

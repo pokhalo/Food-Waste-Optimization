@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 
+
+
 class DataRepository:
     """Class to handle connection to data streams and manage data operations."""
     
@@ -12,7 +14,7 @@ class DataRepository:
         - Reads customer data and receipt counts.
         - Merges customer data, receipt counts, and people flow data.
         - Calculates next day's waste and filters the data.
-
+        
         Returns:
             pandas.DataFrame: The processed data.
         """
@@ -25,41 +27,40 @@ class DataRepository:
         # Aggregate receipt counts by date for Exactum
         receipts_by_date_exactum = hourly_customer_exactum.groupby("Date").sum()["Kuitti kpl"]
 
-        # Merge multiple Excel sheets into one DataFrame
-        customer_data = self.merge_multiple_excel_sheets("src/data/basic_mvp_data/kumpula_data.xlsx")
-        
+        customer_data = pd.read_csv("src/data/basic_mvp_data/kumpula_lounaat_kat.csv", sep=";", skiprows=2)
+        customer_data = customer_data.drop([0,1])
+        customer_data = customer_data.drop(columns=customer_data.columns[1:-14], axis="columns")
+        customer_data = customer_data.drop(columns=customer_data.columns[-1], axis="columns")
+
+        customer_data["Date"]  = pd.to_datetime(customer_data["Unnamed: 0"])
+        customer_data = customer_data.drop(columns=customer_data.columns[0], axis="columns")
+
         # Get people flow data by date
-        supersight_data = self.get_people_flow_by_date("src/data/basic_mvp_data/supersight-raw-data.csv")
+        #supersight_data = self.get_people_flow_by_date("src/data/basic_mvp_data/supersight-raw-data.csv")
 
         # Merge receipts, customer data, and people flow data
         data = pd.merge(receipts_by_date_exactum, customer_data, on="Date", how="inner")
-        data = pd.merge(data, supersight_data, on="Date", how="inner")
+
+        data.set_index("Date", inplace=True)
+        #data = pd.merge(data, supersight_data, on="Date", how="inner")
 
         # Calculate next day's waste and fill NaN values with 0
-        data = self.get_next_day_waste(data).fillna(value=0)
+        data = data.fillna(value=0)
 
         # Add a column for the weekday
         data['Weekday'] = data.index.dayofweek
 
-        # Filter out rows where the total is less than or equal to 0
-        data = data[data["Yhteensä"] > 0]
+        #Change percentage strings to a float between 0 and 1
+        for column in data:
+            if column[0] == "%":
+                data[column] = data[column].str.replace("%", '')
+                data[column] = data[column].str.replace(" ", '')
+                data[column] = data[column].str.replace(",", '.').astype(float)
+                data[column] = data[column] / 100
 
-        # Print the processed data
-        print(data)
+        self.get_menu_items()
 
-        return data
 
-    def get_next_day_waste(self, data):
-        """
-        Add a column for the next day's waste based on the 'Yhteensä' column.
-
-        Args:
-            data (pandas.DataFrame): The DataFrame to modify.
-
-        Returns:
-            pandas.DataFrame: The modified DataFrame with the next day's waste.
-        """
-        data['Huomisen Jäte'] = data['Yhteensä'].shift(-1)
         return data
 
     def get_people_flow_by_date(self, filename):
@@ -89,42 +90,134 @@ class DataRepository:
 
         # Remove timezone information
         return daily_sum_diff.tz_convert(None)
+    
+    
+    def get_average_occupancy(self):
+        """Computes the average occupancy of three restaurants
+        in Kumpula. Creates a dictionary that has the restaurant
+        as a main key and the day as another. Then, for each day it holds a list
+        for the average occupancy for each hour of the day (0-23).
 
-    def merge_multiple_excel_sheets(self, filename):
-        """
-        Combine data from multiple Excel sheets into one DataFrame.
-
-        Args:
-            filename (str): Path to the Excel file.
+        Currently only works for three restaurants.
 
         Returns:
-            pandas.DataFrame: The combined data from multiple sheets.
+            dict: avg occupancy by hour for each rest for each day
         """
-        # Read multiple sheets from Excel file
-        excel_data = pd.read_excel(io=filename, sheet_name=None, skiprows=1, index_col=0)
 
-        # Extract and process data for Exactum
-        sold_meals_exactum = excel_data["Myydyt lounaat"]["620 Exactum"][1:]
-        cols_for_exactum = excel_data["Myytyjen lounaiden suhde"].columns[-14:]
-        dist_sold_meals_exactum = excel_data["Myytyjen lounaiden suhde"][cols_for_exactum][1:]
+        df = pd.read_excel(io="src/data/basic_mvp_data/tuntidata2.xlsx", index_col=0)
 
-        cols_for_exactum = excel_data["Biojäte"].columns[10:-5]
-        biowaste_exactum = excel_data["Biojäte"][cols_for_exactum]
+        df = df.replace({"600 Chemicum": "Chemicum", "610 Physicum": "Physicum", "620 Exactum": "Exactum"})
 
-        # Set up a new header for biowaste data
-        new_header = biowaste_exactum.iloc[0]
-        biowaste_exactum = biowaste_exactum[2:]
-        biowaste_exactum.columns = new_header
+        df["weekday"] = df.index.dayofweek
 
-        # Merge all data based on index (date)
-        combined_data = pd.merge(sold_meals_exactum, dist_sold_meals_exactum, left_index=True, right_index=True, how="outer")
-        combined_data = pd.merge(combined_data, biowaste_exactum, left_index=True, right_index=True, how="outer")
+        grouped_df = df.groupby(["Ravintola", "weekday", "Kuitin tunti"]).mean().to_dict()["Kuitti kpl"]
 
-        # Insert Date column and set it as the index
-        np.insert(combined_data.columns.values, 0, "Date")
-        combined_data["Date"] = pd.to_datetime(combined_data.index.values, dayfirst=True)
-        combined_data = combined_data.set_index(keys="Date")
+        restaurants = ["Chemicum", "Physicum", "Exactum"]
+        
+        occupancy = {
+            restaurant: {
+                day: [
+                    grouped_df.get((restaurant, day, hour), 0) 
+                    for hour in range(24)
+                ]
+                for day in range(7)
+            }
+            for restaurant in restaurants
+        }
 
-        return combined_data
+
+        return occupancy
+        
+
+
+    def get_menu_items(self):
+
+        # Save data file as excel and gather relevant data into dataframe    
+        csv_path = "src/data/basic_mvp_data/kumpula_menu.csv"
+        excel_path = "src/data/basic_mvp_data/kumpula_menu.xlsx"
+        read_file_product = pd.read_csv(csv_path, sep=";")
+        read_file_product.to_excel(excel_path, index=None, header=False)
+        menu_data = pd.read_excel("src/data/basic_mvp_data/kumpula_menu.xlsx")
+        menu_data = menu_data.drop([0, 1], axis=0)
+        menu_data = menu_data.drop(columns=menu_data.columns[0:-3])
+        menu_data.drop(axis='columns', columns='Total.2', inplace=True)
+        menu_data.dropna(axis=0, how='all', inplace=True)
+        menu_data.rename(columns={menu_data.columns[0]: 'Menu item'}, inplace=True)
+        menu_data.rename(columns={menu_data.columns[1]: 'Meals sold'}, inplace=True)
+        menu_data["Date"] = np.nan
+
+        # Save dates that are among menu item data into their own column
+        menu_data.reset_index()
+        for indexx, row in menu_data.iterrows():
+            if len(row['Menu item']) == 10 and row['Menu item'][0] == "2":
+                menu_data.loc[indexx, "Date"] = row['Menu item']
+            else:
+                menu_data.loc[indexx, "Date"] = menu_data.loc[indexx-1, "Date"]
+
+
+        #print(menu_data)
+
+        return menu_data
+    
+
+    def roll_means(self, value:int = 5):
+        df = self.get_df_from_stationary_data()
+        #df.set_index('Date', inplace=True)
+        rolling_means = df.rolling(window=value).mean()
+        rolling_means['Next day sold meals'] = df['Total.2'].shift(-1)
+        rolling_means['Weekday'] = df['Weekday']
+        rolling_means.dropna(inplace=True)
+        return rolling_means.apply(pd.to_numeric, errors='coerce')
+    
+    def get_avg_meals_waste_ratio(self):
+        """Computes the average ratio of meals sold
+        to biowaste produced by one customer.
+
+        !!! Requires "Biowaste.csv" file !!!
+
+        Returns:
+            float: ratio meals_sold:waste_produced per 1 customer
+        """
+        df = pd.read_csv("src/data/basic_mvp_data/Biowaste.csv", sep=";")
+        df.index = pd.to_datetime(df.pop("Date"))
+
+        grouped_biowaste = df.groupby(["Ravintola"]).sum().astype(float)
+
+
+        df2 = pd.read_excel(io="src/data/basic_mvp_data/tuntidata2.xlsx", index_col=0).groupby(["Ravintola"]).sum().drop(columns="Kuitin tunti")
+
+        data = grouped_biowaste.merge(df2, on=["Ravintola"], how="inner")
+
+
+        # Compute the ratio
+        for column in data.columns.values:
+            ratio_column_name = f'{column} per Kuitti kpl (kg)'
+            data[ratio_column_name] = data[column] / data['Kuitti kpl']
+            data.pop(column)
+        data.pop("Kuitti kpl per Kuitti kpl (kg)")
+
+        
+        return data.to_dict()
+
+
+
+
 
 data_repository = DataRepository()
+
+if __name__ == "__main__":
+    #from ..app.index import DATABASE_URL, app
+    #from flask_sqlalchemy import SQLAlchemy
+    #from sqlalchemy import text
+
+    #app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
+    #db = SQLAlchemy(app)
+
+    #data = data_repository.get_df_from_stationary_data()
+    #roll = data_repository.roll_means()
+
+    #rs = db.session.execute(text("SELECT * from test"))
+    #result = rs.fetchone()
+    #print(result)
+    print(data_repository.get_avg_meals_waste_ratio())
+
