@@ -20,12 +20,15 @@ jobs:
     steps:
       - name: Set environment variables
         run: |
-          echo "DB_USER = ${{ secrets.DB_USER }}" >> $GITHUB_ENV
+          echo "DB_USER = ${{ secrets.DB_USERNAME }}" >> $GITHUB_ENV
           echo "DB_PASSWORD = ${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
           echo "DB_HOSTNAME = ${{ vars.DB_HOST }}" >> $GITHUB_ENV
           echo "DB_NAME = ${{ vars.DB_NAME }}" >> $GITHUB_ENV
           echo "DATABASE_URL = postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOSTNAME}/${DB_NAME}" >> $GITHUB_ENV
-          echo "$DB_NAME $DB_HOSTNAME"
+      - name: Show environment selected variables
+        run: |
+            echo "$DATABASE_URL"
+            echo "$DB_HOSTNAME"
       - uses: actions/checkout@v4
       - name: Set up Python 3.9
         uses: actions/setup-python@v5
