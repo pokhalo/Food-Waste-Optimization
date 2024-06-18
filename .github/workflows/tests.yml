@@ -37,7 +37,7 @@ jobs:
       - name: Debug environment variables
         run: |
             echo "${{ env.DB_HOSTNAME }}"
-            echo "${DB_HOSTNAME }"
+            echo "${DB_HOSTNAME}"
       - name: Run tests
         run: poetry run coverage run --branch -m pytest
         working-directory: src
