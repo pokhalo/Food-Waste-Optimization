@@ -36,7 +36,7 @@ jobs:
         run: poetry lock && poetry install
       - name: Run tests
         run: |
-              echo ${DB_HOSTNAME}
+              printf '%s\n' "$DB_HOSTNAME"
               poetry run coverage run --branch -m pytest
         working-directory: src
       - name: Coverage report
