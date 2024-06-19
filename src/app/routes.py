@@ -2,7 +2,6 @@ from ..services import model_service
 from flask import render_template, jsonify, make_response
 from ..app.app import app
 
-
 model = model_service.ModelService()
 model.load_model()
 

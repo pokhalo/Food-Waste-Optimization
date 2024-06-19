@@ -1,3 +1,5 @@
+"""Creates ModelService class that allows requests to AI models.
+    """
 from ..repositories.data_repository import data_repository
 from .linear_regression import LinearRegressionModel
 from .neural_network import NeuralNetwork
@@ -125,6 +127,8 @@ class ModelService:
 
 
 def example_model():
+    """Creates an instance of ModelService for accessing the class methods.
+    """
     s = ModelService()
 
     # After defining the class the model must be fitted using

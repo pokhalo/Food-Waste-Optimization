@@ -69,7 +69,7 @@ class DatabaseRepository:
             df.to_sql(name="sold_lunches", con=self.database_connection, if_exists="append")
         except Exception as err:
             print("Error in inserting sold lunches into database. The file might be the wrong format.", err)
-    
+
     def insert_restaurants(self, restaurants: pd.Series):
         """Function to insert restaurants to database. If exists,
         skip, if new, append to old. Will create ids from restaurant names
