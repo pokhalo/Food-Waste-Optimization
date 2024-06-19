@@ -28,3 +28,4 @@ class DatabaseScript:
 if __name__ == "__main__":
     script = DatabaseScript()
     script.import_biowaste()
+
