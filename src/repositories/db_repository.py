@@ -35,15 +35,15 @@ class DatabaseRepository:
         try:
             df = pd.read_csv(filepath, sep=";")
             df.index = pd.to_datetime(df.pop("Date"), format="%d.%m.%Y")
-        except Exception as error:
-            print("Error in trying to load biowaste file or creating DateTime object from it:", error)
+        except Exception as err:
+            print("Error in trying to load biowaste file or creating DateTime object from it:", err)
 
         # try to process data str -> float and insert into database
         try:
             df.iloc[:,-4:] = df.iloc[:,-4:].astype(float)
             df.to_sql(name="biowaste", con=self.database_connection, if_exists="append")
-        except Exception as error:
-            print("Error in inserting biowaste data into database. The file might be the wrong format. Try replacing ',' with '.':", error)
+        except Exception as err:
+            print("Error in inserting biowaste data into database. The file might be the wrong format. Try replacing ',' with '.':", err)
 
     def insert_sold_lunches(self, filepath="src/data/basic_mvp_data/Sold lunches.csv"):
         """Function to insert sold lunches data from csv file to database.
@@ -58,8 +58,8 @@ class DatabaseRepository:
             df = pd.read_csv(filepath, sep=";", low_memory=False)
             df['DateTime'] = pd.to_datetime(df['Date'] + ' ' + df['Receipt time'], format="%d.%m.%Y %H:%M")
             df = df.drop(columns=["Date", "Receipt time", "Unnamed: 6", "Unnamed: 7", "Unnamed: 8"])
-        except KeyError as error:
-            print("Error in trying to create a datetime object from dataframe:", error)
+        except KeyError as err:
+            print("err in trying to create a datetime object from dataframe:", err)
 
         # split dataframe into separate Series objects for specific processing, names become ids
         try:
@@ -68,15 +68,15 @@ class DatabaseRepository:
 
             # category can be dropped, not needed in database
             self.insert_food_categories(df.pop("Food Category"))
-        except KeyError as error:
-            print("Error in splitting data into separate Series objects:", error)
+        except KeyError as err:
+            print("Error in splitting data into separate Series objects:", err)
 
         # insert remaining dataframe into database
         try:
-            print(df)
-            #df.to_sql(name="sold_lunches", con=self.database_connection, if_exists="append")
-        except KeyError as error:
-            print("Error in inserting sold lunches into database. The file might be the wrong format.", error)
+            df.to_sql(name="sold_lunches", con=self.database_connection, if_exists="append")
+        except Exception as err:
+            print("Error in inserting sold lunches into database. The file might be the wrong format.", err)
+        print(df)
     
     def insert_restaurants(self, restaurants: pd.Series):
         """Function to insert restaurants to database. If exists,
@@ -93,22 +93,33 @@ class DatabaseRepository:
             split_values = np.char.split(restaurants.values.astype(str), " ")
             values = [(item[0], item[1]) for item in split_values]
             ids = np.array([value[0] for value in split_values]).astype(int)
-        except Exception as error:
-            print("Processing restaurant data caused an error:", error)
+        except Exception as err:
+            print("Processing restaurant data caused an err:", err)
 
         try:
             df = pd.DataFrame(values, columns=["id", "restaurant"])
             df.to_sql("restaurants", con=self.database_connection, if_exists="append")
-        except Exception as error:
-            print("Error in inserting restaurant data into database:", error)
+        except Exception as err:
+            print("Error in inserting restaurant data into database:", err)
+            
         return ids
         
     def insert_food_categories(self, categories: pd.Series):
         pass
 
     def insert_dishes(self, dishes: pd.Series):
-        pass
+        dishes = dishes.astype(str)
+        try :
+            dishes.to_sql("dishes", con=self.database_connection, if_exists="append")
+        except Exception as err:
+            print("Error in inserting dish data into database:", err)
+        dish_ids = self.get_dish_ids(dish_names=dishes)
+        return dish_ids
 
+    def get_dish_ids(self, dish_names: pd.Series):
+        test_id = 1
+        dish_names = test_id
+        return dish_names
 
 if __name__ == "__main__":
     db_repo = DatabaseRepository()
