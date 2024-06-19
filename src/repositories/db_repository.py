@@ -25,8 +25,8 @@ class DatabaseRepository:
     used to initialize with data and add data to 
     existing database.
     """
-    def __init__(self, db_connection=None):
-        self.database_connection = db_connection
+    def __init__(self):
+        self.database_connection = engine
 
     def insert_biowaste(self, filepath="src/data/basic_mvp_data/Biowaste.csv"):
         """Function to insert biowaste data from csv file to database.
