@@ -105,19 +105,44 @@ class DatabaseRepository:
         return ids
         
     def insert_food_categories(self, categories: pd.Series):
-        pass
+        """Function to insert food categories to database.
+        After inserting into database, ids are fetched from 
+        database and returned.
+
+        Args:
+            categories (pd.Series): categories of food, e.g. meat, fish
+
+        Returns:
+            ids : ids to replace the name representation of the category in a pd.Series
+        """
+        categories = categories.astype(str)
+        try :
+            categories.to_sql("categories", con=self.database_connection, if_exists="append")
+        except Exception as err:
+            print("Error in inserting food category data into database:", err)
+        return self.get_id_from_db(table_name="categories", names=categories)
 
     def insert_dishes(self, dishes: pd.Series):
+        """Function to insert dishes (e.g. Nakkikastike) to database.
+        After inserting into database, ids are fetched from 
+        database and returned.
+
+        Args:
+            categories (pd.Series): names of dishes, e.g. Nakkikastike
+
+        Returns:
+            ids : ids to replace the name representation of the dish name in a pd.Series
+        """
         dishes = dishes.astype(str)
         try :
             dishes.to_sql("dishes", con=self.database_connection, if_exists="append")
         except Exception as err:
             print("Error in inserting dish data into database:", err)
-        dish_ids = self.get_dish_ids(dish_names=dishes)
-        return dish_ids
+        return self.get_id_from_db(table_name="dishes", names=dishes)
 
-    def get_dish_ids(self, dish_names: pd.Series):
+    def get_id_from_db(self, table_name: str, names: pd.Series):
         test_id = 1
+        test_text = f"FROM {table_name} SELECT *"
         dish_names = test_id
         return dish_names
 
