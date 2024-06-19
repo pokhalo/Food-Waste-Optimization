@@ -9,21 +9,7 @@ model.load_model()
 
 @app.route("/dbtest")
 def db_conn_test():
-    # data = data_repository.DataRepository()
-    # df = data.get_df_from_stationary_data()
-    # roll = data.roll_means()
-
-    # engine = init_engine(app)
-
-    # dbrepo.insert_df_to_db("dataframe", df, engine)
-    # dbrepo.insert_df_to_db("rolleddata",roll, engine)
-
-    # rs = dbrepo.lookup_table_from_db(db, name="dataframe")
-    # rs2 = dbrepo.lookup_table_from_db(db, name="rolleddata")
-    # return (str(rs), str(rs2))
-
-    value = db_repository.get_test_value()
-    return value
+    return "not testing database connection"
 
 
 @app.route("/")
@@ -42,7 +28,7 @@ def get_data_for_wednesday():
     
 @app.route('/data/occupancy')
 def occupancy_data():
-    data = data_repository.DataRepository().get_average_occupancy()
+    data = model.predict_occupancy()
     return data
 
 @app.route('/data/biowaste')
