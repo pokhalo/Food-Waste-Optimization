@@ -8,7 +8,7 @@ import MenuView from './components/MenuView.jsx'
 import AdminView from './components/AdminView.jsx'
 import UploadView from './components/UploadView.jsx'
 import Footer from './components/Footer.jsx'
-import MainView from './components/MainView.jsx'
+import ManagerView from './components/ManagerView.jsx'
 import GuestView from './components/GuestView.jsx'
 import 'bulma/css/bulma.min.css'
 
@@ -19,12 +19,8 @@ const App = ({ instance }) => {
   instance.setNavigationClient(navigationClient)
 
   const [predData, setData] = useState(999)
-
- 
-  var activeAccount = false
-  if (instance.getActiveAccount()) {
-    activeAccount = instance.getActiveAccount()
-  }
+  const [ fetchedBiowasteData, setFetchedBiowasteData ] = useState([]) // variables containing all fetched biowaste data
+  const [ isLoadingBiowaste, setIsLoadingBiowaste ] = useState(true)
 
   // for debugging ->
   const { msInstance, accounts, inProgress } = useMsal()
@@ -38,11 +34,9 @@ const App = ({ instance }) => {
   }
   // debugging end
 
-  console.log('client id: ', import.meta.env.VITE_CLIENT_ID)
-  console.log(import.meta.env.MODE)
-
   useEffect(() => {
     let ignore = false
+    let ignoreBiowaste = false
     const fetchData = async () => {
       try {
         const response = await requestService.getDataFromFlask()
@@ -52,23 +46,32 @@ const App = ({ instance }) => {
       } catch (error) {
         console.error('Error fetching data:', error)
       }
+      try {
+        const responseBiowaste = await requestService.getBiowastePrediction()
+        if (!ignoreBiowaste) {
+          console.log(responseBiowaste.data)
+          setFetchedBiowasteData(responseBiowaste.data)
+          setIsLoadingBiowaste(false)
+        }
+      } catch (error) {
+        console.log('Error fetching biowaste data: ', error)
+      }
     }
     fetchData()
     return () => {
       ignore = true
+      ignoreBiowaste = true
     }
   }, [])
-
-
 
   return (
     <>
     <MsalProvider instance={instance}>
       <Menu instance={instance}></Menu>
       <Routes>
-            <Route path="/" element={<GuestView instance={instance}/>} />
-            <Route path="/fwowebserver" element={<GuestView instance={instance}/>} />
-            <Route path="/sales" element={<MainView predData={predData}/>} />
+            <Route path="/" element={<GuestView instance={instance} fetchedBiowasteData={fetchedBiowasteData.customerBiowaste} isLoadingBiowaste={isLoadingBiowaste}/>} />
+            <Route path="/fwowebserver" element={<GuestView instance={instance} fetchedBiowasteData={fetchedBiowasteData.customerBiowaste} isLoadingBiowaste={isLoadingBiowaste}/>} />
+            <Route path="/sales" element={<ManagerView predData={predData} fetchedBiowasteData={fetchedBiowasteData}/>} />
             <Route path="/menus" element={<MenuView />} />
             <Route path="/admin" element={<AdminView />} />
             <Route path="/upload" element={<UploadView />} />
