@@ -70,7 +70,10 @@ class DatabaseRepository:
         # split dataframe into separate Series objects for specific processing, names become ids
         try:
             df["Restaurant"] = self.insert_restaurants(df["Restaurant"])
-            df["Dish"] = self.insert_dishes(df["Dish"])
+            df["normalized CO2"] = df["Hiilijalanjälki"] / df["pcs"]
+            df = df.drop(columns="Hiilijalanjälki")
+            print(df)
+            df["Dish"] = self.insert_dishes(df["Dish", "normalized CO2"])
 
             # category can be dropped, not needed in database
             self.insert_food_categories(df.pop("Food Category"))
@@ -129,22 +132,24 @@ class DatabaseRepository:
         return self.get_id_from_db(table_name="categories", names=categories)
 
     def insert_dishes(self, dishes: pd.Series):
-        """Function to insert dishes (e.g. Nakkikastike) to database.
+        """Function to insert dishes and their CO2 emissions (e.g. Nakkikastike 0.56) to database.
         After inserting into database, ids are fetched from 
         database and returned.
 
         Args:
-            categories (pd.Series): names of dishes, e.g. Nakkikastike
+            categories (pd.Series): names of dishes, e.g. Nakkikastike CO2Emissions
 
         Returns:
             ids : ids to replace the name representation of the dish name in a pd.Series
         """
+        print(dishes)
         dishes = dishes.astype(str)
         try :
             dishes.to_sql("dishes", con=self.database_connection, if_exists="append")
         except Exception as err:
             print("Error in inserting dish data into database:", err)
         return self.get_id_from_db(table_name="dishes", names=dishes)
+
 
     def get_id_from_db(self, table_name: str, names: pd.Series):
         test_id = 1
