@@ -89,8 +89,18 @@ class DatabaseRepository:
         Returns:
             restaurant ids (pd.Series): ids as int, e.g. 600
         """
-        split_values = np.char.split(restaurants.values.astype(str), " ")
-        ids = np.array([value[0] for value in split_values]).astype(int)
+        try:
+            split_values = np.char.split(restaurants.values.astype(str), " ")
+            values = [(item[0], item[1]) for item in split_values]
+            ids = np.array([value[0] for value in split_values]).astype(int)
+        except Exception as error:
+            print("Processing restaurant data caused an error:", error)
+
+        try:
+            df = pd.DataFrame(values, columns=["id", "restaurant"])
+            df.to_sql("restaurants", con=self.database_connection, if_exists="append")
+        except Exception as error:
+            print("Error in inserting restaurant data into database:", error)
         return ids
         
     def insert_food_categories(self, categories: pd.Series):
