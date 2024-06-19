@@ -59,7 +59,7 @@ class DatabaseRepository:
             df['DateTime'] = pd.to_datetime(df['Date'] + ' ' + df['Receipt time'], format="%d.%m.%Y %H:%M")
             df = df.drop(columns=["Date", "Receipt time", "Unnamed: 6", "Unnamed: 7", "Unnamed: 8"])
         except KeyError as err:
-            print("err in trying to create a datetime object from dataframe:", err)
+            print("Error in trying to create a datetime object from dataframe:", err)
 
         # split dataframe into separate Series objects for specific processing, names become ids
         try:
