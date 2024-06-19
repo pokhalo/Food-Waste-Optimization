@@ -94,7 +94,7 @@ class DatabaseRepository:
             values = [(item[0], item[1]) for item in split_values]
             ids = np.array([value[0] for value in split_values]).astype(int)
         except Exception as err:
-            print("Processing restaurant data caused an err:", err)
+            print("Processing restaurant data caused an error:", err)
 
         try:
             df = pd.DataFrame(values, columns=["id", "restaurant"])
