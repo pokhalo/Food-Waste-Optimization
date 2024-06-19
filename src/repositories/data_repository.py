@@ -65,7 +65,6 @@ class DataRepository:
                 data[column] = data[column].str.replace(",", '.').astype(float)
                 data[column] = data[column] / 100
 
-        self.get_menu_items()
 
         return data
 
