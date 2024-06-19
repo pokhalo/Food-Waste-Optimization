@@ -64,7 +64,7 @@ class ModelService:
         try:
             self.model.fit_and_save()
             print("Model fitted and saved")
-        except Exception as err:
+        except Exception as err: # pylint: disable=W0718
             print("Model could not be fitted:", err)
 
     def load_model(self):
@@ -75,7 +75,7 @@ class ModelService:
         try:
             self.model.load_model()
             print("Model loaded")
-        except Exception as err:
+        except Exception as err: # pylint: disable=W0718
             print("Model could not be loaded:", err)
 
     def predict_waste_by_week(self):
