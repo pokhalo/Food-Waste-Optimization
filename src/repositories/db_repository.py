@@ -1,24 +1,7 @@
-from sqlalchemy import text
 from ..app.db import db, engine
 import pandas as pd
 import numpy as np
 
-def get_test_value():
-    sql = text("SELECT name FROM test")
-    result = db.session.execute(sql,)
-    value = result.fetchone()[0]
-    return value
-
-def insert_df_to_db(name: str, df, engine):
-    df.to_sql(name=name, con=engine, if_exists='replace')
-    return
-
-
-def lookup_table_from_db(db, name):
-    sql = text(f"SELECT * FROM {name};")
-    rs = db.session.execute(sql)
-    result = rs.fetchall()
-    return result
 
 class DatabaseRepository:
     """Class to insert data into database. Can be
@@ -27,6 +10,9 @@ class DatabaseRepository:
     """
     def __init__(self):
         self.database_connection = engine
+
+    def test_connection(self):
+        pass
 
     def insert_biowaste(self, filepath="src/data/basic_mvp_data/Biowaste.csv"):
         """Function to insert biowaste data from csv file to database.
