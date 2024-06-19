@@ -6,6 +6,7 @@ from flask import render_template, jsonify, make_response
 #import os
 from ..app.app import app
 from ..repositories import db_repository
+
 #def init_routes(app):
 model = model_service.ModelService()
 model.load_model()
