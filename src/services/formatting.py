@@ -2,6 +2,7 @@
 """To format data to be displayed on Jinja2 Templates
 """
 
+
 def get_dummy_data():
     """function to return some dummy data for /data router and data.html template
     Returns:
@@ -12,7 +13,8 @@ def get_dummy_data():
     data_for_chemicum = [22.5, 43.2, 55.6, 23.7, 36.4]
     data_for_exactum = [13.6, 31.3, 18.9, 42.2, 11.7]
     data_total = count_total([data_for_chemicum, data_for_exactum])
-    data_for_data_router = [column_labels, label_for_on_mouse_over, data_for_chemicum, data_for_exactum, data_total]
+    data_for_data_router = [column_labels, label_for_on_mouse_over,
+                            data_for_chemicum, data_for_exactum, data_total]
     return data_for_data_router
 
 

@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 from ..config import set_configuration
 
+
 def create_app():
     load_dotenv()
     template_dir = os.path.abspath('src/frontend/dist/')

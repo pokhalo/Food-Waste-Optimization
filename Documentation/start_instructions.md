@@ -3,8 +3,10 @@ To start, first clone the project: git clone https://github.com/Food-Waste-Optim
 # To Start with Back End:
 
 - Make sure you have python (3.9) and poetry installed
-- Create file src/data/basic_mvp_data/
-- Add data files from slack-channel #data into folder
+- Create folder for data: src/data/basic_mvp_data/
+- Add data files from slack-channel #data (or channel: files) into data folder
+- Set up ssh-redirect for database connection. Currently our databases on the UH servers can only be accessed from the Megasense server, so you will need access to set this up:
+`ssh -L 5433:possu-test.it.helsinki.fi:5432 username@megasense-server.cs.helsinki.fi`
 - Go to root and run:
   
 `poetry install`
