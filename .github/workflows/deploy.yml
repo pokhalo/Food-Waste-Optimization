@@ -4,17 +4,19 @@ on:
   release:
     types: [published]
   # Allows to run this workflow manually from the Actions tab
-  # REMOVE after testing that the workflow is complete!!!
   workflow_dispatch:
-
+    inputs:
+      release:
+        description: 'Release to build the container from'
+        required: true
+        default: 'latest'
 jobs:
     tests:
         uses: ./.github/workflows/tests.yml
     
     build-and-push:
         runs-on: ubuntu-latest2
-        #needs: tests
-
+        
         steps:
             - name: Check out the repo
               uses: actions/checkout@v3
