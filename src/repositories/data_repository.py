@@ -42,7 +42,8 @@ class DataRepository:
             columns=customer_data.columns[0], axis="columns")
 
         # Get people flow data by date
-        #supersight_data = self.get_people_flow_by_date("src/data/basic_mvp_data/supersight-raw-data.csv")
+        #data_path = "src/data/basic_mvp_data/supersight-raw-data.csv"
+        #supersight_data = self.get_people_flow_by_date(data_path)
 
         # Merge receipts, customer data, and people flow data
         data = pd.merge(receipts_by_date_exactum,
