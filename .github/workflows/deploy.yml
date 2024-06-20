@@ -1,8 +1,11 @@
 name: Deploy to production
 
 on:
-    release:
-        types: [published]
+  release:
+    types: [published]
+  # Allows to run this workflow manually from the Actions tab
+  # REMOVE after testing that the workflow is complete!!!
+  workflow_dispatch:
 
 jobs:
     tests:
@@ -24,6 +27,7 @@ jobs:
 
             - name: Build and push
               uses: docker/build-push-action@v2
-              with:
-                    push: true
-                    tags: ohjelmistotuotantoprojekti/food-waste-optimization:latest
+              run: |
+                docker build --build-arg DB_USER=${{ secrets.DB_USERNAME }} --build-arg DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+                --build-arg DB_HOST=${{env.DB_HOST}} --build-arg DB_NAME=${{env.DB_NAME}} -t ohjelmistotuotantoprojekti/food-waste-optimization:latest .
+                docker push ohjelmistotuotantoprojekti/food-waste-optimization:latest
