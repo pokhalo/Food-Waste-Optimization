@@ -1,3 +1,5 @@
+"""Create and configure Flask-app object with CORS-support.
+    """
 from flask import Flask
 from flask_cors import CORS
 # from ..app.db import db
@@ -8,6 +10,11 @@ from ..config import set_configuration
 
 
 def create_app():
+    """Create and configure Flask-app object with CORS-support.
+
+    Returns:
+        Flask: Flask-app object.
+    """
 
     load_dotenv()
     template_dir = os.path.abspath('src/frontend/dist/')

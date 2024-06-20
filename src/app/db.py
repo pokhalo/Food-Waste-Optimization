@@ -1,3 +1,5 @@
+"""Initialize SQLAlchemy database connection for Flask app using environment variables to set database URI.
+    """
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text, create_engine
 from ..app.app import app
