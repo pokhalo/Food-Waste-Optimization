@@ -34,13 +34,12 @@ class ML_Model:
         self.train_x, self.test_x, self.train_y, self.test_y = train_test_split(
             X, y, test_size=test_size, random_state=None, shuffle=True, stratify=None)
 
-    def predict(self, weekday=0):
+    def predict(self, weekday: int, dishes: list):
         """ Get predicted meals sold for day "weekday".
-        Uses average of last "x" days as input data.
+        Takes in weekday and a list of menu items for
+        that day to make a prediction.
         """
-        features = self.get_avg_of_last_days().values
-
-        features[-1] = weekday
+        dishes = dishes # one hot encoding
 
         features = self.scaler.transform(features)
 
