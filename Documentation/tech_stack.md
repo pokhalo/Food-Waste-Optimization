@@ -1,4 +1,4 @@
-# Current technologies and libraries added to skeleton:
+# Current technologies and libraries added to project:
 
 ## Python
 
@@ -17,6 +17,24 @@ Python packaging and dependency management
 Framework for web pages created with Python
 
 [Flask documentation](https://flask.palletsprojects.com/en/3.0.x/)
+
+## Flask-Cors
+
+A Flask extension for handling Cross Origin Resource Sharing (CORS)
+
+[Flask-Cors documentation](https://pypi.org/project/Flask-Cors/)
+
+## Flask-SQLAlchemy
+
+A Flask extension for SQLAlchemy support
+
+[Flask-SQLAlchemy documentation](https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/)
+
+## SQLAlchemy
+
+Python SQL toolkit and database abstraction library
+
+[SQLAlchemy](https://www.sqlalchemy.org/)
 
 ## Jinja2
 
@@ -51,3 +69,15 @@ A Framework providing ready-to-use front-end components
 Simple yet flexible JavaScript charting library for the modern web
 
 [Chartjs.org](https://www.chartjs.org/)
+
+## React 
+
+Library for web interfaces
+
+[React.dev](https://react.dev/)
+
+## Scikit-learn
+
+A set of python modules for machine learning
+
+[Scikit-learn](https://scikit-learn.org/stable/)
