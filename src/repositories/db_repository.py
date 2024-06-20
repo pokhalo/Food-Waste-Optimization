@@ -28,12 +28,21 @@ class DatabaseRepository:
         try:
             df = pd.read_csv(filepath, sep=";")
             df.index = pd.to_datetime(df.pop("Date"), format="%d.%m.%Y")
+            df = df.rename(mapper={"Ravintola": "Restaurant", 
+                                   "Asiakasbiojäte. tiski (kg)": "biowaste_customer", 
+                                   "Biojäte kahvi. porot (kg)": "biowaste_coffee",
+                                   "Keittiön biojäte (ruoanvalmistus) (kg)": "biowaste_kitchen",
+                                   "Salin biojäte (jämät) (kg)": "biowaste_hall"},
+                                    axis="columns")
+            df.index.name = "date"
+            print(df)
         except Exception as err: # pylint: disable=W0718
             print("Error in trying to load biowaste file or creating DateTime object from it:", err)
 
         # try to process data str -> float and insert into database
         try:
             df.iloc[:,-4:] = df.iloc[:,-4:].astype(float)
+            df["restaurant_id"] = self.insert_restaurants(df.pop("Restaurant"))
             df.to_sql(name="biowaste", con=self.database_connection, if_exists="append")
         except Exception as err: # pylint: disable=W0718
             print(
@@ -104,7 +113,9 @@ class DatabaseRepository:
             print("Processing restaurant data caused an error:", err)
 
         try:
-            df = pd.DataFrame(values, columns=["id", "restaurant"])
+            df = pd.DataFrame(values, columns=["id", "name"])
+            df.set_index("id", inplace=True)
+            print(df)
             df.to_sql("restaurants", con=self.database_connection, if_exists="append")
         except Exception as err: # pylint: disable=W0718
             print("Error in inserting restaurant data into database:", err)
@@ -161,25 +172,28 @@ class DatabaseRepository:
         return series.str.replace(",", ".").astype(float)
 
     def get_id_from_db(self, table_name: str, names: pd.Series):
-        test_id = 1
-        test_text = f"FROM {table_name} SELECT *"
-        dish_names = test_id
-        return dish_names
+        query = f"FROM {table_name} SELECT id"
+        ids = pd.read_sql_query(sql=query, con=self.database_connection)
+        return ids
     
     def get_sold_meals_data(self):
-        return pd.read_sql_table("dishes", con=self.database_connection)
-        # query = """select datetime, sold meals, rest_id, """
-        # df = pd.read_sql_query(sql=query, con=self.database_connection)
-
+        return pd.read_sql_table("sold_lunches", con=self.database_connection)
 
     def get_biowaste_data(self):
-        pass
+        return pd.read_sql_table("biowaste", con=self.database_connection)
 
     def get_occupancy_data(self):
+        # for people flow data
         pass
 
     def get_receipt_data(self):
-        pass
+        return pd.read_sql_table("customers_per_hour", con=self.database_connection)
+
+    def get_categories_data(self):
+        return pd.read_sql_table("categories", con=self.database_connection)
+
+    def get_restaurant_data(self):
+        return pd.read_sql_table("restaurants", con=self.database_connection)
 
 
 

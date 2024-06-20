@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from db_repository import db_repo
+from .db_repository import db_repo
 
 class DataRepository:
     """Class to handle connection to data streams and manage data operations."""
@@ -19,6 +19,7 @@ class DataRepository:
         Returns:
             pandas.DataFrame: The processed data.
         """
+        return None
         data = db_repo.get_sold_meals_data()
 
         data = self.process_menu_items(data["Dish"])
@@ -138,6 +139,13 @@ class DataRepository:
         but encoded
         """
         pass
+
+    def test_db(self):
+        db_repo.insert_biowaste()
+        print("inserted")
+        df2 = db_repo.get_biowaste_data()
+
+        print(df2)
 
 data_repo = DataRepository()
 
