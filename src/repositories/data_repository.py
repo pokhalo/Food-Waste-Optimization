@@ -21,6 +21,7 @@ class DataRepository:
         """
         data = db_repo.get_sold_meals_data()
 
+        data = self.process_menu_items(data["Dish"])
             
         # run language processing for menu items
         # create weekday column
@@ -129,7 +130,14 @@ class DataRepository:
         data.pop("Kuitti kpl per Kuitti kpl (kg)")
 
         return data.to_dict()
+    
+    def process_menu_items(self):
+        """One hot encoding of menu items
 
+        Take in pd.Series and return pd.Series
+        but encoded
+        """
+        pass
 
 data_repo = DataRepository()
 

@@ -175,6 +175,10 @@ class DatabaseRepository:
     def get_occupancy_data(self):
         pass
 
+    def get_receipt_data(self):
+        pass
+
+    
 
 
     
