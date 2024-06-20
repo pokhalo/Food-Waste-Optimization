@@ -1,6 +1,6 @@
 """Creates ModelService class that allows requests to AI models.
     """
-from ..repositories.data_repository import data_repository
+from ..repositories.data_repository import data_repo
 from .linear_regression import LinearRegressionModel
 from .neural_network import NeuralNetwork
 from sklearn.exceptions import NotFittedError
@@ -15,11 +15,10 @@ class ModelService:
 
     def __init__(self):
         # data is fetched every time init is run, this should not happen
-        self.data = data_repository.roll_means()
-        self.prediction_data = data_repository.get_df_from_stationary_data()
+        self.data = data_repo.get_model_fit_data()
+        self.predictor_data = data_repo.get_model_predict_data()
         self.model = NeuralNetwork(
             data=self.data, prediction_data=self.prediction_data)
-        self.data_repo = data_repository
 
     def predict(self, feature):
         """This function will predict sold meals
