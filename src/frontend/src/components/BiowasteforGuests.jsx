@@ -1,96 +1,96 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Bar as BarChartforBiowaste } from 'react-chartjs-2'
 import { Chart as ChartBiowaste, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js'
 import 'bulma/css/bulma.min.css'
 
 const BiowasteforGuests = ({ fetchedBiowasteData, isLoadingBiowaste }) => {
 
-    const [ biowasteDataToDisplay, setBiowasteDataToDisplay ] = useState([]) // variables containing selected biowaste data displayed on chart
-    const [ titleForForecast, setTitleForForecast ] = useState('Estimated Biowaste, Chemicum')
-    const dataLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-    const styleForInactiveButton = 'button is-link is-light'
-    const styleForActiveButton = 'button is-link'
-    const [ styleForChemB, setStyleForChemB ] = useState(styleForActiveButton)
-    const [ styleForExaB, setStyleForExaB ] = useState(styleForInactiveButton)
-    const [ styleForPhyB, setStyleForPhyB ] = useState(styleForInactiveButton)
+
+  console.log(fetchedBiowasteData)
 
     ChartBiowaste.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-    const data = {
-        labels: dataLabels,
+      const [ titleForForecast, setTitleForForecast ] = useState('Estimated Biowaste / Customer, Chemicum')
+      const restaurants = ['Chemicum', 'Exactum', 'Physicum']
+      const [ selectedRestaurant, setSelectedRestaurant ] = useState('Chemicum')
+      const [ selectedRestaurantIndex, setSelectedRestaurantIndex ] = useState(0)
+      const [ dataBiowaste, setDataBiowaste ] = useState({
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         datasets: [{
             label: 'Estimated Biowaste, kg',
-              data: biowasteDataToDisplay,
+              data: [10, 10, 10, 10, 10, 10],
               borderWidth: 1
             }]
-        }
-  
-    const options = {
-        responsive: true,
-        scales: {
-        y: {
-          beginAtZero: true
+        })
+
+      useEffect(() => {
+        const createDataForChart = () => {
+          if (isLoadingBiowaste) {
+            setDataBiowaste(      {
+              labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+              datasets: [{
+                  label: 'Estimated Occupancy',
+                    data: [10, 10, 10, 10],
+                    borderWidth: 1,
+                  }]
+              })
+          } else {
+            const biowaste = fetchedBiowasteData[selectedRestaurantIndex][selectedRestaurant]
+            console.log('biowaste: ', biowaste)
+            setDataBiowaste(
+            {
+              labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+              datasets: [{
+                  label: 'Estimated Occupancy',
+                    data: biowaste,
+                    borderWidth: 1,
+                  }]
+              }
+          )
         }
       }
+      createDataForChart()
+      setTitleForForecast(`Estimated Biowaste / Customer, ${selectedRestaurant}`)
+    }, [selectedRestaurant, selectedRestaurantIndex, fetchedBiowasteData, isLoadingBiowaste])
+    
+    if (isLoadingBiowaste) {
+      return <div>Is loading...</div>
     }
-
-    const clickChemBiowaste = () => {
-        setTitleForForecast('Estimated Biowaste, Chemicum')
-        setBiowasteDataToDisplay(fetchedBiowasteData[0].Chemicum)
-        setStyleForChemB(styleForActiveButton)
-        setStyleForExaB(styleForInactiveButton)
-        setStyleForPhyB(styleForInactiveButton)
+    
+      const options = {
+          responsive: true,
+          scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
       }
-
-      const clickExaBiowaste = () => {
-        setTitleForForecast('Estimated Biowaste, Exactum')
-        setBiowasteDataToDisplay(fetchedBiowasteData[1].Exactum)
-        setStyleForExaB(styleForActiveButton)
-        setStyleForChemB(styleForInactiveButton)
-        setStyleForPhyB(styleForInactiveButton)
+    
+      const handleRestaurantChange = (event, i) => {   
+        setSelectedRestaurant(event.currentTarget.value)
+        setSelectedRestaurantIndex(i)
+        console.log('restaurant: ', event.currentTarget.value)
       }
-
-      const clickPhyBiowaste = () => {
-        setTitleForForecast('Estimated Biowaste, Physicum')
-        setBiowasteDataToDisplay(fetchedBiowasteData[2].Physicum)     
-        setStyleForPhyB(styleForActiveButton)
-        setStyleForChemB(styleForInactiveButton)
-        setStyleForExaB(styleForInactiveButton)
-      }
-
 
     return (
         <div className="pt-3">
-            { isLoadingBiowaste ? 
-            <div className="container is-max-desktop is-skeleton">
-             <div className="pt-6 pb-6">
-             <div className="p-4"> 
-                  <h5 className="title is-5" id="title-of-forecast-2">{titleForForecast}</h5>
-                  <BarChartforBiowaste options={options} data={data}></BarChartforBiowaste>
-             </div>
-             <div className="buttons">
-                <button className={styleForChemB} onClick={clickChemBiowaste}>Chemicum</button>
-                <button className={styleForExaB} onClick={clickExaBiowaste}>Exactum</button> 
-                <button className={styleForPhyB} onClick={clickPhyBiowaste}>Physicum</button>
-              </div>
-              </div>
-            </div>
-            :
             <div className="container is-max-desktop">
-            <div className="pt-6 pb-6">
-                 <div className="p-4"> 
-                      <h5 className="title is-5" id="title-of-forecast-2">{titleForForecast}</h5>
-                      <BarChartforBiowaste options={options} data={data}></BarChartforBiowaste>
+             <div className="pt-6 pb-6">
+                <div className="p-4"> 
+                    <h5 className="title is-5" id="title-of-forecast-2">{titleForForecast}</h5>
+                    <BarChartforBiowaste options={options} data={dataBiowaste}></BarChartforBiowaste>
                  </div>
-                 <div className="buttons">
-                    <button className={styleForChemB} onClick={clickChemBiowaste}>Chemicum</button>
-                    <button className={styleForExaB} onClick={clickExaBiowaste}>Exactum</button> 
-                    <button className={styleForPhyB} onClick={clickPhyBiowaste}>Physicum</button>
-                  </div>
+                          <div className="buttons">
+                            { restaurants.map((restaurant, i) => {
+                              return (
+                                <button className='button is-link' key={i} value={restaurant} onClick={(event) => handleRestaurantChange(event, i)}>{restaurant}</button>                                
+                              )
+
+                            })}                            
+                          </div>
+               </div>
             </div>
-        </div>    
-      }
-    </div>         
+         </div>         
     )
 }
 
