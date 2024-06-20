@@ -26,11 +26,11 @@ class DatabaseRepository:
 
         # try to load biowaste file and create DateTime object to it
         try:
-            df = pd.read_csv(filepath, sep=";")
+            df = pd.read_csv(filepath, sep=";", decimal=(","))
             df.index = pd.to_datetime(df.pop("Date"), format="%d.%m.%Y")
             df = df.rename(mapper={"Ravintola": "Restaurant", 
-                                   "Asiakasbiojäte. tiski (kg)": "biowaste_customer", 
-                                   "Biojäte kahvi. porot (kg)": "biowaste_coffee",
+                                   "Asiakasbiojäte, tiski (kg)": "biowaste_customer", 
+                                   "Biojäte kahvi, porot (kg)": "biowaste_coffee",
                                    "Keittiön biojäte (ruoanvalmistus) (kg)": "biowaste_kitchen",
                                    "Salin biojäte (jämät) (kg)": "biowaste_hall"},
                                     axis="columns")
@@ -115,6 +115,8 @@ class DatabaseRepository:
         try:
             df = pd.DataFrame(values, columns=["id", "name"])
             df.set_index("id", inplace=True)
+            df = df.drop_duplicates(keep='last')
+            # TODO: Check the existing data in database and drop from the df
             print(df)
             df.to_sql("restaurants", con=self.database_connection, if_exists="append")
         except Exception as err: # pylint: disable=W0718
