@@ -1,10 +1,10 @@
 """Create and configure Flask-app object with CORS-support.
     """
+import os
 from flask import Flask
 from flask_cors import CORS
 # from ..app.db import db
 # from ..app.routes import init_routes
-import os
 from dotenv import load_dotenv
 from ..config import set_configuration
 
