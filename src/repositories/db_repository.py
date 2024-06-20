@@ -42,7 +42,7 @@ class DatabaseRepository:
                 err
             )
 
-    def insert_sold_lunches(self, filepath="src/data/basic_mvp_data/Sold lunches.csv"):
+    def insert_sold_meals(self, filepath="src/data/basic_mvp_data/Sold lunches.csv"):
         """Function to insert sold lunches data from csv file to database.
         Requires a specific csv file. Will append new data if old is found.
 
@@ -167,7 +167,10 @@ class DatabaseRepository:
         return dish_names
     
     def get_sold_meals_data(self):
-        pass
+        return pd.read_sql_table("dishes", con=self.database_connection)
+        # query = """select datetime, sold meals, rest_id, """
+        # df = pd.read_sql_query(sql=query, con=self.database_connection)
+
 
     def get_biowaste_data(self):
         pass
@@ -178,7 +181,7 @@ class DatabaseRepository:
     def get_receipt_data(self):
         pass
 
-    
+
 
 
     

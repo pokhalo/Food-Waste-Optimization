@@ -39,31 +39,11 @@ class ML_Model:
         Takes in weekday and a list of menu items for
         that day to make a prediction.
         """
-        dishes = dishes # one hot encoding
+        dishes = dishes # one hot encoding - use nlp_service
 
         features = self.scaler.transform(features)
 
         return int(self.model.predict(features)[0])
-
-    def get_avg_of_last_days(self, days=5):
-        """
-        Get the average of all numeric features of the last `days` days.
-        In theory, this will give the model a better capability of predicting 
-        according to larger trends than just the previous day.
-
-        Default is 5 days.
-
-        Returns: DataFrame of one entry which is the average of the last `days` days.
-        """
-        df = self.prediction_data.iloc[-days:].reset_index(drop=True)
-
-        # Convert all columns to numeric, coercing errors to NaN
-        df = df.apply(pd.to_numeric, errors='coerce')
-
-        # Compute the mean, skipping NaN values
-        numeric_avg = df.mean(axis=0, skipna=True)
-
-        return pd.DataFrame(numeric_avg).T
 
     def test(self):
         r2 = self.model.score(self.test_x, self.test_y)
