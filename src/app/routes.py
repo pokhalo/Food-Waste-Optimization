@@ -1,5 +1,5 @@
-from ..services import model_service
 from flask import render_template, jsonify, make_response
+from ..services import model_service
 from ..app.app import app
 
 model = model_service.ModelService()

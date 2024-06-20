@@ -1,3 +1,5 @@
+"""Configure different launch modes.
+    """
 import os
 
 
