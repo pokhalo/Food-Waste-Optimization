@@ -165,6 +165,25 @@ class DatabaseRepository:
         test_text = f"FROM {table_name} SELECT *"
         dish_names = test_id
         return dish_names
+    
+    def get_sold_meals_data(self):
+        pass
+
+    def get_biowaste_data(self):
+        pass
+
+    def get_occupancy_data(self):
+        pass
+
+    def get_receipt_data(self):
+        pass
+
+    
+
+
+    
+
+db_repo = DatabaseRepository()
 
 if __name__ == "__main__":
     db_repo = DatabaseRepository()
