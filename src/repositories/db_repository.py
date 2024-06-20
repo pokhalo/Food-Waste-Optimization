@@ -73,15 +73,19 @@ class DatabaseRepository:
             )
         # split dataframe into separate Series objects for specific processing, names become ids
         try:
-            df["Restaurant"] = self.insert_restaurants(df["Restaurant"])
+            df["restaurant_id"] = self.insert_restaurants(df["Restaurant"])
+
+            # category can be dropped, not needed in database
+            # TODO: NB! INDECES NEEDED!
+            self.insert_food_categories(df.pop("Food Category"))
+
             hiilijalanjalki = self.comma_nums_to_float(df["Hiilijalanjälki"])
             pcs = self.comma_nums_to_float(df["pcs"])
             df["normalized CO2"] = hiilijalanjalki / pcs
             df = df.drop(columns="Hiilijalanjälki")
             df["Dish"] = self.insert_dishes(df[["Dish", "normalized CO2"]])
 
-            # category can be dropped, not needed in database
-            self.insert_food_categories(df.pop("Food Category"))
+            
         except Exception as err: # pylint: disable=W0718
             print("Error in splitting data into separate Series objects:", err)
 
@@ -135,9 +139,15 @@ class DatabaseRepository:
         Returns:
             ids : ids to replace the name representation of the category in a pd.Series
         """
-        categories = categories.astype(str)
+        sr = categories.drop_duplicates()
+        print(sr)
+        sr = sr.rename("name")
+        print(sr)
+        df = pd.DataFrame(sr)
+        df.index.name = "id"
+        print(df)
         try :
-            categories.to_sql("categories", con=self.database_connection, if_exists="append")
+            df.to_sql("categories", con=self.database_connection, if_exists="append")
         except Exception as err: # pylint: disable=W0718
             print("Error in inserting food category data into database:", err)
         return self.get_id_from_db(table_name="categories", names=categories)
