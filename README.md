@@ -44,6 +44,5 @@ Currently it is not possible to run the containers locally, but we are looking a
 <!---
 Current [live system](Megasense link here, as soon as authentication works reasonably)
 --->
-- Currently added extensions:
-  - flask-cors
-- [Tech Stack](Documentation/tech_stack.md)
+Currently added technologies:  
+[Tech Stack](Documentation/tech_stack.md)
