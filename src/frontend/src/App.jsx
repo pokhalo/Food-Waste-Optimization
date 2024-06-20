@@ -48,6 +48,7 @@ const App = ({ instance }) => {
       }
       try {
         const responseBiowaste = await requestService.getBiowastePrediction()
+        console.log(responseBiowaste.data)
         if (!ignoreBiowaste) {
           console.log(responseBiowaste.data)
           setFetchedBiowasteData(responseBiowaste.data)
@@ -71,7 +72,7 @@ const App = ({ instance }) => {
       <Routes>
             <Route path="/" element={<GuestView instance={instance} fetchedBiowasteData={fetchedBiowasteData.customerBiowaste} isLoadingBiowaste={isLoadingBiowaste}/>} />
             <Route path="/fwowebserver" element={<GuestView instance={instance} fetchedBiowasteData={fetchedBiowasteData.customerBiowaste} isLoadingBiowaste={isLoadingBiowaste}/>} />
-            <Route path="/sales" element={<ManagerView predData={predData} fetchedBiowasteData={fetchedBiowasteData}/>} />
+            <Route path="/sales" element={<ManagerView predData={predData} isLoadingBiowaste={isLoadingBiowaste} fetchedBiowasteData={fetchedBiowasteData}/>} />
             <Route path="/menus" element={<MenuView />} />
             <Route path="/admin" element={<AdminView />} />
             <Route path="/upload" element={<UploadView />} />
