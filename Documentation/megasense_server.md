@@ -2,7 +2,7 @@
 
 #### What is it?
  
- Megasense is a data platform owned by the Department of the Computer Scienc at the University of Helsinki where
+ Megasense is a data platform owned by the Department of the Computer Science at the University of Helsinki where
  data is hosted and provided via Megasense API to users.
  Megasense provides a server for hosting, preferably containerized, applications.
  
@@ -10,10 +10,9 @@
 
  #### Access to Megasense
 
- In order to get access using megasense-server, you have to ask for permissions by sending email to
- **samu.varjonen@fmi.fi**.
+ In order to get access using megasense-server, you have to ask for permissions by sending email to the megasense administrative contact person. You will know who this is, if you are a member of the development team needing access to megasense,
 
- Having permissions to use platform, you can login to using SSH commandline tool from linux/MacOS/Win. SSH would be the easiest, although not user friendly, way of using megasense-server.
+ Having permissions to use platform, you can login to using SSH command line tool from linux/MacOS/Win. SSH would be the easiest, although not user friendly, way of using megasense-server.
 
  To login using ssh use following command:
   `ssh username@megasense-server.cs.helsinki.fi`
@@ -32,10 +31,10 @@
 
 #### How is it even configured?
 
- Docker runs constantly the containers available inside megasnese-server. We have created a docker-compose.yml file which defines four services as following:
+ Docker runs constantly the containers available inside megasense-server. We have created a docker-compose.yml file which defines four services as following:
  
  - **fwoapp**: main application containes both backend and frontend (stage-environment).
- - **watchtower**: pull in applicatoin's image from Docker Hub registery on hourly baisis.
- - **fwo-ann**: Neural Netwrok process contains codes learning from data.
+ - **watchtower**: pull in application image from Docker Hub registery on hourly basis.
+ - **fwo-ann**: Neural Network process training our model with the current dataset.
  - **fwofront**: Main application containing both frontend and backend (Production environment).
 
