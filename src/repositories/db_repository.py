@@ -141,22 +141,23 @@ class DatabaseRepository:
         Returns:
             ids : ids to replace the name representation of the category in a pd.Series
         """
-        sr = categories.drop_duplicates()
-        print(sr)
-        sr = sr.rename("name")
-        print(sr)
-        df = pd.DataFrame(sr)
-        df.index.name = "id"
-        print(df)
+
+        # Eliminate the existing category data from the new data
+        sr1 = categories.drop_duplicates()
+        sr1 = sr1.rename("name")
+        sr2 = self.get_categories_data()['name']
+        sr = pd.concat([sr1, sr2]).drop_duplicates(keep=False)
+
+        # Add the new category data to database
         try :
-            df.to_sql("categories", con=self.database_connection, if_exists="append", index=False)
+            sr.to_sql("categories", con=self.database_connection, if_exists="append", index=False)
         except Exception as err: # pylint: disable=W0718
             print("Error in inserting food category data into database:", err)
 
+        # Return category ids as a pd.Series
         categories.name = "name"
         table = self.get_categories_data()
         ids = pd.merge(categories, table, 'left', 'name')
-        print(ids)
         return ids.pop('id')
 
     def insert_dishes(self, dish_data: pd.Series):
