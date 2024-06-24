@@ -75,9 +75,11 @@ class DatabaseRepository:
         try:
             df["restaurant_id"] = self.insert_restaurants(df["Restaurant"])
 
-            # category can be dropped, not needed in database
+            # category can be dropped, not needed in database. Replace with id
             # TODO: NB! INDECES NEEDED!
-            self.insert_food_categories(df.pop("Food Category"))
+            df["category_id"] = self.insert_food_categories(df.pop("Food Category"))
+            print(df)
+            
 
             hiilijalanjalki = self.comma_nums_to_float(df["Hiilijalanjälki"])
             pcs = self.comma_nums_to_float(df["pcs"])
@@ -150,7 +152,12 @@ class DatabaseRepository:
             df.to_sql("categories", con=self.database_connection, if_exists="append")
         except Exception as err: # pylint: disable=W0718
             print("Error in inserting food category data into database:", err)
-        return self.get_id_from_db(table_name="categories", names=categories)
+
+        categories.name = "name"
+        table = self.get_categories_data()
+        ids = pd.merge(categories, table, 'left', 'name')
+        print(ids)
+        return ids.pop('id')
 
     def insert_dishes(self, dish_data: pd.Series):
         """Function to insert dishes and their CO2 emissions (e.g. Nakkikastike 0.56) to database.
