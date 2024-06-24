@@ -21,6 +21,8 @@ const App = ({ instance }) => {
   const [predData, setData] = useState(999)
   const [ fetchedBiowasteData, setFetchedBiowasteData ] = useState([]) // variables containing all fetched biowaste data
   const [ isLoadingBiowaste, setIsLoadingBiowaste ] = useState(true)
+  const [ fetchedMenuData, setFetchedMenuData ] = useState([])
+  const [ isLoadingMenuData, setIsLoadingMenuData ] = useState(true)
 
   // for debugging ->
   const { msInstance, accounts, inProgress } = useMsal()
@@ -37,6 +39,7 @@ const App = ({ instance }) => {
   useEffect(() => {
     let ignore = false
     let ignoreBiowaste = false
+    let ignoreMenus = false
     const fetchData = async () => {
       try {
         const response = await requestService.getDataFromFlask()
@@ -57,11 +60,21 @@ const App = ({ instance }) => {
       } catch (error) {
         console.log('Error fetching biowaste data: ', error)
       }
+      try {
+        const responseMenus = await requestService.getDataForMenus()
+        if (!ignoreMenus) {
+          setFetchedMenuData(responseMenus.data)
+          setIsLoadingMenuData(false)
+        }
+      } catch (error) {
+        console.log('Error fetching data for menus: ', error)
+      }
     }
     fetchData()
     return () => {
       ignore = true
       ignoreBiowaste = true
+      ignoreMenus = true
     }
   }, [])
 
@@ -73,7 +86,7 @@ const App = ({ instance }) => {
             <Route path="/" element={<GuestView instance={instance} fetchedBiowasteData={fetchedBiowasteData.customerBiowaste} isLoadingBiowaste={isLoadingBiowaste}/>} />
             <Route path="/fwowebserver" element={<GuestView instance={instance} fetchedBiowasteData={fetchedBiowasteData.customerBiowaste} isLoadingBiowaste={isLoadingBiowaste}/>} />
             <Route path="/sales" element={<ManagerView predData={predData} isLoadingBiowaste={isLoadingBiowaste} fetchedBiowasteData={fetchedBiowasteData}/>} />
-            <Route path="/menus" element={<MenuView />} />
+            <Route path="/menus" element={<MenuView fetchedMenuData={fetchedMenuData} isLoadingMenuData={isLoadingMenuData}/>} />
             <Route path="/admin" element={<AdminView />} />
             <Route path="/upload" element={<UploadView />} />
         </Routes>

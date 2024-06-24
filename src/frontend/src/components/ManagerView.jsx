@@ -79,17 +79,9 @@ const ManagerView = ({ predData, fetchedBiowasteData, isLoadingBiowaste }) => {
         radius: '50%',
     }
 
-    const handleRestaurantChange = (event) => {   
+    const handleRestaurantChange = (event, i) => {   
       setSelectedRestaurant(event.currentTarget.value)
-      if (event.currentTarget.value == 'Chemicum') {
-        setSelectedRestaurantIndex(0)
-      } 
-      if (event.currentTarget.value == 'Exactum') {
-        setSelectedRestaurantIndex(1) 
-      }
-      if (event.currentTarget.value == 'Physicum') {
-        setSelectedRestaurantIndex(2) 
-      }
+      setSelectedRestaurantIndex(i)
     }
 
     const handleDayChange = (event, day) => {
@@ -124,7 +116,7 @@ const ManagerView = ({ predData, fetchedBiowasteData, isLoadingBiowaste }) => {
                           <div className="buttons">
                             { restaurants.map((restaurant, i) => {
                               return (
-                                <button className='button is-link' key={i} value={restaurant} onClick={handleRestaurantChange}>{restaurant}</button>                                
+                                <button className='button is-link' key={i} value={restaurant} onClick={(event) => handleRestaurantChange(event, i)}>{restaurant}</button>                                
                               )
 
                             })}                            

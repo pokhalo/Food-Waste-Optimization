@@ -1,12 +1,37 @@
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react'
+import { Doughnut as Doughnut1 } from 'react-chartjs-2'
+import { Doughnut as Doughnut2 } from 'react-chartjs-2'
+import { Doughnut as Doughnut3 } from 'react-chartjs-2'
+import { Doughnut as Doughnut4 } from 'react-chartjs-2'
+import { Chart as ChartMenus1, LinearScale, ArcElement, Title, Tooltip, Legend } from 'chart.js'
+import { Chart as ChartMenus2 } from 'chart.js'
+import { Chart as ChartMenus3 } from 'chart.js'
+import { Chart as ChartMenus4 } from 'chart.js'
+import MenuChart from './MenuChart'
 import Unauthorized from './Unauthorized'
+import 'bulma/css/bulma.min.css'
 
-const MenuView = () => {
+const MenuView = ({ fetchedMenuData, isLoadingMenuData}) => {
+
+    ChartMenus1.register(ArcElement, LinearScale, Title, Tooltip, Legend)
+    ChartMenus2.register(ArcElement, LinearScale, Title, Tooltip, Legend)
+    ChartMenus3.register(ArcElement, LinearScale, Title, Tooltip, Legend)
+    ChartMenus4.register(ArcElement, LinearScale, Title, Tooltip, Legend)           
+
 
     return (
         <div>
             <AuthenticatedTemplate>
-                <p>Menus here</p>
+                <div className="pt-3">
+                    <div className="fixed-grid">
+                        <div className="grid">
+                            <MenuChart fetchedMenuData={fetchedMenuData} isLoadingMenuData={isLoadingMenuData} Chart={ChartMenus1} Doughnut={Doughnut1}></MenuChart>
+                            <MenuChart fetchedMenuData={fetchedMenuData} isLoadingMenuData={isLoadingMenuData} Chart={ChartMenus2} Doughnut={Doughnut2}></MenuChart>
+                            <MenuChart fetchedMenuData={fetchedMenuData} isLoadingMenuData={isLoadingMenuData} Chart={ChartMenus3} Doughnut={Doughnut3}></MenuChart>
+                            <MenuChart fetchedMenuData={fetchedMenuData} isLoadingMenuData={isLoadingMenuData} Chart={ChartMenus4} Doughnut={Doughnut4}></MenuChart>
+                        </div>
+                    </div>
+                </div>
             </AuthenticatedTemplate>
             <UnauthenticatedTemplate>
                 <Unauthorized></Unauthorized>
