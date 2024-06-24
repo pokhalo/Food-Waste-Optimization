@@ -31,8 +31,15 @@ const getBiowastePrediction = async () => {
     return result
 }
 
+const getDataForMenus = async () => {
+    const result = await axios.get(`${base_api_url}/data/menus`)
+    console.log('getDataForMenus: ', result)
+    return result
+}
+
 export default {
     getDataFromFlask,
     getOccupancyOfRestaurantsByHour,
-    getBiowastePrediction
+    getBiowastePrediction,
+    getDataForMenus
 }

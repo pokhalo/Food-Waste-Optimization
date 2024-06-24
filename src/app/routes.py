@@ -1,10 +1,11 @@
 from flask import render_template, jsonify, make_response
-from ..services import model_service
+# from ..services import model_service
 from ..app.app import app
 
-model = model_service.ModelService()
-model.load_model()
+# model = model_service.ModelService()
+# model.load_model()
 
+import pandas as pd
 
 @app.route("/dbtest")
 def db_conn_test():
@@ -130,3 +131,125 @@ def hardcoded_biowaste_data():
         'kitchenBiowaste': data_kitchen, 
         'hallBiowaste': data_dining
     })
+
+@app.route('/data/menus')
+def hardcoded_menu_data():
+    df = pd.read_csv("src/data/basic_mvp_data/Sold lunches.csv", sep=";")
+    print(df.head(), flush=True)
+
+    df['Date'] = pd.to_datetime(df['Date'], format="%d.%m.%Y")
+    df = df.set_index('Date')
+
+    Chemicum_all = df[df["Restaurant"] == "600 Chemicum"]
+    Chem_Q123 = [ len(Chemicum_all.loc['2023-01-01':'2023-03-29'][Chemicum_all.loc['2023-01-01':'2023-03-29']["Food Category"] == "Kala"]),
+               len(Chemicum_all.loc['2023-01-01':'2023-03-29'][Chemicum_all.loc['2023-01-01':'2023-03-29']["Food Category"] == "Kana"]),
+               len(Chemicum_all.loc['2023-01-01':'2023-03-29'][Chemicum_all.loc['2023-01-01':'2023-03-29']["Food Category"] == "Liha"]),
+               len(Chemicum_all.loc['2023-01-01':'2023-03-29'][Chemicum_all.loc['2023-01-01':'2023-03-29']["Food Category"] == "Vegaani"])
+    ]
+    Chem_Q223 = [ len(Chemicum_all.loc['2023-04-01':'2023-06-30'][Chemicum_all.loc['2023-04-01':'2023-06-30']["Food Category"] == "Kala"]),
+               len(Chemicum_all.loc['2023-04-01':'2023-06-30'][Chemicum_all.loc['2023-04-01':'2023-06-30']["Food Category"] == "Kana"]),
+               len(Chemicum_all.loc['2023-04-01':'2023-06-30'][Chemicum_all.loc['2023-04-01':'2023-06-30']["Food Category"] == "Liha"]),
+               len(Chemicum_all.loc['2023-04-01':'2023-06-30'][Chemicum_all.loc['2023-04-01':'2023-06-30']["Food Category"] == "Vegaani"])
+    ]
+    Chem_Q323 = [ len(Chemicum_all.loc['2023-07-01':'2023-09-30'][Chemicum_all.loc['2023-07-01':'2023-09-30']["Food Category"] == "Kala"]),
+               len(Chemicum_all.loc['2023-07-01':'2023-09-30'][Chemicum_all.loc['2023-07-01':'2023-09-30']["Food Category"] == "Kana"]),
+               len(Chemicum_all.loc['2023-07-01':'2023-09-30'][Chemicum_all.loc['2023-07-01':'2023-09-30']["Food Category"] == "Liha"]),
+               len(Chemicum_all.loc['2023-07-01':'2023-09-30'][Chemicum_all.loc['2023-07-01':'2023-09-30']["Food Category"] == "Vegaani"])
+    ]
+    Chem_Q423 = [ len(Chemicum_all.loc['2023-10-01':'2023-12-31'][Chemicum_all.loc['2023-10-01':'2023-12-31']["Food Category"] == "Kala"]),
+               len(Chemicum_all.loc['2023-10-01':'2023-12-31'][Chemicum_all.loc['2023-10-01':'2023-12-31']["Food Category"] == "Kana"]),
+               len(Chemicum_all.loc['2023-10-01':'2023-12-31'][Chemicum_all.loc['2023-10-01':'2023-12-31']["Food Category"] == "Liha"]),
+               len(Chemicum_all.loc['2023-10-01':'2023-12-31'][Chemicum_all.loc['2023-10-01':'2023-12-31']["Food Category"] == "Vegaani"])
+    ]
+
+    Exactum_all = df[df["Restaurant"] == "620 Exactum"]
+    Exa_Q123 = [ len(Exactum_all.loc['2023-01-01':'2023-03-29'][Exactum_all.loc['2023-01-01':'2023-03-29']["Food Category"] == "Kala"]),
+               len(Exactum_all.loc['2023-01-01':'2023-03-29'][Exactum_all.loc['2023-01-01':'2023-03-29']["Food Category"] == "Kana"]),
+               len(Exactum_all.loc['2023-01-01':'2023-03-29'][Exactum_all.loc['2023-01-01':'2023-03-29']["Food Category"] == "Liha"]),
+               len(Exactum_all.loc['2023-01-01':'2023-03-29'][Exactum_all.loc['2023-01-01':'2023-03-29']["Food Category"] == "Vegaani"])
+    ]
+    Exa_Q223 = [ len(Exactum_all.loc['2023-04-01':'2023-06-30'][Exactum_all.loc['2023-04-01':'2023-06-30']["Food Category"] == "Kala"]),
+               len(Exactum_all.loc['2023-04-01':'2023-06-30'][Exactum_all.loc['2023-04-01':'2023-06-30']["Food Category"] == "Kana"]),
+               len(Exactum_all.loc['2023-04-01':'2023-06-30'][Exactum_all.loc['2023-04-01':'2023-06-30']["Food Category"] == "Liha"]),
+               len(Exactum_all.loc['2023-04-01':'2023-06-30'][Exactum_all.loc['2023-04-01':'2023-06-30']["Food Category"] == "Vegaani"])
+    ]
+    Exa_Q323 = [ len(Exactum_all.loc['2023-07-01':'2023-09-30'][Exactum_all.loc['2023-07-01':'2023-09-30']["Food Category"] == "Kala"]),
+               len(Exactum_all.loc['2023-07-01':'2023-09-30'][Exactum_all.loc['2023-07-01':'2023-09-30']["Food Category"] == "Kana"]),
+               len(Exactum_all.loc['2023-07-01':'2023-09-30'][Exactum_all.loc['2023-07-01':'2023-09-30']["Food Category"] == "Liha"]),
+               len(Exactum_all.loc['2023-07-01':'2023-09-30'][Exactum_all.loc['2023-07-01':'2023-09-30']["Food Category"] == "Vegaani"])
+    ]
+    Exa_Q423 = [ len(Exactum_all.loc['2023-10-01':'2023-12-31'][Exactum_all.loc['2023-10-01':'2023-12-31']["Food Category"] == "Kala"]),
+               len(Exactum_all.loc['2023-10-01':'2023-12-31'][Exactum_all.loc['2023-10-01':'2023-12-31']["Food Category"] == "Kana"]),
+               len(Exactum_all.loc['2023-10-01':'2023-12-31'][Exactum_all.loc['2023-10-01':'2023-12-31']["Food Category"] == "Liha"]),
+               len(Exactum_all.loc['2023-10-01':'2023-12-31'][Exactum_all.loc['2023-10-01':'2023-12-31']["Food Category"] == "Vegaani"])
+    ]
+
+    Physicum_all = df[df["Restaurant"] == "610 Physicum"]
+    Phy_Q123 = [ len(Physicum_all.loc['2023-01-01':'2023-03-29'][Physicum_all.loc['2023-01-01':'2023-03-29']["Food Category"] == "Kala"]),
+               len(Physicum_all.loc['2023-01-01':'2023-03-29'][Physicum_all.loc['2023-01-01':'2023-03-29']["Food Category"] == "Kana"]),
+               len(Physicum_all.loc['2023-01-01':'2023-03-29'][Physicum_all.loc['2023-01-01':'2023-03-29']["Food Category"] == "Liha"]),
+               len(Physicum_all.loc['2023-01-01':'2023-03-29'][Physicum_all.loc['2023-01-01':'2023-03-29']["Food Category"] == "Vegaani"])
+    ]
+    Phy_Q223 = [ len(Physicum_all.loc['2023-04-01':'2023-06-30'][Physicum_all.loc['2023-04-01':'2023-06-30']["Food Category"] == "Kala"]),
+               len(Physicum_all.loc['2023-04-01':'2023-06-30'][Physicum_all.loc['2023-04-01':'2023-06-30']["Food Category"] == "Kana"]),
+               len(Physicum_all.loc['2023-04-01':'2023-06-30'][Physicum_all.loc['2023-04-01':'2023-06-30']["Food Category"] == "Liha"]),
+               len(Physicum_all.loc['2023-04-01':'2023-06-30'][Physicum_all.loc['2023-04-01':'2023-06-30']["Food Category"] == "Vegaani"])
+    ]
+    Phy_Q323 = [ len(Physicum_all.loc['2023-07-01':'2023-09-30'][Physicum_all.loc['2023-07-01':'2023-09-30']["Food Category"] == "Kala"]),
+               len(Physicum_all.loc['2023-07-01':'2023-09-30'][Physicum_all.loc['2023-07-01':'2023-09-30']["Food Category"] == "Kana"]),
+               len(Physicum_all.loc['2023-07-01':'2023-09-30'][Physicum_all.loc['2023-07-01':'2023-09-30']["Food Category"] == "Liha"]),
+               len(Physicum_all.loc['2023-07-01':'2023-09-30'][Physicum_all.loc['2023-07-01':'2023-09-30']["Food Category"] == "Vegaani"])
+    ]
+    Phy_Q423 = [ len(Physicum_all.loc['2023-10-01':'2023-12-31'][Physicum_all.loc['2023-10-01':'2023-12-31']["Food Category"] == "Kala"]),
+               len(Physicum_all.loc['2023-10-01':'2023-12-31'][Physicum_all.loc['2023-10-01':'2023-12-31']["Food Category"] == "Kana"]),
+               len(Physicum_all.loc['2023-10-01':'2023-12-31'][Physicum_all.loc['2023-10-01':'2023-12-31']["Food Category"] == "Liha"]),
+               len(Physicum_all.loc['2023-10-01':'2023-12-31'][Physicum_all.loc['2023-10-01':'2023-12-31']["Food Category"] == "Vegaani"])
+    ]
+
+    All_Q123 = [ len(df.loc['2023-01-01':'2023-03-29'][df.loc['2023-01-01':'2023-03-29']["Food Category"] == "Kala"]),
+               len(df.loc['2023-01-01':'2023-03-29'][df.loc['2023-01-01':'2023-03-29']["Food Category"] == "Kana"]),
+               len(df.loc['2023-01-01':'2023-03-29'][df.loc['2023-01-01':'2023-03-29']["Food Category"] == "Liha"]),
+               len(df.loc['2023-01-01':'2023-03-29'][df.loc['2023-01-01':'2023-03-29']["Food Category"] == "Vegaani"])
+    ]
+    All_Q223 = [ len(df.loc['2023-04-01':'2023-06-30'][df.loc['2023-04-01':'2023-06-30']["Food Category"] == "Kala"]),
+               len(df.loc['2023-04-01':'2023-06-30'][df.loc['2023-04-01':'2023-06-30']["Food Category"] == "Kana"]),
+               len(df.loc['2023-04-01':'2023-06-30'][df.loc['2023-04-01':'2023-06-30']["Food Category"] == "Liha"]),
+               len(df.loc['2023-04-01':'2023-06-30'][df.loc['2023-04-01':'2023-06-30']["Food Category"] == "Vegaani"])
+    ]
+    All_Q323 = [ len(df.loc['2023-07-01':'2023-09-30'][df.loc['2023-07-01':'2023-09-30']["Food Category"] == "Kala"]),
+               len(df.loc['2023-07-01':'2023-09-30'][df.loc['2023-07-01':'2023-09-30']["Food Category"] == "Kana"]),
+               len(df.loc['2023-07-01':'2023-09-30'][df.loc['2023-07-01':'2023-09-30']["Food Category"] == "Liha"]),
+               len(df.loc['2023-07-01':'2023-09-30'][df.loc['2023-07-01':'2023-09-30']["Food Category"] == "Vegaani"])
+    ]
+    All_Q423 = [ len(df.loc['2023-10-01':'2023-12-31'][df.loc['2023-10-01':'2023-12-31']["Food Category"] == "Kala"]),
+               len(df.loc['2023-10-01':'2023-12-31'][df.loc['2023-10-01':'2023-12-31']["Food Category"] == "Kana"]),
+               len(df.loc['2023-10-01':'2023-12-31'][df.loc['2023-10-01':'2023-12-31']["Food Category"] == "Liha"]),
+               len(df.loc['2023-10-01':'2023-12-31'][df.loc['2023-10-01':'2023-12-31']["Food Category"] == "Vegaani"])
+    ]
+
+
+    return jsonify({ 'Chemicum': { 
+                        'Q123' : Chem_Q123,
+                        'Q223': Chem_Q223,
+                        'Q323': Chem_Q323,
+                        'Q423' : Chem_Q423 },
+                    'Exactum': {
+                        'Q123': Exa_Q123,
+                        'Q223': Exa_Q223,
+                        'Q323': Exa_Q323,
+                        'Q423': Exa_Q423,
+                    },
+                    'Physicum': {
+                        'Q123': Phy_Q123,
+                        'Q223': Phy_Q223,
+                        'Q323': Phy_Q323,
+                        'Q423': Phy_Q423,
+                    },
+                    'Total': {
+                        'Q123': All_Q123,
+                        'Q223': All_Q223,
+                        'Q323': All_Q323,
+                        'Q423': All_Q423,
+                    }                    
+                })
+
