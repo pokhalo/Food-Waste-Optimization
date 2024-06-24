@@ -119,11 +119,16 @@ class DatabaseRepository:
             print("Processing restaurant data caused an error:", err)
 
         try:
+            # Make a dataframe of restaurant data
             df = pd.DataFrame(values, columns=["id", "name"])
             df.set_index("id", inplace=True)
             df = df.drop_duplicates(keep='last')
-            # TODO: Check the existing data in database and drop from the df
-            print(df)
+
+            # Eliminate the existing restaurant data from the new data
+            df2 = self.get_restaurant_data()
+            df = pd.concat([df, df2]).drop_duplicates(keep=False)
+
+            # Add new restaurant data to database
             df.to_sql("restaurants", con=self.database_connection, if_exists="append")
         except Exception as err: # pylint: disable=W0718
             print("Error in inserting restaurant data into database:", err)
@@ -213,7 +218,9 @@ class DatabaseRepository:
         return pd.read_sql_table("categories", con=self.database_connection)
 
     def get_restaurant_data(self):
-        return pd.read_sql_table("restaurants", con=self.database_connection)
+        df = pd.read_sql_table("restaurants", con=self.database_connection)
+        df.set_index("id", inplace=True)
+        return df
 
 
 
