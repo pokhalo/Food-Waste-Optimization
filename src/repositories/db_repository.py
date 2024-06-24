@@ -149,7 +149,7 @@ class DatabaseRepository:
         df.index.name = "id"
         print(df)
         try :
-            df.to_sql("categories", con=self.database_connection, if_exists="append")
+            df.to_sql("categories", con=self.database_connection, if_exists="append", index=False)
         except Exception as err: # pylint: disable=W0718
             print("Error in inserting food category data into database:", err)
 
