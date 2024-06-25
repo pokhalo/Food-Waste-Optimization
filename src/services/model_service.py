@@ -94,20 +94,22 @@ class ModelService:
                     map(lambda i: i*weight, self.predict_next_week()))
         return waste
 
-    def predict_next_week(self, num_of_days=5):
+    def predict_next_week(self, num_of_days: int, menu_plan: list):
         """Return a list of predictions
         for the next week from current date.
 
         num_of_days represents the length of week,
         or, how many days the restaurant is open.
 
-        !!!Currently only works for Exactum!!!
+        menu_plan represents the menus for the days.
+        It should be a list of lists. The main list for each day
+        and inner list for each dish.
 
         Returns:
             list of int: list of predictions where index is offset from current day
         """
         day_offset = list(range(0, num_of_days))
-        return list(map(self.predict, day_offset))
+        return list(map(self.predict, day_offset, menu_plan))
 
     def predict_occupancy(self):
         """Fetches the average occupancy by hour by day by restaurant
