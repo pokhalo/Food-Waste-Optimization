@@ -28,6 +28,12 @@ class NeuralNetwork(ML_Model):
         self._split_data(X, y)
 
     def _learn(self, show_curve=False):
+        """Function to fit the model to the
+        training data.
+
+        Args:
+            show_curve (bool, optional): If true shows loss curve. Defaults to False.
+        """
         self.train_x = self.scaler.fit_transform(self.train_x)
 
         self.model.fit(X=self.train_x, y=self.train_y)
@@ -40,10 +46,16 @@ class NeuralNetwork(ML_Model):
             plt.show()
 
     def fit_and_save(self):
+        """Function to first fit the model
+        and then save it.
+        """
         self._learn()
         pickle.dump(self.model, open(MODEL_PATH, 'wb'))
         pickle.dump(self.scaler, open(SCALER_PATH, 'wb'))
 
     def load_model(self):
+        """Function to load a saved model (and scaler)
+        from a file.
+        """
         self.model = pickle.load(open(MODEL_PATH, 'rb'))
         self.scaler = pickle.load(open(SCALER_PATH, 'rb'))

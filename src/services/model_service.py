@@ -20,7 +20,7 @@ class ModelService:
         self.model = NeuralNetwork(
             data=self.data, prediction_data=self.prediction_data)
 
-    def predict(self, weekday, menu_plan):
+    def __predict(self, weekday, menu_plan):
         """This function will predict sold meals
         for a specific day and meal plan
         Args:
@@ -55,7 +55,7 @@ class ModelService:
         print(
             f"Mean squared error: {mse}\nMean absolute error: {mae}\nR^2: {r2}")
 
-    def fit_and_save(self):
+    def __fit_and_save(self):
         """Will fit the model and the save into a file.
         If unsuccessful, will give error.
         """
@@ -65,7 +65,7 @@ class ModelService:
         except Exception as err: # pylint: disable=W0718
             print("Model could not be fitted:", err)
 
-    def load_model(self):
+    def __load_model(self):
         """This function will load the model. First
         try to load a model and if no model is found,
         will give error.
@@ -76,7 +76,7 @@ class ModelService:
         except Exception as err: # pylint: disable=W0718
             print("Model could not be loaded:", err)
 
-    def predict_waste_by_week(self):
+    def __predict_waste_by_week(self):
         """Predicts food waste for a week
         based on average food waste per customer
         and estimated amount of customers.
@@ -94,7 +94,7 @@ class ModelService:
                     map(lambda i: i*weight, self.predict_next_week()))
         return waste
 
-    def predict_next_week(self, num_of_days: int, menu_plan: list):
+    def __predict_next_week(self, num_of_days: int, menu_plan: list):
         """Return a list of predictions
         for the next week from current date.
 
@@ -111,7 +111,7 @@ class ModelService:
         day_offset = list(range(0, num_of_days))
         return list(map(self.predict, day_offset, menu_plan))
 
-    def predict_occupancy(self):
+    def __predict_occupancy(self):
         """Fetches the average occupancy by hour by day by restaurant
         for all restaurants as a dictionary.
 

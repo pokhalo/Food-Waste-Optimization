@@ -32,6 +32,13 @@ class ML_Model:
         return None
 
     def _split_data(self, X, y, test_size=0.1):
+        """Split data into training and test data.
+
+        Args:
+            X (_type_): feature matrix
+            y (_type_): correct value
+            test_size (float, optional): Percentage of test data. Defaults to 0.1.
+        """
         self.train_x, self.test_x, self.train_y, self.test_y = train_test_split(
             X, y, test_size=test_size, random_state=None, shuffle=True, stratify=None)
 
@@ -50,6 +57,18 @@ class ML_Model:
         return int(self.model.predict(features)[0])
 
     def test(self):
+        """Test the model. Might present some
+        problems if the model is not a neural network.
+        
+        Can print the prediction and it's errors for more
+        of an intuitive look into the error.
+
+        Will return None also due to another function
+        expecting three values.
+
+        Returns:
+            float: mean absolute error, r2 value
+        """
         r2 = self.model.score(self.test_x, self.test_y)
 
         res = []
