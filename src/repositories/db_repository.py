@@ -35,7 +35,6 @@ class DatabaseRepository:
                                    "Salin biojäte (jämät) (kg)": "biowaste_hall"},
                                     axis="columns")
             df.index.name = "date"
-            print(df)
         except Exception as err: # pylint: disable=W0718
             print("Error in trying to load biowaste file or creating DateTime object from it:", err)
 
@@ -63,8 +62,10 @@ class DatabaseRepository:
         # create a dataframe from the file and create DateTime object from timestamps
         try:
             df = pd.read_csv(filepath, sep=";", dtype=str)
-            date_time_str = df['Date'] + ' ' + df['Receipt time']
-            df['DateTime'] = pd.to_datetime(date_time_str, format="%d.%m.%Y %H:%M")
+            # date_time_str = df['Date'] + ' ' + df['Receipt time']
+            # df['datetime'] = pd.to_datetime(date_time_str, format="%d.%m.%Y %H:%M")
+            df['date'] = pd.to_datetime(df['Date'], format="%d.%m.%Y")
+            df['time'] = pd.to_datetime(df['Receipt time'], format="%H:%M")
             df = df.drop(columns=["Date", "Receipt time"])
         except Exception as err: # pylint: disable=W0718
             print(
@@ -75,30 +76,45 @@ class DatabaseRepository:
         try:
             df["restaurant_id"] = self.insert_restaurants(df.pop("Restaurant"))
 
+        except Exception as err:
+            print("Error in inserting restaurant data into database:", err)
+
+        try:
             # category can be dropped, not needed in database. Get category_id for the dishes.
             category_id = self.insert_food_categories(df.pop("Food Category"))
-            
-            print(df.head())
-            dish = df.pop("Dish")
-            hiilijalanjalki = self.comma_nums_to_float(df.pop("Hiilijalanjälki"))
-            pcs = self.comma_nums_to_float(df["pcs"])
-            co2 = hiilijalanjalki / pcs
-            df_dish = pd.DataFrame({"name" : dish, "carbon_footprint" : co2.round(2), "category_id" : category_id})
-            print(df_dish)
-            df["dish_id"] = self.insert_dishes(df_dish)
 
-            
+        except Exception as err:
+            print("Error in inserting category data into database:", err)
+
+
+        dish = df.pop("Dish")
+        hiilijalanjalki = self.comma_nums_to_float(df.pop("Hiilijalanjälki"))
+        pcs = self.comma_nums_to_float(df["pcs"])
+        co2 = hiilijalanjalki / pcs
+        df_dish = pd.DataFrame({"name" : dish, "carbon_footprint" : co2.round(2), "category_id" : category_id})
+        
+        try:
+            df["dish_id"] = self.insert_dishes(df_dish)
+ 
         except Exception as err: # pylint: disable=W0718
-            print("Error in splitting data into separate Series objects:", err)
+            print("Error in inserting dishes into database:", err)
 
         # insert remaining dataframe into database
-        # try:
-        #     df.to_sql(name="sold_lunches", con=self.database_connection, if_exists="append")
-        # except Exception as err: # pylint: disable=W0718
-        #     print(
-        #         "Error in inserting sold lunches into database."
-        #         "The file might be the wrong format.", err
-        #     )
+        df["amount"] = df.pop("pcs").str.replace(" ", "0")
+
+        # Eliminate the existing sold_lunches data from the new data
+        df_db = self.get_sold_meals_data()
+        times = df_db.pop("time").astype(str)
+        df_db['time'] = pd.to_datetime(times, format="%H:%M:%S")
+        df = pd.concat([df, df_db]).drop_duplicates(subset=['date', 'time', 'restaurant_id', 'dish_id'], keep=False)
+
+        try:
+            df.to_sql(name="sold_lunches", con=self.database_connection, if_exists="append", index=False)
+        except Exception as err: # pylint: disable=W0718
+            print(
+                "Error in inserting sold lunches into database."
+                "The file might be the wrong format.", err
+            )
 
     def insert_restaurants(self, restaurants: pd.Series):
         """Function to insert restaurants to database. If exists,
@@ -180,8 +196,8 @@ class DatabaseRepository:
 
         # Eliminate the existing dish data from the new data
         df1 = dish_data.drop_duplicates(keep='last')
-        df2 = self.get_dish_data()
-        df = pd.concat([df1, df2]).drop_duplicates(keep=False)
+        df2 = self.get_dish_data().set_index("id")
+        df = pd.concat([df1, df2]).drop_duplicates(subset=['name', 'carbon_footprint', 'category_id'], keep=False)
 
         # Add the dish data to database
         try :
@@ -191,8 +207,8 @@ class DatabaseRepository:
         
         # Return dish ids as a pd.Series
         table = self.get_dish_data()
-        ids = pd.merge(dish_data, table, 'left', 'name')
-        return ids.pop('id')
+        ids = pd.merge(dish_data, table, how='left', on=['name', 'carbon_footprint', 'category_id'])
+        return ids.pop("id")
 
     def comma_nums_to_float(self, series: pd.Series):
         """For a pandas Series object that has values like
@@ -234,9 +250,7 @@ class DatabaseRepository:
         return df
     
     def get_dish_data(self):
-        df = pd.read_sql_table("dishes", con=self.database_connection)
-        df.set_index("id", inplace=True)
-        return df
+        return pd.read_sql_table("dishes", con=self.database_connection)
 
 
 
