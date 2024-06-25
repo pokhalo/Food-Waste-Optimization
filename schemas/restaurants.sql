@@ -34,10 +34,11 @@ CREATE TABLE dishes (
 );
 
 CREATE TABLE sold_lunches (
-    datetime DATE,
+    date DATE,
+    time TIME,
     amount INTEGER,
     restaurant_id INTEGER REFERENCES restaurants (id),
     dish_id INTEGER REFERENCES dishes (id),
-    PRIMARY KEY (datetime, restaurant_id, dish_id)
+    PRIMARY KEY (date, time, restaurant_id, dish_id)
 );
 
