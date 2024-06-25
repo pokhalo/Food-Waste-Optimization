@@ -22,8 +22,8 @@ class NeuralNetwork(ML_Model):
                                   shuffle=True)
 
     def _setup_data(self):
-        y = self.data["Next day sold meals"].values
-        X = self.data.drop("Next day sold meals", axis="columns").values
+        y = self.data["sold meals"].values
+        X = self.data.drop("sold meals", axis="columns").values
 
         self._split_data(X, y)
 

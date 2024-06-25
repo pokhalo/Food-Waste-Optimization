@@ -20,19 +20,18 @@ class ModelService:
         self.model = NeuralNetwork(
             data=self.data, prediction_data=self.prediction_data)
 
-    def predict(self, feature):
+    def predict(self, weekday, menu_plan):
         """This function will predict sold meals
-        for a specific day using an offset. Will take a mean
-        of last number of days and switches the day to feature.
-
+        for a specific day and meal plan
         Args:
-            feature (int): day of prediction, 0 - monday, 1 - tuesday etc.
+            weekday (int): day of prediction, 0 - monday, 1 - tuesday etc.
+            menu_plan (list): planned menu for the day
 
         Returns:
             int: number of sold meals
         """
         try:
-            return self.model.predict(feature)
+            return self.model.predict(weekday, menu_plan)
         except NotFittedError as err:
             print("You must load or fit model first")
 
