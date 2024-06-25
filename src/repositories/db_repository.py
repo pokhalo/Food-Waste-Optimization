@@ -73,32 +73,32 @@ class DatabaseRepository:
             )
         # split dataframe into separate Series objects for specific processing, names become ids
         try:
-            df["restaurant_id"] = self.insert_restaurants(df["Restaurant"])
+            df["restaurant_id"] = self.insert_restaurants(df.pop("Restaurant"))
 
-            # category can be dropped, not needed in database. Replace with id
-            # TODO: NB! INDECES NEEDED!
-            df["category_id"] = self.insert_food_categories(df.pop("Food Category"))
-            print(df)
+            # category can be dropped, not needed in database. Get category_id for the dishes.
+            category_id = self.insert_food_categories(df.pop("Food Category"))
             
-
-            hiilijalanjalki = self.comma_nums_to_float(df["Hiilijalanjälki"])
+            print(df.head())
+            dish = df.pop("Dish")
+            hiilijalanjalki = self.comma_nums_to_float(df.pop("Hiilijalanjälki"))
             pcs = self.comma_nums_to_float(df["pcs"])
-            df["normalized CO2"] = hiilijalanjalki / pcs
-            df = df.drop(columns="Hiilijalanjälki")
-            df["Dish"] = self.insert_dishes(df[["Dish", "normalized CO2"]])
+            co2 = hiilijalanjalki / pcs
+            df_dish = pd.DataFrame({"name" : dish, "carbon_footprint" : co2, "category_id" : category_id})
+            print(df_dish)
+            df["dish_id"] = self.insert_dishes(df_dish)
 
             
         except Exception as err: # pylint: disable=W0718
             print("Error in splitting data into separate Series objects:", err)
 
         # insert remaining dataframe into database
-        try:
-            df.to_sql(name="sold_lunches", con=self.database_connection, if_exists="append")
-        except Exception as err: # pylint: disable=W0718
-            print(
-                "Error in inserting sold lunches into database."
-                "The file might be the wrong format.", err
-            )
+        # try:
+        #     df.to_sql(name="sold_lunches", con=self.database_connection, if_exists="append")
+        # except Exception as err: # pylint: disable=W0718
+        #     print(
+        #         "Error in inserting sold lunches into database."
+        #         "The file might be the wrong format.", err
+        #     )
 
     def insert_restaurants(self, restaurants: pd.Series):
         """Function to insert restaurants to database. If exists,
@@ -165,7 +165,7 @@ class DatabaseRepository:
         ids = pd.merge(categories, table, 'left', 'name')
         return ids.pop('id')
 
-    def insert_dishes(self, dish_data: pd.Series):
+    def insert_dishes(self, dish_data: pd.DataFrame):
         """Function to insert dishes and their CO2 emissions (e.g. Nakkikastike 0.56) to database.
         After inserting into database, ids are fetched from 
         database and returned.
@@ -176,12 +176,23 @@ class DatabaseRepository:
         Returns:
             ids : ids to replace the name representation of the dish name in a pd.Series
         """
-        dish_data["Dish"] = dish_data["Dish"].astype(str)
+        # dish_data["Dish"] = dish_data["Dish"].astype(str)
+
+        # Eliminate the existing dish data from the new data
+        df1 = dish_data.drop_duplicates(keep='last')
+        df2 = self.get_dish_data()
+        df = pd.concat([df1, df2]).drop_duplicates(keep=False)
+
+        # Add the dish data to database
         try :
-            dish_data.to_sql("dishes", con=self.database_connection, if_exists="append")
+            df.to_sql("dishes", con=self.database_connection, if_exists="append", index=False)
         except Exception as err: # pylint: disable=W0718
             print("Error in inserting dish data into database:", err)
-        return self.get_id_from_db(table_name="dishes", names=dish_data["Dish"])
+        
+        # Return dish ids as a pd.Series
+        table = self.get_dish_data()
+        ids = pd.merge(dish_data, table, 'left', 'name')
+        return ids.pop('id')
 
     def comma_nums_to_float(self, series: pd.Series):
         """For a pandas Series object that has values like
@@ -219,6 +230,11 @@ class DatabaseRepository:
 
     def get_restaurant_data(self):
         df = pd.read_sql_table("restaurants", con=self.database_connection)
+        df.set_index("id", inplace=True)
+        return df
+    
+    def get_dish_data(self):
+        df = pd.read_sql_table("dishes", con=self.database_connection)
         df.set_index("id", inplace=True)
         return df
 
