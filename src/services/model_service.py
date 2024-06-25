@@ -122,6 +122,30 @@ class ModelService:
             dict: above given structure
         """
         return self.data_repo.get_average_occupancy()
+    
+    def get_latest_weekly_prediction(self):
+        """Will use data_repository to fetch the latest
+        prediction of sold meals stored in a desired place. Currently
+        in a database. Is necessary to allow faster load
+        times for the website.
+        """
+        pass
+
+    def get_latest_biowaste_prediction(self):
+        """Will use data_repository to fetch the latest
+        biowaste prediction stored in a desired place. Currently
+        in a database. Is necessary to allow faster load
+        times for the website."""
+        pass
+
+    def get_latest_occupancy_prediction(self):
+        """Will use data_repository to fetch the latest
+        prediction of occupancy stored in a desired place. Currently
+        in a database. Is necessary to allow faster load
+        times for the website."""
+        pass
+
+
 
 # HOW TO USE
 
