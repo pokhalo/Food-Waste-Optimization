@@ -83,7 +83,7 @@ class DatabaseRepository:
             hiilijalanjalki = self.comma_nums_to_float(df.pop("Hiilijalanjälki"))
             pcs = self.comma_nums_to_float(df["pcs"])
             co2 = hiilijalanjalki / pcs
-            df_dish = pd.DataFrame({"name" : dish, "carbon_footprint" : co2, "category_id" : category_id})
+            df_dish = pd.DataFrame({"name" : dish, "carbon_footprint" : co2.round(2), "category_id" : category_id})
             print(df_dish)
             df["dish_id"] = self.insert_dishes(df_dish)
 
@@ -205,7 +205,7 @@ class DatabaseRepository:
             pd.Series: changed values as float
         """
         series = series.str.replace(" ", "0")
-        return series.str.replace(",", ".").astype(float)
+        return series.str.replace(",", ".").astype(float).round(2)
 
     def get_id_from_db(self, table_name: str, names: pd.Series):
         query = f"FROM {table_name} SELECT id"
