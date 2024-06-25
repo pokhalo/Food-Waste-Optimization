@@ -50,7 +50,7 @@ class ML_Model:
 
         Returns integer of estimated sold meals.
         """
-        one_hot_menu = language_processor.process(menulist)
+        one_hot_menu = language_processor.process_learn(menulist)
 
         features = self.scaler.transform(features)
 
