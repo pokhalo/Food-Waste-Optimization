@@ -66,13 +66,36 @@ class LanguageProcessor:
                     idx = lemmas.index(lemma)
                     item_vector[idx] = 1
             one_hot_encoded_list.append(item_vector.tolist())
-        
+
         return one_hot_encoded_list
 
-    def process(self):
-        """W.I.P.
+    def process(self, input_list):
+        """ Work in Progress
+            Divide input_list into lemmas
+            fetch corresponding one-hot-encodings from database
+            return list of encoded dishes
+
+        Args:
+            input_list (list): List of strings (Menu items) Recommended maximum: 7 items
+        Returns:
+            list: Corresponding list of one-hot-encodings (lists of ones and zeroes)
         """
-        pass
+        lemmas = self.get_lemmas(input_list)
+        one_hot_encoded_list = []
+
+        # For item in input_list:
+        #   doc = self.nlp(item)
+        #   item_lemmas = [token.lemma_ for token in doc if not token.is_stop and not token.is_punct and not token.is_space]
+
+        #   Fetch corresponding one-hot-encoding from PSQL
+        #   item_encoding = fetch_encoding_from_db(item_lemmas)
+
+        #   if all(lemma in lemmas for lemma in item_lemmas):
+        #       Append encoding to one_hot_encoded_list
+        #       one_hot_encoded_list.append(item_encoding)
+
+        return one_hot_encoded_list
+
 
 language_processor = LanguageProcessor()
 
