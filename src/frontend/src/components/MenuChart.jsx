@@ -37,8 +37,10 @@ const MenuChart = ({ fetchedMenuData, isLoadingMenuData, Chart, Doughnut }) => {
 
     // Helper function for setting up data displayed by state variables and use effect - loop
     const createDataSetToDisplay = (dataToShow) => {
+      const sum = dataToShow.reduce((a, b) => a+b)
+      const percentages = dataToShow.map((value) => Math.round(((value/sum*100) * 10) / 10))
         return ({
-                labels: ['Fish', 'Chicken', 'Meat', 'Vegan'],
+                labels: [`Fish ${percentages[0]} %`, `Chicken ${percentages[1]} %`, `Meat ${percentages[2]} %`, `Vegan ${percentages[3]} %`],
                 datasets: [{
                     label: 'Meals Sold in Quartal',
                       data: dataToShow,
