@@ -268,6 +268,23 @@ class DatabaseRepository:
         except Exception as err:
             print("Error in inserting NLP encoding into database:", err)
 
+    def get_nlp_encoding(self, lemma : str):
+        """Function to get an encoding for a lemma.
+
+            Args: lemma (str): a lemma used in NLP
+
+            Returns: result: result of SQL query as pd.DataFrame
+
+        """
+
+        sql = f"SELECT encoding FROM nlp_encoding WHERE lemma = '{lemma}'"
+
+        try:
+            result = pd.read_sql_query(sql, self.database_connection)
+            return result
+        except Exception as err:
+            print("Error in getting encoding from database:", err)
+
 
     
 
