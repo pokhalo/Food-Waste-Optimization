@@ -62,10 +62,10 @@ class DatabaseRepository:
         # create a dataframe from the file and create DateTime object from timestamps
         try:
             df = pd.read_csv(filepath, sep=";", dtype=str)
-            # date_time_str = df['Date'] + ' ' + df['Receipt time']
-            # df['datetime'] = pd.to_datetime(date_time_str, format="%d.%m.%Y %H:%M")
-            df['date'] = pd.to_datetime(df['Date'], format="%d.%m.%Y")
-            df['time'] = pd.to_datetime(df['Receipt time'], format="%H:%M")
+            date_time_str = df['Date'] + ' ' + df['Receipt time']
+            df['datetime'] = pd.to_datetime(date_time_str, format="%d.%m.%Y %H:%M")
+            # df['date'] = pd.to_datetime(df['Date'], format="%d.%m.%Y")
+            # df['time'] = pd.to_datetime(df['Receipt time'], format="%H:%M")
             df = df.drop(columns=["Date", "Receipt time"])
         except Exception as err: # pylint: disable=W0718
             print(
@@ -104,9 +104,9 @@ class DatabaseRepository:
 
         # Eliminate the existing sold_lunches data from the new data
         df_db = self.get_sold_meals_data()
-        times = df_db.pop("time").astype(str)
-        df_db['time'] = pd.to_datetime(times, format="%H:%M:%S")
-        df = pd.concat([df, df_db]).drop_duplicates(subset=['date', 'time', 'restaurant_id', 'dish_id'], keep=False)
+        # times = df_db.pop("time").astype(str)
+        # df_db['time'] = pd.to_datetime(times, format="%H:%M:%S")
+        df = pd.concat([df, df_db]).drop_duplicates(subset=['datetime', 'restaurant_id', 'dish_id'], keep=False)
 
         try:
             df.to_sql(name="sold_lunches", con=self.database_connection, if_exists="append", index=False)
