@@ -17,45 +17,36 @@ const OccupancyforGuests = ({ fetchedOccupancyData, isLoadingOccupancy }) => {
   const [ selectedDayIndex, setSelectedDayIndex ] = useState(0)
   const [ selectedDay, setSelectedDay ] = useState('Monday')
   const [ selectedRestaurantIndex, setSelectedRestaurantIndex ] = useState(0)
-  const [ dataOccupancy, setDataOccupancy ] = useState({
-    labels: ['9-10', '10-11', '11-12', '12-13', '13-14', '14-15', '15-16'],
-    datasets: [{
-        label: 'Estimated occupancy by hour',
-          data: [10, 10, 10, 10, 10, 10], // dummy list to function as a placeholder when data is not fetched yet
-          borderWidth: 1
-        }]
-    })
+  const [ dataOccupancy, setDataOccupancy ] = useState()
 
   ChartOccupancy.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
   useEffect(() => {
     const createDataForChart = () => { 
       if (isLoadingOccupancy) {        // sets up dummy data while data is still being fetched
-        setDataOccupancy(      {
-          labels: ['9-10', '10-11', '11-12', '12-13', '13-14', '14-15', '15-16'],
-          datasets: [{
-              label: 'Estimated Occupancy',
-                data: [10, 10, 10, 10],
-                borderWidth: 1,
-              }]
-          })
+        setDataOccupancy(createDataSetToDisplay([30, 30, 30, 30, 30, 30, 30]))
       } else {
         const occupancy = fetchedOccupancyData[selectedRestaurantIndex][selectedDayIndex] // sets up the view when data has arrived
-        setDataOccupancy(
-        {
-          labels: ['9-10', '10-11', '11-12', '12-13', '13-14', '14-15', '15-16'],
-          datasets: [{
-              label: 'Estimated Occupancy',
-                data: occupancy,
-                borderWidth: 1,
-              }]
-          }
-      )
+        setDataOccupancy(createDataSetToDisplay(occupancy))
     }
   }
   createDataForChart()
   setTitleForForecast(`Estimated Occupancy, ${selectedRestaurant}, ${selectedDay}`)
 }, [selectedRestaurant, selectedDay, selectedDayIndex, selectedRestaurantIndex, fetchedOccupancyData, isLoadingOccupancy]) // dependencies: use effect - loop updates the view when a dependecy changes
+
+// Helper function to set data in the right format for chart:
+const createDataSetToDisplay = (dataToShow) => {
+  return ({
+      labels: ['9-10', '10-11', '11-12', '12-13', '13-14', '14-15', '15-16'],
+      datasets: [{
+          label: 'Estimated Occupancy',
+          borderColor: '#36A2EB',
+          backgroundColor: '#9BD0F5',
+          data: dataToShow,
+          borderWidth: 1,
+        }]
+    })
+}
 
 // this is returned if no data has arrived yet
 if (isLoadingOccupancy) {

@@ -14,44 +14,44 @@ const BiowasteforGuests = ({ fetchedBiowasteData, isLoadingBiowaste }) => {
       const restaurants = ['Chemicum', 'Exactum', 'Physicum']     // list used to create buttons dynamically
       const [ selectedRestaurant, setSelectedRestaurant ] = useState('Chemicum')  // Name of selected Restaurant.
       const [ selectedRestaurantIndex, setSelectedRestaurantIndex ] = useState(0)  // Index for selected restaurant. 0: Chemicum, 1: Exactum, 2: Physicum. Data structure requires both name and index
-      const [ dataBiowaste, setDataBiowaste ] = useState({ // initial state for chart variables when data is not loaded
+      const [ dataBiowaste, setDataBiowaste ] = useState(({
         labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         datasets: [{
-            label: 'Estimated Biowaste, kg',
-              data: [10, 10, 10, 10, 10, 10], // dummy list to use as a placeholder while data still loads
-              borderWidth: 1
+              label: 'Estimated Occupancy',
+              borderColor: '#36A2EB',
+              backgroundColor: '#9BD0F5',
+              data: [5, 5, 5, 5, 5, 5],
+              borderWidth: 1,
             }]
-        })
+        }))
 
       useEffect(() => {
         const createDataForChart = () => {
           if (isLoadingBiowaste) {     // state while data is still loading and accessing it would cause error
-            setDataBiowaste(      {
-              labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-              datasets: [{
-                  label: 'Estimated Occupancy',
-                    data: [10, 10, 10, 10],
-                    borderWidth: 1,
-                  }]
-              })
+            setDataBiowaste(createDataSetToDisplay([5, 5, 5, 5, 5, 5]))
           } else {     // setting the real state for chart when data is loaded
             const biowaste = fetchedBiowasteData[selectedRestaurantIndex][selectedRestaurant]
-            setDataBiowaste(
-            {
-              labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-              datasets: [{
-                  label: 'Estimated Occupancy',
-                    data: biowaste,
-                    borderWidth: 1,
-                  }]
-              }
-          )
+            setDataBiowaste(createDataSetToDisplay(biowaste))
         }
       }
       createDataForChart()
       setTitleForForecast(`Estimated Biowaste / Customer, ${selectedRestaurant}`)
     }, [selectedRestaurant, selectedRestaurantIndex, fetchedBiowasteData, isLoadingBiowaste]) // dependencies for use effect hook: the state is updated when one of the dependencies change.
     
+    // Helper function to set up data in right format for the chart
+    const createDataSetToDisplay = (dataToShow) => {
+      return ({
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        datasets: [{
+              label: 'Estimated Occupancy',
+              borderColor: '#36A2EB',
+              backgroundColor: '#9BD0F5',
+              data: dataToShow,
+              borderWidth: 1,
+            }]
+        })
+    }
+
     // if data is not loaded this is returned to prevent errors caused by accessing undefined data:
     if (isLoadingBiowaste) {
       return <div>Is loading...</div>

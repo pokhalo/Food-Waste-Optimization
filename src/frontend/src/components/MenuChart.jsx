@@ -66,7 +66,6 @@ const MenuChart = ({ fetchedMenuData, isLoadingMenuData, Chart, Doughnut }) => {
 
     // onClick - function to handle restaurant change
     const handleRestaurantChange = (event) => {
-        console.log(event.currentTarget.value)
         setSelectedRestaurant(event.currentTarget.value)
     }
 
@@ -83,7 +82,7 @@ const MenuChart = ({ fetchedMenuData, isLoadingMenuData, Chart, Doughnut }) => {
             <div className="cell p-6 m-6">
             <div className="p-6 m-6"> 
                 <h5 className="title is-5" id="title-of-data-2">{titleForData}</h5>
-                <Doughnut options={options} data={dataToDisplay}></Doughnut>           
+                <Doughnut options={options} data={dataToDisplay}></Doughnut>
             </div>
             <div className="buttons">
                 { restaurants.map((restaurant, i) => {
