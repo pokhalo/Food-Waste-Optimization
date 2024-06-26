@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from db_repository import db_repo
+from .db_repository import db_repo
 from src.services.language_processor import language_processor
 
 class DataRepository:
@@ -20,6 +20,7 @@ class DataRepository:
         Returns:
             pandas.DataFrame: The processed data.
         """
+        return None
         data = db_repo.get_sold_meals_data()
 
         data["weekday"] = data.index.dayofweek
@@ -132,6 +133,23 @@ class DataRepository:
 
         return data.to_dict()
 
+
+    def test_db(self):
+        if False:
+            db_repo.insert_biowaste()
+            db_repo.insert_sold_meals()
+            print("inserted")
+
+            print("Restaurants:")
+            print(db_repo.get_restaurant_data().head())
+            print("Biowaste:")
+            print(db_repo.get_biowaste_data().head())
+            print("Categories:")
+            print(db_repo.get_categories_data().head())
+            print("Dishes:")
+            print(db_repo.get_dish_data().head())
+            print("Sold lunches:")
+            print(db_repo.get_sold_meals_data().head())
 
 data_repo = DataRepository()
 
