@@ -17,21 +17,22 @@ class ModelService:
 
         # predict data is not currently used
         self.predictor_data = data_repo.get_model_predict_data()
+
         self.model = NeuralNetwork(
             data=self.data, prediction_data=self.prediction_data)
 
-    def __predict(self, weekday, menu_plan):
+
+    def __predict(self, weekday: int, meal_plan: list):
         """This function will predict sold meals
         for a specific day and meal plan
         Args:
             weekday (int): day of prediction, 0 - monday, 1 - tuesday etc.
-            menu_plan (list): planned menu for the day
-
+            meal_plan (list): dishes to be sold on that day
         Returns:
             int: number of sold meals
         """
         try:
-            return self.model.predict(weekday, menu_plan)
+            return self.model.predict(weekday=weekday, dishes=meal_plan)
         except NotFittedError as err:
             print("You must load or fit model first")
 

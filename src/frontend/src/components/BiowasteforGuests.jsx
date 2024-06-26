@@ -3,29 +3,29 @@ import { Bar as BarChartforBiowaste } from 'react-chartjs-2'
 import { Chart as ChartBiowaste, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js'
 import 'bulma/css/bulma.min.css'
 
+// Component for presenting customer biowaste. Receives fetched data from App.jsx -> GuestView.jsx as props
+
 const BiowasteforGuests = ({ fetchedBiowasteData, isLoadingBiowaste }) => {
 
-
-  console.log(fetchedBiowasteData)
-
+  // Different chart names (eg. ChartBiowaste instead of Chart) are used to prevent conflicts while displaying several charts on the same view:
     ChartBiowaste.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
       const [ titleForForecast, setTitleForForecast ] = useState('Estimated Biowaste / Customer, Chemicum')
-      const restaurants = ['Chemicum', 'Exactum', 'Physicum']
-      const [ selectedRestaurant, setSelectedRestaurant ] = useState('Chemicum')
-      const [ selectedRestaurantIndex, setSelectedRestaurantIndex ] = useState(0)
-      const [ dataBiowaste, setDataBiowaste ] = useState({
+      const restaurants = ['Chemicum', 'Exactum', 'Physicum']     // list used to create buttons dynamically
+      const [ selectedRestaurant, setSelectedRestaurant ] = useState('Chemicum')  // Name of selected Restaurant.
+      const [ selectedRestaurantIndex, setSelectedRestaurantIndex ] = useState(0)  // Index for selected restaurant. 0: Chemicum, 1: Exactum, 2: Physicum. Data structure requires both name and index
+      const [ dataBiowaste, setDataBiowaste ] = useState({ // initial state for chart variables when data is not loaded
         labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         datasets: [{
             label: 'Estimated Biowaste, kg',
-              data: [10, 10, 10, 10, 10, 10],
+              data: [10, 10, 10, 10, 10, 10], // dummy list to use as a placeholder while data still loads
               borderWidth: 1
             }]
         })
 
       useEffect(() => {
         const createDataForChart = () => {
-          if (isLoadingBiowaste) {
+          if (isLoadingBiowaste) {     // state while data is still loading and accessing it would cause error
             setDataBiowaste(      {
               labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
               datasets: [{
@@ -34,9 +34,8 @@ const BiowasteforGuests = ({ fetchedBiowasteData, isLoadingBiowaste }) => {
                     borderWidth: 1,
                   }]
               })
-          } else {
+          } else {     // setting the real state for chart when data is loaded
             const biowaste = fetchedBiowasteData[selectedRestaurantIndex][selectedRestaurant]
-            console.log('biowaste: ', biowaste)
             setDataBiowaste(
             {
               labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -51,12 +50,14 @@ const BiowasteforGuests = ({ fetchedBiowasteData, isLoadingBiowaste }) => {
       }
       createDataForChart()
       setTitleForForecast(`Estimated Biowaste / Customer, ${selectedRestaurant}`)
-    }, [selectedRestaurant, selectedRestaurantIndex, fetchedBiowasteData, isLoadingBiowaste])
+    }, [selectedRestaurant, selectedRestaurantIndex, fetchedBiowasteData, isLoadingBiowaste]) // dependencies for use effect hook: the state is updated when one of the dependencies change.
     
+    // if data is not loaded this is returned to prevent errors caused by accessing undefined data:
     if (isLoadingBiowaste) {
       return <div>Is loading...</div>
     }
     
+    // options for chart
       const options = {
           responsive: true,
           scales: {
@@ -65,13 +66,14 @@ const BiowasteforGuests = ({ fetchedBiowasteData, isLoadingBiowaste }) => {
           }
         }
       }
-    
-      const handleRestaurantChange = (event, i) => {   
+
+     // function to handle button clicks and to change the selected restaurant
+      const handleRestaurantChange = (event, i) => {    
         setSelectedRestaurant(event.currentTarget.value)
         setSelectedRestaurantIndex(i)
-        console.log('restaurant: ', event.currentTarget.value)
       }
 
+    // Returns the chart, title for it, a dynamically created list of buttons presenting restaurant names and a function handling restaurant change.
     return (
         <div className="pt-3">
             <div className="container is-max-desktop">
