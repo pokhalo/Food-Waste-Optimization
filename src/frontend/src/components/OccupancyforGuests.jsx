@@ -5,14 +5,14 @@ import 'bulma/css/bulma.min.css'
 
 const OccupancyforGuests = ({ fetchedOccupancyData, isLoadingOccupancy }) => {
 
-  // Component to present occupancy data of restaurants and estimated amount of biowaste / day / restaurant based on visitor amounts.
+  // Component to present occupancy data of restaurants and estimated amount of biowaste / customer.
   // Indexes in occupancy data matrix used to present restaurants: Chemicum - 0, Exactum - 1, Physicum - 2
   // Indexes in occupancy data matrix used to present weekdays: 0 - Monday, 1 - Tuesday, 2 - Wednesday, 3 - Thursday, 4 - Friday, 5 - Saturday
 
 
   const [ titleForForecast, setTitleForForecast ] = useState('Estimated Occupancy, Chemicum')
-  const restaurants = ['Chemicum', 'Exactum', 'Physicum']
-  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  const restaurants = ['Chemicum', 'Exactum', 'Physicum'] // used to dynamically create buttons
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] // used to dynamically create buttons
   const [ selectedRestaurant, setSelectedRestaurant ] = useState('Chemicum')
   const [ selectedDayIndex, setSelectedDayIndex ] = useState(0)
   const [ selectedDay, setSelectedDay ] = useState('Monday')
@@ -21,7 +21,7 @@ const OccupancyforGuests = ({ fetchedOccupancyData, isLoadingOccupancy }) => {
     labels: ['9-10', '10-11', '11-12', '12-13', '13-14', '14-15', '15-16'],
     datasets: [{
         label: 'Estimated occupancy by hour',
-          data: [10, 10, 10, 10, 10, 10],
+          data: [10, 10, 10, 10, 10, 10], // dummy list to function as a placeholder when data is not fetched yet
           borderWidth: 1
         }]
     })
@@ -29,8 +29,8 @@ const OccupancyforGuests = ({ fetchedOccupancyData, isLoadingOccupancy }) => {
   ChartOccupancy.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
   useEffect(() => {
-    const createDataForChart = () => {
-      if (isLoadingOccupancy) {
+    const createDataForChart = () => { 
+      if (isLoadingOccupancy) {        // sets up dummy data while data is still being fetched
         setDataOccupancy(      {
           labels: ['9-10', '10-11', '11-12', '12-13', '13-14', '14-15', '15-16'],
           datasets: [{
@@ -40,7 +40,7 @@ const OccupancyforGuests = ({ fetchedOccupancyData, isLoadingOccupancy }) => {
               }]
           })
       } else {
-        const occupancy = fetchedOccupancyData[selectedRestaurantIndex][selectedDayIndex]
+        const occupancy = fetchedOccupancyData[selectedRestaurantIndex][selectedDayIndex] // sets up the view when data has arrived
         setDataOccupancy(
         {
           labels: ['9-10', '10-11', '11-12', '12-13', '13-14', '14-15', '15-16'],
@@ -55,12 +55,14 @@ const OccupancyforGuests = ({ fetchedOccupancyData, isLoadingOccupancy }) => {
   }
   createDataForChart()
   setTitleForForecast(`Estimated Occupancy, ${selectedRestaurant}, ${selectedDay}`)
-}, [selectedRestaurant, selectedDay, selectedDayIndex, selectedRestaurantIndex, fetchedOccupancyData, isLoadingOccupancy])
+}, [selectedRestaurant, selectedDay, selectedDayIndex, selectedRestaurantIndex, fetchedOccupancyData, isLoadingOccupancy]) // dependencies: use effect - loop updates the view when a dependecy changes
 
+// this is returned if no data has arrived yet
 if (isLoadingOccupancy) {
   return <div>Is loading...</div>
 }
 
+// options for the chart
   const options = {
       responsive: true,
       scales: {
@@ -70,16 +72,19 @@ if (isLoadingOccupancy) {
     }
   }
 
+  // onClick-function to set up chosen restaurant
   const handleRestaurantChange = (event, i) => {   
     setSelectedRestaurant(event.currentTarget.value)
     setSelectedRestaurantIndex(i)
   }
 
+  // onClick-function to set up chosen day
   const handleDayChange = (event, day) => {
     setSelectedDayIndex(event.currentTarget.value)
     setSelectedDay(day)
   }
 
+  // Returns a title for forecast, a chart displaying occupancy data, a list of buttons with restaurant names and a list of buttons with weekdays.
     return (
       <div className="pt-3">
           <div className="container is-max-desktop">
