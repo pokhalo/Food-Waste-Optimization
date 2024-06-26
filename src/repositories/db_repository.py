@@ -14,6 +14,8 @@ class DatabaseRepository:
     def test_connection(self):
         pass
 
+# RESTAURANT DATA
+
     def insert_biowaste(self, filepath="src/data/basic_mvp_data/Biowaste.csv"):
         """Function to insert biowaste data from csv file to database.
         Requires csv file which is modified to allow datapoints to be float: repl "," -> "."
@@ -252,7 +254,19 @@ class DatabaseRepository:
     def get_dish_data(self):
         return pd.read_sql_table("dishes", con=self.database_connection)
 
+# RESULT DATA
 
+    def insert_nlp_encoding(self, data : pd.DataFrame):
+        """Function to insert NLP lemmas and encoding to database for later use.
+
+        Args:
+            data (pd.DataFrame): DataFrame with 'lemma' (str) as an index and 'encoding' (integer[])
+        """
+
+        try:
+            data.to_sql("nlp_encoding", con=self.database_connection, if_exists='replace')
+        except Exception as err:
+            print("Error in inserting NLP encoding into database:", err)
 
 
     
