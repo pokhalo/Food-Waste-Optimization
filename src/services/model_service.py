@@ -1,7 +1,6 @@
 """Creates ModelService class that allows requests to AI models.
     """
 from ..repositories.data_repository import data_repo
-from .linear_regression import LinearRegressionModel
 from .neural_network import NeuralNetwork
 from sklearn.exceptions import NotFittedError
 
@@ -10,12 +9,13 @@ from sklearn.exceptions import NotFittedError
 
 class ModelService:
     """Class for handling the connection
-    between models and the app.
+    between models, data and the app.
     """
 
     def __init__(self):
-        # data is fetched every time init is run, this should not happen
         self.data = data_repo.get_model_fit_data()
+
+        # predict data is not currently used
         self.predictor_data = data_repo.get_model_predict_data()
         self.model = NeuralNetwork(
             data=self.data, prediction_data=self.prediction_data)
@@ -45,11 +45,11 @@ class ModelService:
         R^2 value
         """
         try:
-            self.load_model()
+            self.__load_model()
         except NotFittedError as err:
             # no model to load
             print("Model could not be loaded, fitting instead:", err)
-            self.fit_and_save()
+            self.__fit_and_save()
         mse, mae, r2 = self.model.test()
 
         print(
@@ -91,7 +91,7 @@ class ModelService:
         for waste_type in waste:
             for restaurant, weight in waste[waste_type].items():
                 waste[waste_type][restaurant] = list(
-                    map(lambda i: i*weight, self.predict_next_week()))
+                    map(lambda i: i*weight, self.__predict_next_week()))
         return waste
 
     def __predict_next_week(self, num_of_days: int, menu_plan: list):
@@ -109,7 +109,7 @@ class ModelService:
             list of int: list of predictions where index is offset from current day
         """
         day_offset = list(range(0, num_of_days))
-        return list(map(self.predict, day_offset, menu_plan))
+        return list(map(self.__predict, day_offset, menu_plan))
 
     def __predict_occupancy(self):
         """Fetches the average occupancy by hour by day by restaurant
@@ -163,9 +163,9 @@ def example_model():
 
 if __name__ == "__main__":
     model = ModelService()
-    # model.fit_and_save()
-    model.load_model()
-    print(model.predict_waste_by_week())
+    model.__fit_and_save()
+    #model.load_model()
+    #print(model.predict_waste_by_week())
     # print(model.predict_next_week(5))
     # model.test_model()
     #predicted_value = model.predict(2)

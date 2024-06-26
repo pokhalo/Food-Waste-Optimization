@@ -5,7 +5,7 @@ from sklearn.utils import resample
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from language_processor import language_processor
+from .language_processor import language_processor
 
 MODEL_PATH = "src/data/finalized_model.sav"
 SCALER_PATH = "src/data/scaler_model.sav"
@@ -46,13 +46,15 @@ class ML_Model:
         """ Get predicted meals sold for day "weekday".
         Takes in the weekday and a list of dishes.
 
-        Gets preprocessed by scaler.
+        First is processed by NLP for one hot encoding.
+        Also is preprocessed by scaler.
 
         Returns integer of estimated sold meals.
         """
-        one_hot_menu = language_processor.process_learn(menulist)
+        data = pd.DataFrame([weekday, menulist], columns=["weekday", "Dish"])
+        data["Dish"] = language_processor.process(data["Dish"])
 
-        features = self.scaler.transform(features)
+        features = self.scaler.transform(data.values)
 
         return int(self.model.predict(features)[0])
 

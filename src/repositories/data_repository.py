@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
-from db_repository import db_repo
-from src.services.language_processor import language_processor
+from .db_repository import db_repo
+from ..services.language_processor import language_processor
 
 class DataRepository:
     """Class to handle connection to data streams and manage data operations."""
@@ -23,6 +23,8 @@ class DataRepository:
         data = db_repo.get_sold_meals_data()
 
         data["weekday"] = data.index.dayofweek
+
+        print("data repo", data)
 
         # one hot encoding for menu items using nlp
         data["Dish"] = language_processor.process_learn(data["Dish"])
