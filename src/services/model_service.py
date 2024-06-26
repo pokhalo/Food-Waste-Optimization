@@ -14,12 +14,8 @@ class ModelService:
 
     def __init__(self):
         self.data = data_repo.get_model_fit_data()
-
-        # predict data is not currently used
-        self.predictor_data = data_repo.get_model_predict_data()
-
         self.model = NeuralNetwork(
-            data=self.data, prediction_data=self.prediction_data)
+            data=self.data)
 
 
     def __predict(self, weekday: int, meal_plan: list):
@@ -46,27 +42,28 @@ class ModelService:
         R^2 value
         """
         try:
-            self.__load_model()
+            self.load_model()
         except NotFittedError as err:
             # no model to load
             print("Model could not be loaded, fitting instead:", err)
-            self.__fit_and_save()
+            self.fit_and_save()
         mse, mae, r2 = self.model.test()
 
         print(
             f"Mean squared error: {mse}\nMean absolute error: {mae}\nR^2: {r2}")
 
-    def __fit_and_save(self):
+    def fit_and_save(self):
         """Will fit the model and the save into a file.
         If unsuccessful, will give error.
         """
         try:
+            print("Fitting model")
             self.model.fit_and_save()
             print("Model fitted and saved")
         except Exception as err: # pylint: disable=W0718
             print("Model could not be fitted:", err)
 
-    def __load_model(self):
+    def load_model(self):
         """This function will load the model. First
         try to load a model and if no model is found,
         will give error.
@@ -77,7 +74,7 @@ class ModelService:
         except Exception as err: # pylint: disable=W0718
             print("Model could not be loaded:", err)
 
-    def __predict_waste_by_week(self):
+    def _predict_waste_by_week(self):
         """Predicts food waste for a week
         based on average food waste per customer
         and estimated amount of customers.
@@ -95,7 +92,7 @@ class ModelService:
                     map(lambda i: i*weight, self.__predict_next_week()))
         return waste
 
-    def __predict_next_week(self, num_of_days: int, menu_plan: list):
+    def _predict_next_week(self, num_of_days: int, menu_plan: list):
         """Return a list of predictions
         for the next week from current date.
 
@@ -112,7 +109,7 @@ class ModelService:
         day_offset = list(range(0, num_of_days))
         return list(map(self.__predict, day_offset, menu_plan))
 
-    def __predict_occupancy(self):
+    def _predict_occupancy(self):
         """Fetches the average occupancy by hour by day by restaurant
         for all restaurants as a dictionary.
 
@@ -148,29 +145,9 @@ class ModelService:
 
 
 
-# HOW TO USE
-
-
-def example_model():
-    """Creates an instance of ModelService for accessing the class methods.
-    """
-    s = ModelService()
-
-    # After defining the class the model must be fitted using
-    s.load_model()
-
-    # s.predict(2)
-
 
 if __name__ == "__main__":
     model = ModelService()
-    model.__fit_and_save()
-    #model.load_model()
-    #print(model.predict_waste_by_week())
-    # print(model.predict_next_week(5))
-    # model.test_model()
-    #predicted_value = model.predict(2)
-    # print(predicted_value)
-    #print("Saving predicted value to file")
-    # with open('src/data/predicted.txt', "w") as file:
-    #    file.write(str(predicted_value))
+    model.fit_and_save()
+    model.test_model()
+    
