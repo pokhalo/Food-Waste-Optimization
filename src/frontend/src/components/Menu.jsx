@@ -65,10 +65,10 @@ const Menu = ({ instance }) => {
         </nav>
         <div className="tabs">
         <ul>
-          <li className="is-active"><Link to={`/sales`}>Manager View</Link></li>
+          <li><Link to={`/fwowebserver`}>Front Page</Link></li>
+          <li><Link to={`/sales`}>Manager View</Link></li>
           <li><Link to={`/menus`}> Menu Creators View</Link></li>
           <li><Link to={`/upload`}>Data upload</Link></li>
-          <li><Link to={`/admin`}>Admin</Link></li>
         </ul>
       </div>
     </AuthenticatedTemplate>

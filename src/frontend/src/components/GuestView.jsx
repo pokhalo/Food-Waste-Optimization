@@ -19,6 +19,7 @@ const GuestView = ({ fetchedBiowasteData, isLoadingBiowaste }) => {
       const fetchData = async () => {
         try {
           const responseOccupancy = await requestService.getOccupancyOfRestaurantsByHour()
+          console.log(responseOccupancy.data)
           if (!ignoreOccupancy) {
             const chemModified = Object.keys(responseOccupancy.data.Chemicum).map(key => responseOccupancy.data.Chemicum[key]).slice(0, 6)
             const chemDropEmptyHours = chemModified.map(arr => arr.slice(9, 16))

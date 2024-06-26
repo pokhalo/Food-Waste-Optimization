@@ -5,6 +5,7 @@ from sklearn.utils import resample
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from language_processor import language_processor
 
 MODEL_PATH = "src/data/finalized_model.sav"
 SCALER_PATH = "src/data/scaler_model.sav"
@@ -31,21 +32,43 @@ class ML_Model:
         return None
 
     def _split_data(self, X, y, test_size=0.1):
+        """Split data into training and test data.
+
+        Args:
+            X (_type_): feature matrix
+            y (_type_): correct value
+            test_size (float, optional): Percentage of test data. Defaults to 0.1.
+        """
         self.train_x, self.test_x, self.train_y, self.test_y = train_test_split(
             X, y, test_size=test_size, random_state=None, shuffle=True, stratify=None)
 
-    def predict(self, weekday: int, dishes: list):
+    def predict(self, weekday: int, menulist: list):
         """ Get predicted meals sold for day "weekday".
-        Takes in weekday and a list of menu items for
-        that day to make a prediction.
+        Takes in the weekday and a list of dishes.
+
+        Gets preprocessed by scaler.
+
+        Returns integer of estimated sold meals.
         """
-        dishes = dishes # one hot encoding - use nlp_service
+        one_hot_menu = language_processor.process_learn(menulist)
 
         features = self.scaler.transform(features)
 
         return int(self.model.predict(features)[0])
 
     def test(self):
+        """Test the model. Might present some
+        problems if the model is not a neural network.
+        
+        Can print the prediction and it's errors for more
+        of an intuitive look into the error.
+
+        Will return None also due to another function
+        expecting three values.
+
+        Returns:
+            float: mean absolute error, r2 value
+        """
         r2 = self.model.score(self.test_x, self.test_y)
 
         res = []
