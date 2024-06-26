@@ -20,19 +20,18 @@ class ModelService:
         self.model = NeuralNetwork(
             data=self.data, prediction_data=self.prediction_data)
 
-    def predict(self, feature):
+    def __predict(self, weekday, menu_plan):
         """This function will predict sold meals
-        for a specific day using an offset. Will take a mean
-        of last number of days and switches the day to feature.
-
+        for a specific day and meal plan
         Args:
-            feature (int): day of prediction, 0 - monday, 1 - tuesday etc.
+            weekday (int): day of prediction, 0 - monday, 1 - tuesday etc.
+            menu_plan (list): planned menu for the day
 
         Returns:
             int: number of sold meals
         """
         try:
-            return self.model.predict(feature)
+            return self.model.predict(weekday, menu_plan)
         except NotFittedError as err:
             print("You must load or fit model first")
 
@@ -56,7 +55,7 @@ class ModelService:
         print(
             f"Mean squared error: {mse}\nMean absolute error: {mae}\nR^2: {r2}")
 
-    def fit_and_save(self):
+    def __fit_and_save(self):
         """Will fit the model and the save into a file.
         If unsuccessful, will give error.
         """
@@ -66,7 +65,7 @@ class ModelService:
         except Exception as err: # pylint: disable=W0718
             print("Model could not be fitted:", err)
 
-    def load_model(self):
+    def __load_model(self):
         """This function will load the model. First
         try to load a model and if no model is found,
         will give error.
@@ -77,7 +76,7 @@ class ModelService:
         except Exception as err: # pylint: disable=W0718
             print("Model could not be loaded:", err)
 
-    def predict_waste_by_week(self):
+    def __predict_waste_by_week(self):
         """Predicts food waste for a week
         based on average food waste per customer
         and estimated amount of customers.
@@ -95,22 +94,24 @@ class ModelService:
                     map(lambda i: i*weight, self.predict_next_week()))
         return waste
 
-    def predict_next_week(self, num_of_days=5):
+    def __predict_next_week(self, num_of_days: int, menu_plan: list):
         """Return a list of predictions
         for the next week from current date.
 
         num_of_days represents the length of week,
         or, how many days the restaurant is open.
 
-        !!!Currently only works for Exactum!!!
+        menu_plan represents the menus for the days.
+        It should be a list of lists. The main list for each day
+        and inner list for each dish.
 
         Returns:
             list of int: list of predictions where index is offset from current day
         """
         day_offset = list(range(0, num_of_days))
-        return list(map(self.predict, day_offset))
+        return list(map(self.predict, day_offset, menu_plan))
 
-    def predict_occupancy(self):
+    def __predict_occupancy(self):
         """Fetches the average occupancy by hour by day by restaurant
         for all restaurants as a dictionary.
 
@@ -121,6 +122,30 @@ class ModelService:
             dict: above given structure
         """
         return self.data_repo.get_average_occupancy()
+    
+    def get_latest_weekly_prediction(self):
+        """Will use data_repository to fetch the latest
+        prediction of sold meals stored in a desired place. Currently
+        in a database. Is necessary to allow faster load
+        times for the website.
+        """
+        pass
+
+    def get_latest_biowaste_prediction(self):
+        """Will use data_repository to fetch the latest
+        biowaste prediction stored in a desired place. Currently
+        in a database. Is necessary to allow faster load
+        times for the website."""
+        pass
+
+    def get_latest_occupancy_prediction(self):
+        """Will use data_repository to fetch the latest
+        prediction of occupancy stored in a desired place. Currently
+        in a database. Is necessary to allow faster load
+        times for the website."""
+        pass
+
+
 
 # HOW TO USE
 
