@@ -58,7 +58,10 @@ if (isLoadingOccupancy) {
       responsive: true,
       scales: {
       y: {
-        beginAtZero: true
+        beginAtZero: true,
+        min: 0,
+        max: 250,
+        stepSize: 5,
       }
     }
   }
