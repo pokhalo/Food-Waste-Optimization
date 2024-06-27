@@ -21,6 +21,7 @@ Model service will call functions in the _model's class_ itself(e.g. _NeuralNetw
 The model will then call functions from the class _data_repository_. This class is meant to be the bridge between the application and the database. The database (using _database_repository_) gives "raw" data and the data_repo will process it for the model. 
 
 ## Language processor
+_Language_processor.py_ uses NLP techiques to process menu items (strings) into lemmas. The lemmas are encoded as numerals using [one-hot-encoding.](https://en.wikipedia.org/wiki/One-hot) This allows the AI model to handle text-based data as well. _Process_learn_ function reads a large set of menu items, saves their encodings to database and returns a list of encodings that correspond to given menu items. _Process_ function reads a smaller set of menu items (a week), fetches their matching encodings from the database and returns a list of the corresponding encodings. 
 
 ## Data_repository
 The main idea behind data_repository is that the database will store data in a __raw__ format. We must process the data for it to be useful for the model. 
