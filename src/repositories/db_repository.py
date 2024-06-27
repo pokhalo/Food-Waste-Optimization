@@ -229,7 +229,7 @@ class DatabaseRepository:
         query = f"FROM {table_name} SELECT id"
         ids = pd.read_sql_query(sql=query, con=self.database_connection)
         return ids
-    
+
     def get_sold_meals_data(self):
         return pd.read_sql_table("sold_lunches", con=self.database_connection)
 
@@ -250,7 +250,7 @@ class DatabaseRepository:
         df = pd.read_sql_table("restaurants", con=self.database_connection)
         df.set_index("id", inplace=True)
         return df
-    
+
     def get_dish_data(self):
         return pd.read_sql_table("dishes", con=self.database_connection)
 
@@ -274,7 +274,6 @@ class DatabaseRepository:
             Args: lemma (str): a lemma used in NLP
 
             Returns: result: result of SQL query as pd.DataFrame
-
         """
 
         sql = f"SELECT encoding FROM nlp_encoding WHERE lemma = '{lemma}'"
