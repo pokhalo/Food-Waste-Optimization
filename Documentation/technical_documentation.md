@@ -9,6 +9,8 @@ The sourcecode is divided into two separate structures, frontend and backend. Co
 ### How the NN works
 First the data is fetched from the database (db_repository), then it is combined into a desired dataframe (data_repository). Then, the menu items are encoded as one hot encoding (language processor). Then it is turned into numpy matrices of X (meaning feature matrix) and y (the correct value). Then it is split into training and testing data. 
 
+The matrix consists of one hot encoded menu item and weekday as an integer. Consider using a date as well.
+
 When calling _learn, it will take training data, it will scale it and start fitting. Fitting algos etc. are done by the library itself. 
 
 NeuralNetwork class is a subclass of ML_Model, this is so there can be multiple models efficiently. 
@@ -36,6 +38,9 @@ The _data repository_ calls functions from the _database repository_ and is call
 ## How to read predictions (TODO)
 The server is not fast enough to predict the values on the fly, so we came up with a solution to make the predictions at night automatically. There is a separate container to fit the model and then save it. 
 
-There are specific functions to fetch the predictions from the database in the _model service_ class, but the database functions has not been written yet. 
+There are specific functions to fetch the predictions from the database in the _model service_ class, but the database functions have not been written yet. 
 
-There needs to be separate function calls to train the model and make predictions (using _model service_) in the separate container.
+There needs to be separate function calls to train the model and make predictions (using _model service_) in the separate container automatically. Note: these have not been done yet.
+
+
+
