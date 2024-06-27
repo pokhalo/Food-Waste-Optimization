@@ -19,6 +19,8 @@ The current software structure and developmental phase allows several possible w
 - People flow data is not in the database
 - Biowaste data is not fetched from the database
 - Occupancy data (receipt data) is not fetched from the database
+- User interface for data upload (see Front End)
+- Using the information of the academic years (see side project [ac_years_to_db](https://github.com/Food-Waste-Optimization/ac_years_to_db))
 
 
 ## Testing
