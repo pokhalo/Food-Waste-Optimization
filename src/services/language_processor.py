@@ -102,11 +102,12 @@ class LanguageProcessor:
             doc = self.nlp(item)
             item_lemmas = [token.lemma_ for token in doc if not token.is_stop and not token.is_punct and not token.is_space]
 
-            item_encoding = db.get_nlp_encoding(item_lemmas)
-            item_encoding = item_encoding.values.tolist()
+            for lemma in item_lemmas:
+                lemma_encoding = db.get_nlp_encoding(lemma)
+                lemma_encoding = lemma_encoding.values.tolist()
 
-            if all(lemma in lemmas for lemma in item_lemmas):
-                one_hot_encoded_list.append(item_encoding)
+                if lemma in lemmas:
+                    one_hot_encoded_list.append(lemma_encoding)
 
         return one_hot_encoded_list
 
