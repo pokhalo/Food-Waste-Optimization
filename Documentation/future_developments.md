@@ -6,6 +6,7 @@ The current software structure and developmental phase allows several possible w
 
 - Utilising CO2-data in AI model, perhaps estimating CO2 per day  
 - Improving AI model, exploratory testing to find better parameters and settings  
+  - e.g. academic years and weeks, see see side project [ac_years_to_db](https://github.com/Food-Waste-Optimization/ac_years_to_db) and branch [day-info](https://github.com/Food-Waste-Optimization/Food-Waste-Optimization/tree/day-info)
 - Improving NLP, it is quite heavy to run  
 
 ## Front End
