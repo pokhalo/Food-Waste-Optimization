@@ -20,6 +20,8 @@ const Menu = ({ instance }) => {
   // helper variable to define the URL in Link-tag:
   const MODE = import.meta.env.MODE
 
+  console.log('mode from menu: ', MODE)
+
   // Returns the menu bar. The authenticated version contains URL:s defined in the App.jsx to switch between views.
     return (
       <>
@@ -73,10 +75,10 @@ const Menu = ({ instance }) => {
         </nav>
         <div className="tabs">
         <ul>
-          <li><Link to={`/fwowebserver`}>Front Page</Link></li>
-          <li><Link to={`/sales`}>Manager View</Link></li>
-          <li><Link to={`/menus`}> Menu Creators View</Link></li>
-          <li><Link to={`/upload`}>Data upload</Link></li>
+          <li><Link to={ MODE == 'development' ? '/' : '/fwowebserver'}>Front Page</Link></li>
+          <li><Link to={ MODE == 'development' ? '/sales' : '/fwowebserver/sales'}>Manager View</Link></li>
+          <li><Link to={ MODE == 'development' ? '/menus' : '/fwowebserver/menus'}> Menu Creators View</Link></li>
+          <li><Link to={ MODE == 'development' ? '/upload' : '/fwowebserver/upload' }>Data upload</Link></li>
         </ul>
       </div>
     </AuthenticatedTemplate>

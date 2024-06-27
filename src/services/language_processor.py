@@ -21,7 +21,7 @@ class LanguageProcessor:
         """Load language model.
         """
         stanza.download(lang="fi")
-        self.nlp = spacy_stanza.load_pipeline(name="fi")
+        self.nlp = spacy_stanza.load_pipeline(name="fi", processors="tokenize,lemma")
 
     def get_lemmas(self, menulist):
         """Divides strings into unique lemmas.
@@ -40,7 +40,6 @@ class LanguageProcessor:
                     lemmas.append(token.lemma_)
                     #print(token.lemma_, flush=True)
         unique_lemmas = list(set(lemmas))
-        print(unique_lemmas)
         return unique_lemmas
 
     def process_learn(self, input_list):

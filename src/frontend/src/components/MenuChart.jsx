@@ -37,8 +37,10 @@ const MenuChart = ({ fetchedMenuData, isLoadingMenuData, Chart, Doughnut }) => {
 
     // Helper function for setting up data displayed by state variables and use effect - loop
     const createDataSetToDisplay = (dataToShow) => {
+      const sum = dataToShow.reduce((a, b) => a+b)
+      const percentages = dataToShow.map((value) => Math.round(((value/sum*100) * 10) / 10))
         return ({
-                labels: ['Fish', 'Chicken', 'Meat', 'Vegan'],
+                labels: [`Fish ${percentages[0]} %`, `Chicken ${percentages[1]} %`, `Meat ${percentages[2]} %`, `Vegan ${percentages[3]} %`],
                 datasets: [{
                     label: 'Meals Sold in Quartal',
                       data: dataToShow,
@@ -66,7 +68,6 @@ const MenuChart = ({ fetchedMenuData, isLoadingMenuData, Chart, Doughnut }) => {
 
     // onClick - function to handle restaurant change
     const handleRestaurantChange = (event) => {
-        console.log(event.currentTarget.value)
         setSelectedRestaurant(event.currentTarget.value)
     }
 
@@ -83,7 +84,7 @@ const MenuChart = ({ fetchedMenuData, isLoadingMenuData, Chart, Doughnut }) => {
             <div className="cell p-6 m-6">
             <div className="p-6 m-6"> 
                 <h5 className="title is-5" id="title-of-data-2">{titleForData}</h5>
-                <Doughnut options={options} data={dataToDisplay}></Doughnut>           
+                <Doughnut options={options} data={dataToDisplay}></Doughnut>
             </div>
             <div className="buttons">
                 { restaurants.map((restaurant, i) => {
