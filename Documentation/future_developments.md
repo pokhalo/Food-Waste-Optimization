@@ -16,6 +16,10 @@ The current software structure and developmental phase allows several possible w
 
 - Moving from test database to production database. This will allow more testing to be done with the test database without compromising production.  
 
+- People flow data is not in the database
+- Biowaste data is not fetched from the database
+- Occupancy data (receipt data) is not fetched from the database
+
 
 ## Testing
 
