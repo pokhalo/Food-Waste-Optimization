@@ -34,6 +34,49 @@ The _data repository_ calls functions from the _database repository_ and is call
 
 ## Database_repository
 
+Module [`db_repository.py`](/src/repositories/db_repository.py) inserts data into and gets it from the PostgreSQL database.
+
+Schemas of the tables can be found in the folder [/schemas](/schemas).
+
+### Restaurant data
+
+For now data from restaurants is uploaded to the database by hand. To make it easier there are functions to insert data from files. Files must be in the correct format.
+
+These functions insert new data into database and keep the old in database.
+
+`insert_biowaste` is used to upload Biowaste data. The CSV file is supposed to have columns
+
+- Date
+- Ravintola
+- Asiakasbiojäte, tiski (kg)
+- Biojäte kahvi, porot (kg)
+- Keittiön biojäte (ruoanvalmistus) (kg)
+- Salin biojäte (jämät) (kg)
+
+The function is not working properly. If data being inserted contains data that is already in the database, the function will not insert anything into the database. See branch [biowaste-fix](https://github.com/Food-Waste-Optimization/Food-Waste-Optimization/tree/biowaste-fix).
+
+`insert_sold_meals` is used to upload data of sold lunches. The CSV file is supposed to have columns
+
+- Date
+- Receipt time
+- Restaurant
+- Food Category
+- Dish
+- pcs
+- Hiilijalanjälki
+
+The function is working as planned.
+
+The function`insert_restaurants` is called by both `insert_biowaste` and `insert_sold_meals` and the functions `insert_food_categories`and `insert_dishes` are called by the latter. All of these three are working as planned.
+
+**TODO:**
+
+- Fixing of biowaste data insert
+- Occupancy from receipts by hour (*Tuntikohtainen asiakasmäärä v2.xlsx*)
+
+### Result data
+
+These functions are supposed to save the results of the predictions etc. to the database. The old data will be deleted when new predictions are saved.
 
 ## How to read predictions (TODO)
 The server is not fast enough to predict the values on the fly, so we came up with a solution to make the predictions at night automatically. There is a separate container to fit the model and then save it. 
