@@ -127,6 +127,8 @@ class ModelService:
         prediction of sold meals stored in a desired place. Currently
         in a database. Is necessary to allow faster load
         times for the website.
+
+        This should be used by the routes function.
         """
         return data_repo.get_latest_weekly_prediction()
 
@@ -134,14 +136,20 @@ class ModelService:
         """Will use data_repository to fetch the latest
         biowaste prediction stored in a desired place. Currently
         in a database. Is necessary to allow faster load
-        times for the website."""
+        times for the website.
+        
+        This should be used by the routes function.
+        """
         return data_repo.get_latest_biowaste_prediction()
 
     def get_occupancy_prediction(self):
         """Will use data_repository to fetch the latest
         prediction of occupancy stored in a desired place. Currently
         in a database. Is necessary to allow faster load
-        times for the website."""
+        times for the website.
+        
+        This should be used by the routes function.
+        """
         return data_repo.get_latest_occupancy_prediction()
 
 
