@@ -4,8 +4,9 @@ The current software structure and developmental phase allows several possible w
 
 ## Back End
 
-- Utilising CO2-data in AI-model, perhaps estimating CO2 per day
-
+- Utilising CO2-data in AI model, perhaps estimating CO2 per day  
+- Improving AI model, exploratory testing to find better parameters and settings  
+- Improving NLP, it is quite heavy to run  
 
 ## Front End
 
@@ -15,7 +16,6 @@ The current software structure and developmental phase allows several possible w
 ## Database
 
 - Moving from test database to production database. This will allow more testing to be done with the test database without compromising production.  
-
 - People flow data is not in the database
 - Biowaste data is not fetched from the database
 - Occupancy data (receipt data) is not fetched from the database
@@ -24,5 +24,8 @@ The current software structure and developmental phase allows several possible w
 ## Testing
 
 - The software is in need of much more testing. A big road block to testing is a successful database integration, which we were able to start at the end of the project, but it still needs some work.
-
 - Model testing and cross-validation are not done currently.
+
+## Other ideas
+
+- More exploratory data analysis to provide value to YLVA, finding relations and causalities from data  
