@@ -53,7 +53,7 @@ These functions insert new data into database and keep the old in database.
 - Keittiön biojäte (ruoanvalmistus) (kg)
 - Salin biojäte (jämät) (kg)
 
-The function is not working properly. If data being inserted contains data that is already in the database, the function will not insert anything into the database.
+The function is not working properly. If data being inserted contains data that is already in the database, the function will not insert anything into the database. See branch [biowaste-fix](https://github.com/Food-Waste-Optimization/Food-Waste-Optimization/tree/biowaste-fix).
 
 `insert_sold_meals` is used to upload data of sold lunches. The CSV file is supposed to have columns
 
