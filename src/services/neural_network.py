@@ -34,7 +34,7 @@ class NeuralNetwork(ML_Model):
 
         self._split_data(X, y)
 
-    def _learn(self, show_curve=True):
+    def _learn(self, show_curve=False):
         """Function to fit the model to the
         training data.
 
