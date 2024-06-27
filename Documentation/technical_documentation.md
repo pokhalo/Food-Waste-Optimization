@@ -31,3 +31,11 @@ For example, the database gives us data using timestamps, but the model expects 
 The _data repository_ calls functions from the _database repository_ and is called by _model service_. 
 
 ## Database_repository
+
+
+## How to read predictions (TODO)
+The server is not fast enough to predict the values on the fly, so we came up with a solution to make the predictions at night automatically. There is a separate container to fit the model and then save it. 
+
+There are specific functions to fetch the predictions from the database in the _model service_ class, but the database functions has not been written yet. 
+
+There needs to be separate function calls to train the model and make predictions (using _model service_) in the separate container.
