@@ -277,7 +277,39 @@ class DatabaseRepository:
     def get_dish_data(self):
         return pd.read_sql_table("dishes", con=self.database_connection)
 
+    def fetch_latest_weekly_prediction(self):
+        """Fetch the latest prediction of sold meals
+        from the database.
+        """
+        pass
 
+    def fetch_latest_biowaste_prediction(self):
+        """Fetch the latest biowaste prediction
+        from the database."""
+        pass
+
+    def fetch_latest_occupancy_prediction(self):
+        """Fetch the latest prediction of occupancy
+        from the database."""
+        pass
+
+    def insert_weekly_prediction(self):
+        """Store a prediction of sold meals
+        to the database.
+        """
+        pass
+
+    def insert_biowaste_prediction(self):
+        """Store a prediction of created biowaste
+        to the database.
+        """
+        pass
+
+    def insert_occupancy_prediction(self):
+        """Store a prediction of occupancy
+        to the database.
+        """
+        pass
 
 
     

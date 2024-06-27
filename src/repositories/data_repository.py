@@ -151,7 +151,22 @@ class DataRepository:
         data.pop("Kuitti kpl per Kuitti kpl (kg)")
 
         return data.to_dict()
+    
+    def get_latest_weekly_prediction(self):
+        """Fetch the latest prediction of sold meals
+        stored in a desired place. Currently in a database.
+        """
+        pass
 
+    def get_latest_biowaste_prediction(self):
+        """Fetch the latest biowaste prediction
+        stored in a desired place. Currently in a database."""
+        pass
+
+    def get_latest_occupancy_prediction(self):
+        """Fetch the latest prediction of occupancy
+        stored in a desired place. Currently in a database."""
+        pass
 
     def test_db(self):
         if False:
