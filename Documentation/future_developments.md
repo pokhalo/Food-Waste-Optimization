@@ -4,7 +4,7 @@ The current software structure and developmental phase allows several possible w
 
 ## Back End
 
-- Utilising CO2-data in AI-model  
+- Utilising CO2-data in AI-model, perhaps estimating CO2 per day
 
 
 ## Front End
@@ -19,4 +19,6 @@ The current software structure and developmental phase allows several possible w
 
 ## Testing
 
-- The software is in need of much more testing. A big road block to testing was successful database integration that was finished at the end of the project.  
+- The software is in need of much more testing. A big road block to testing is a successful database integration, which we were able to start at the end of the project, but it still needs some work.
+
+- Model testing and cross-validation are not done currently.
