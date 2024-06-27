@@ -253,18 +253,8 @@ class DatabaseRepository:
         
         return ordered_values
 
-        
-
-    def get_id_from_db(self, table_name:str, names:pd.Series):
-        query = f"FROM {table_name} SELECT id"
-        ids = pd.read_sql_query(sql=query, con=self.database_connection)
-        return ids
-    
     def get_sold_meals_data(self):
-        print("reading from database...")
-        df = pd.read_sql_table("sold_lunches", con=self.database_connection)
-        #df.set_index("datetime", inplace=True)
-        return df
+        return pd.read_sql_table("sold_lunches", con=self.database_connection)
 
     def get_biowaste_data(self):
         return pd.read_sql_table("biowaste", con=self.database_connection)
