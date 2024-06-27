@@ -293,19 +293,19 @@ class DatabaseRepository:
         from the database."""
         pass
 
-    def insert_weekly_prediction(self):
+    def insert_weekly_prediction(self, prediction):
         """Store a prediction of sold meals
         to the database.
         """
         pass
 
-    def insert_biowaste_prediction(self):
+    def insert_biowaste_prediction(self, prediction):
         """Store a prediction of created biowaste
         to the database.
         """
         pass
 
-    def insert_occupancy_prediction(self):
+    def insert_occupancy_prediction(self, prediction):
         """Store a prediction of occupancy
         to the database.
         """

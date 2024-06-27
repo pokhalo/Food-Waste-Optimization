@@ -79,18 +79,16 @@ class ModelService:
         based on average food waste per customer
         and estimated amount of customers.
 
-        Should be modified. End result should be where
-        restaurant prediction is mapped to meal waste ratio prediction.
-
-        Returns:
-            float: food waste in kgs
+        Saves prediction to permanent storage
+        and should be fetched from there.
         """
-        waste = self.data_repo.get_avg_meals_waste_ratio()
+        waste = data_repo.get_avg_meals_waste_ratio()
         for waste_type in waste:
             for restaurant, weight in waste[waste_type].items():
                 waste[waste_type][restaurant] = list(
-                    map(lambda i: i*weight, self.__predict_next_week()))
-        return waste
+                    map(lambda i: i*weight, self._predict_next_week()))
+                
+        data_repo.save_latest_biowaste_prediction(waste)
 
     def _predict_next_week(self, num_of_days: int, menu_plan: list):
         """Return a list of predictions
@@ -103,11 +101,14 @@ class ModelService:
         It should be a list of lists. The main list for each day
         and inner list for each dish.
 
-        Returns:
+        Data struct:
             list of int: list of predictions where index is offset from current day
+
+        Is saved to permanent storage.
         """
         day_offset = list(range(0, num_of_days))
-        return list(map(self.__predict, day_offset, menu_plan))
+        pred = list(map(self.__predict, day_offset, menu_plan))
+        data_repo.save_latest_weekly_prediction(pred)
 
     def _predict_occupancy(self):
         """Fetches the average occupancy by hour by day by restaurant
@@ -116,11 +117,11 @@ class ModelService:
         To get occupancy for a given restaurant and day, simply use 
         dict[restaurant_name][day_as_int] = [avg occupancy for hours 0-23]
 
-        Returns:
-            dict: above given structure
+        This is expected to change into a more dynamic prediction.
         """
-        return self.data_repo.get_average_occupancy()
-    
+        prediction = data_repo.get_average_occupancy()
+        data_repo.save_latest_occupancy_prediction(prediction)
+
     def get_weekly_prediction(self):
         """Will use data_repository to fetch the latest
         prediction of sold meals stored in a desired place. Currently
