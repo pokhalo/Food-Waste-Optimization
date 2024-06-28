@@ -151,7 +151,38 @@ class DataRepository:
         data.pop("Kuitti kpl per Kuitti kpl (kg)")
 
         return data.to_dict()
+    
+    def save_latest_weekly_prediction(self, prediction):
+        """Save the latest prediction of sold meals
+        to be stored in a desired place. Currently in a database.
+        """
+        db_repo.insert_weekly_prediction(prediction)
 
+    def save_latest_biowaste_prediction(self, prediction):
+        """Save the latest biowaste prediction to be
+        stored in a desired place. Currently in a database."""
+        db_repo.insert_biowaste_prediction(prediction)
+
+    def save_latest_occupancy_prediction(self, prediction):
+        """Save the latest prediction of occupancy to be
+        stored in a desired place. Currently in a database."""
+        db_repo.insert_occupancy_prediction(prediction)
+
+    def get_latest_weekly_prediction(self):
+        """Fetch the latest prediction of sold meals
+        stored in a desired place. Currently in a database.
+        """
+        return db_repo.fetch_latest_weekly_prediction()
+
+    def get_latest_biowaste_prediction(self):
+        """Fetch the latest biowaste prediction
+        stored in a desired place. Currently in a database."""
+        return db_repo.fetch_latest_biowaste_prediction()
+
+    def get_latest_occupancy_prediction(self):
+        """Fetch the latest prediction of occupancy
+        stored in a desired place. Currently in a database."""
+        return db_repo.fetch_latest_occupancy_prediction()
 
     def test_db(self):
         if False:
