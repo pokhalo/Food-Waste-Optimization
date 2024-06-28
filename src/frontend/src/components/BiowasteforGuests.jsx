@@ -43,7 +43,7 @@ const BiowasteforGuests = ({ fetchedBiowasteData, isLoadingBiowaste }) => {
       return ({
         labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         datasets: [{
-              label: 'Estimated Occupancy',
+              label: 'Estimated Biowaste / Customer',
               borderColor: '#36A2EB',
               backgroundColor: '#9BD0F5',
               data: dataToShow,
@@ -62,7 +62,11 @@ const BiowasteforGuests = ({ fetchedBiowasteData, isLoadingBiowaste }) => {
           responsive: true,
           scales: {
           y: {
-            beginAtZero: true
+            beginAtZero: true,
+            min: 0,
+            max: 5,
+            stepSize: 0.5,
+          }
           }
         }
       }
