@@ -41,7 +41,7 @@ const createDataSetToDisplay = (dataToShow) => {
       datasets: [{
           label: 'Estimated Occupancy',
           borderColor: '#36A2EB',
-          backgroundColor: '#9BD0F5',
+          backgroundColor: '#ffc048',
           data: dataToShow,
           borderWidth: 1,
         }]
@@ -80,30 +80,32 @@ if (isLoadingOccupancy) {
 
   // Returns a title for forecast, a chart displaying occupancy data, a list of buttons with restaurant names and a list of buttons with weekdays.
     return (
-      <div className="pt-3">
-          <div className="container is-max-desktop">
+        <div className="pt-3">
+            <div className="container is-max-desktop">
               <div className="pt-6 pb-6">
-                <div className="p-4"> 
-                    <h5 className="title is-5" id="title-of-forecast-1">{titleForForecast}</h5>
-                    <BarChartforOccupancy options={options} data={dataOccupancy}></BarChartforOccupancy>           
-                </div>
-                  <div className="buttons">
-                    { restaurants.map((restaurant, i) => {
-                        return (
-                          <button className='button is-link' key={i} value={restaurant} onClick={(event) => handleRestaurantChange(event, i)}>{restaurant}</button>                                
-                          )
-                        })}                            
-                      </div>
-                      <div className="buttons">
-                        { days.map((day, i) => {
+                <div className="card">
+                  <div className="p-4"> 
+                      <h5 className="title is-5" id="title-of-forecast-1">{titleForForecast}</h5>
+                      <BarChartforOccupancy options={options} data={dataOccupancy}></BarChartforOccupancy>           
+                  </div>
+                    <div className="buttons">
+                      { restaurants.map((restaurant, i) => {
                           return (
-                            <button className='button is-link' key={day} value={i} onClick={(event) => handleDayChange(event, day)}>{day}</button>
-                          )
-                        })}
-                      </div>
+                            <button className='button is-link' key={i} value={restaurant} onClick={(event) => handleRestaurantChange(event, i)}>{restaurant}</button>                                
+                            )
+                          })}                            
+                        </div>
+                        <div className="buttons">
+                          { days.map((day, i) => {
+                            return (
+                              <button className='button is-link' key={day} value={i} onClick={(event) => handleDayChange(event, day)}>{day}</button>
+                            )
+                          })}
+                        </div>
                 </div>
+              </div>
             </div>
-     </div>
+        </div>   
   )
 }
 

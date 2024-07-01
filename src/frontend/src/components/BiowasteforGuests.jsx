@@ -45,7 +45,7 @@ const BiowasteforGuests = ({ fetchedBiowasteData, isLoadingBiowaste }) => {
         datasets: [{
               label: 'Estimated Biowaste / Customer',
               borderColor: '#36A2EB',
-              backgroundColor: '#9BD0F5',
+              backgroundColor: '#ff5e57',
               data: dataToShow,
               borderWidth: 1,
             }]
@@ -81,22 +81,24 @@ const BiowasteforGuests = ({ fetchedBiowasteData, isLoadingBiowaste }) => {
     return (
         <div className="pt-3">
             <div className="container is-max-desktop">
-             <div className="pt-6 pb-6">
-                <div className="p-4"> 
-                    <h5 className="title is-5" id="title-of-forecast-2">{titleForForecast}</h5>
-                    <BarChartforBiowaste options={options} data={dataBiowaste}></BarChartforBiowaste>
-                 </div>
-                          <div className="buttons">
-                            { restaurants.map((restaurant, i) => {
-                              return (
-                                <button className='button is-link' key={i} value={restaurant} onClick={(event) => handleRestaurantChange(event, i)}>{restaurant}</button>                                
-                              )
+              <div className="pt-6 pb-6">
+                <div className="card">
+                  <div className="p-4"> 
+                      <h5 className="title is-5" id="title-of-forecast-2">{titleForForecast}</h5>
+                      <BarChartforBiowaste options={options} data={dataBiowaste}></BarChartforBiowaste>
+                  </div>
+                            <div className="buttons">
+                              { restaurants.map((restaurant, i) => {
+                                return (
+                                  <button className='button is-link' key={i} value={restaurant} onClick={(event) => handleRestaurantChange(event, i)}>{restaurant}</button>                                
+                                )
 
-                            })}                            
-                          </div>
-               </div>
+                              })}                            
+                            </div>
+                </div>
+              </div>
             </div>
-         </div>         
+        </div>         
     )
 }
 
