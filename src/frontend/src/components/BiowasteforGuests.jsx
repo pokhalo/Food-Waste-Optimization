@@ -44,10 +44,9 @@ const BiowasteforGuests = ({ fetchedBiowasteData, isLoadingBiowaste }) => {
         labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         datasets: [{
               label: 'Estimated Biowaste / Customer',
-              borderColor: '#36A2EB',
               backgroundColor: '#ff5e57',
               data: dataToShow,
-              borderWidth: 1,
+              borderWidth: 0,
             }]
         })
     }
@@ -67,8 +66,7 @@ const BiowasteforGuests = ({ fetchedBiowasteData, isLoadingBiowaste }) => {
             max: 5,
             stepSize: 0.5,
           }
-          }
-        }
+        },
       }
 
      // function to handle button clicks and to change the selected restaurant
