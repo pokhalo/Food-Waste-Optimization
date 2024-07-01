@@ -1,5 +1,6 @@
 // Path to Bulma's sass folder
 @use "bulma/sass" with (
+  $body-background-color: #d2dae2,
   $link: #3c40c6,
 );
 
