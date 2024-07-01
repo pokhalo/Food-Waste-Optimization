@@ -56,7 +56,7 @@ const ManagerView = ({ fetchedBiowasteData, isLoadingBiowaste }) => {
                 label: 'Estimated biowaste',
                   data: all,
                   borderWidth: 1,
-                  backgroundColor: ['black', 'red', 'blue', 'yellow'],
+                  backgroundColor: ['3c40c6', 'ffc048', 'ff5e57', '485460'],
                   borderColor: ['white'],
                 }]
             }
@@ -78,6 +78,16 @@ const ManagerView = ({ fetchedBiowasteData, isLoadingBiowaste }) => {
         responsive: true,
         cutout: '40%',
         radius: '50%',
+        plugins: {
+          legend: {
+            position: 'right',
+            labels: {
+              usePointStyle: true,
+              pointStyle: 'circle',
+              padding: 20,
+            }
+          }
+        }
     }
 
     // onClick-function to handle selection of restaurant
