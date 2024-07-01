@@ -9,7 +9,9 @@
     "build": "NODE_ENV=development vite build",
     "build-prod": "vite build --base=/fwowebserver/",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build-bulma": "sass --load-path=node_modules my-bulma-project.scss my-bulma-project.css",
+    "start": "npm run build-bulma -- --watch"
   },
   "dependencies": {
     "@azure/msal-browser": "^3.16.0",

@@ -1,0 +1,8 @@
+// Path to Bulma's sass folder
+@use "bulma/sass" with (
+  $link: #3c40c6,
+);
+
+.card {
+    padding: 40px;
+}
