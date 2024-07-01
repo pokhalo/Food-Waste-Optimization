@@ -63,8 +63,8 @@ git pull
 
 - To install dependencies go to React root folder (src/frontend) and run:
   
-`npm install`
-`npm install sass`
+`npm install`<br>
+`npm install sass`<br>
 `npm install bulma`
 
 - To build the CSS:
