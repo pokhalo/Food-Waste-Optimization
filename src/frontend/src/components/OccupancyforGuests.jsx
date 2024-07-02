@@ -40,10 +40,8 @@ const createDataSetToDisplay = (dataToShow) => {
       labels: ['9-10', '10-11', '11-12', '12-13', '13-14', '14-15', '15-16'],
       datasets: [{
           label: 'Estimated Occupancy',
-          borderColor: '#36A2EB',
           backgroundColor: '#ffc048',
           data: dataToShow,
-          borderWidth: 1,
         }]
     })
 }
