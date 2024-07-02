@@ -1,4 +1,4 @@
-import 'bulma/css/bulma.min.css'
+import '/my-bulma-project.css'
 
 // This component is returned when an unauthorized user tries to access restricted content.
 

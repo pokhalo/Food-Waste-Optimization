@@ -9,7 +9,7 @@ import { Chart as ChartMenus3 } from 'chart.js'
 import { Chart as ChartMenus4 } from 'chart.js'
 import MenuChart from './MenuChart'
 import Unauthorized from './Unauthorized'
-import 'bulma/css/bulma.min.css'
+import '/my-bulma-project.css'
 
 // Component returning sub components presenting views to compare menu items of lunches sold in different quartals. 
 // Data comes from App.jsx as props and is passed to sub components.

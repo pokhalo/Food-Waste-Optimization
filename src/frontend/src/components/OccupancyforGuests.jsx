@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Bar as BarChartforOccupancy } from 'react-chartjs-2'
 import { Chart as ChartOccupancy, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js'
-import 'bulma/css/bulma.min.css'
+import '/my-bulma-project.css'
 
 const OccupancyforGuests = ({ fetchedOccupancyData, isLoadingOccupancy }) => {
 

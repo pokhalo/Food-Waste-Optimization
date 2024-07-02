@@ -1,7 +1,7 @@
 import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react'
 import { loginRequest } from '../utils/authConfig.js'
 import { Link } from 'react-router-dom'
-import 'bulma/css/bulma.min.css'
+import '/my-bulma-project.css'
 
 // The Menu bar for the App. Different content for unauthenticated and authenticated users.
 

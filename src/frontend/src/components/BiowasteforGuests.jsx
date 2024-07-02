@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Bar as BarChartforBiowaste } from 'react-chartjs-2'
 import { Chart as ChartBiowaste, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js'
-import 'bulma/css/bulma.min.css'
+import '/my-bulma-project.css'
 
 // Component for presenting customer biowaste. Receives fetched data from App.jsx -> GuestView.jsx as props
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import OccupancyforGuests from './OccupancyforGuests'
 import BiowasteforGuests from './BiowasteforGuests'
 import requestService from '../services/requestservice'
-import 'bulma/css/bulma.min.css'
+import '/my-bulma-project.css'
 
 // The component receives data and loading information from App.jsx as props
 

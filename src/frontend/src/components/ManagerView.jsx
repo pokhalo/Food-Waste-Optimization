@@ -3,7 +3,7 @@ import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-reac
 import { Doughnut } from 'react-chartjs-2'
 import { Chart as ChartJS, LinearScale, ArcElement, Title, Tooltip, Legend } from 'chart.js'
 import Unauthorized from './Unauthorized.jsx'
-import 'bulma/css/bulma.min.css'
+import '/my-bulma-project.css'
 
 // Component to present data for managers: sales data, data on biowaste and possible others. Currently
 // displaying only the full biowaste data (the same data is partly presented on GuestView.jsx)
